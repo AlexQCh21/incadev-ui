@@ -136,7 +136,7 @@ export function RegisterForm({
 
   return (
     <div 
-      className={cn("flex flex-col gap-6", className)}
+      className={cn("flex flex-col gap-6 mt-5", className)}
       {...props}
     >
       <FieldGroup>

@@ -50,7 +50,6 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  console.log("LoginForm se está renderizando");
   const {
     register,
     handleSubmit,
@@ -107,7 +106,7 @@ export function LoginForm({
 
   return (
     <form 
-      className={cn("flex flex-col gap-6", className)} 
+      className={cn("flex flex-col gap-6 mt-5", className)} 
       onSubmit={handleSubmit(onSubmit)}
       {...props}
     >

@@ -32,10 +32,10 @@ export function AuthPage({ mode }: AuthPageProps) {
         </div>
         <div className="relative w-full h-full pt-18 p-8 md:p-10 md:pb-0 sm:p-15 sm:pb-0 pb-0">
           <div className="">
-            <h1 className="text-5xl sm:text-6xl font-semibold mb-2">¡Bienvenido!</h1>
+            <h1 className="text-5xl sm:text-6xl font-semibold mb-2 text-white">¡Bienvenido!</h1>
           </div>
           <div className="flex w-full mb-0 p-0 justify-between flex-wrap">
-            <p className="w-1/2 text-xl sm:text-3xl font-light">
+            <p className="w-1/2 text-xl sm:text-3xl font-light text-white">
               Que esperas para capacitarte.
             </p>
 
