@@ -19,7 +19,16 @@ import {
   type Icon
 } from "@tabler/icons-react"
 
-// EXPORTAR las interfaces
+export const routes = {
+  general: {
+    login: "/academico/login",
+    register: "/academico/register",
+  },
+  dashboard:{
+    index: "/academico/dashboard"
+  }
+};
+
 export interface NavItem {
   title: string;
   url: string;
