@@ -49,16 +49,13 @@ export function NavMain({ items, searchTerm = '' }: NavMainProps) {
 
   const isAdmin = user?.role?.includes('admin') || user?.roles?.includes('admin');
 
-  // Función para filtrar items basado en búsqueda y rol
   const filterItems = (navItems: NavItem[]): NavItem[] => {
     return navItems
       .filter(item => {
-        // Filtro por rol
         if (item.adminOnly && !isAdmin) {
           return false;
         }
         
-        // Filtro por búsqueda
         if (searchTerm) {
           const matchesTitle = item.title.toLowerCase().includes(searchTerm.toLowerCase());
           const matchesSubItems = item.items?.some(subItem => 
@@ -72,12 +69,10 @@ export function NavMain({ items, searchTerm = '' }: NavMainProps) {
       .map(item => ({
         ...item,
         items: item.items?.filter(subItem => {
-          // Filtro por rol en subitems
           if (subItem.adminOnly && !isAdmin) {
             return false;
           }
           
-          // Filtro por búsqueda en subitems
           if (searchTerm) {
             return subItem.title.toLowerCase().includes(searchTerm.toLowerCase());
           }
@@ -90,7 +85,6 @@ export function NavMain({ items, searchTerm = '' }: NavMainProps) {
 
   const filteredItems = filterItems(items);
 
-  // Si hay término de búsqueda y no hay resultados
   if (searchTerm && filteredItems.length === 0) {
     return (
       <SidebarGroup>

@@ -20,12 +20,14 @@ import {
 } from "@tabler/icons-react"
 
 export const routes = {
+  base: "/academico/",
   general: {
     login: "/academico/login",
     register: "/academico/register",
   },
   dashboard:{
-    index: "/academico/dashboard"
+    index: "/academico/dashboard",
+    account: "/academico/dashboard/account/"
   }
 };
 

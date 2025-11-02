@@ -17,6 +17,7 @@ import {
   navMainOptions, 
   navAdminSecondary
 } from "@/process/academic/academic-site"
+import {routes} from "@/process/academic/academic-site";
 
 interface User {
   first_name?: string;
@@ -37,7 +38,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
   const shownUser = {
     name: user?.first_name ?? "Invitado",
     email: user?.email ?? "—",
-    avatar: user?.avatar ?? "/academico/images/9440461.webp",
+    avatar: user?.avatar ?? `${routes.base}9440461.webp`,
     token: token ?? "token_invalido"
   };
 
@@ -49,18 +50,17 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
-              <a href="/academico/dashboard" title="Dashboard" className="flex items-center space-x-2">
+              <a href={routes.dashboard.index} title="Dashboard" className="flex items-center space-x-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                  <span><img src="/academico/incadev_logotipo.svg" alt="Logotipo Incadev" title="Logotipo Incadev"/></span>
+                  <span><img src="/LOGOTIPO_1024x1024.svg" alt="Logotipo Incadev" title="Logotipo Incadev"/></span>
                 </div>
-                <span className="text-xl font-bold">Incadev</span>
+                <span className="text-xl font-bold">INCADEV</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {/* NavMain con funcionalidad de búsqueda */}
         <NavMain items={navMainCollapse} searchTerm={searchTerm} />
         
         <NavSecondary items={navSimpleMain}/>
@@ -72,7 +72,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
           />
         )}
         
-        {/* NavSecondary con búsqueda */}
         <NavSecondary 
           items={navMainOptions} 
           searchTerm={searchTerm}

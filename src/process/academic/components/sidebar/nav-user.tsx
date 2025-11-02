@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/sidebar"
 import { toast } from "react-toastify"
 import { config } from "@/config/academic-config"
-
+import { routes } from "@/process/academic/academic-site";
 export function NavUser({
   user
 }: {
@@ -61,7 +61,7 @@ export function NavUser({
         toast.success("¡Has cerrado sesión exitosamente!");
 
         setTimeout(() => {
-          window.location.href = "/academico";
+          window.location.href = routes.general.login;
         }, 2000);
       } else {
         const errorData = await response.json();
@@ -117,7 +117,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <a href="/academico/dashboard/account/">
+                <a href={routes.dashboard.account}>
                   <IconUserCircle />
                     Account
                 </a>
