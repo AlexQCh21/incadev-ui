@@ -27,7 +27,7 @@ export const routes = {
   },
   dashboard:{
     index: "/academico/dashboard",
-    account: "/academico/dashboard/account/"
+    account: "/academico/account"
   }
 };
 
