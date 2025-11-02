@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { config } from "@/config/academic-config";
 import { routes } from "@/process/academic/academic-site";
+import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth";
+
 export interface UserData {
   id: number;
   first_name: string;
@@ -20,13 +22,13 @@ export interface UserData {
 }
 
 export const useUserProfile = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<any | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const { token, user: initialUser, mounted: authMounted } = useAcademicAuth();
+  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [user, setUser] = useState<any | null>(initialUser);
   
   const [formData, setFormData] = useState<UserData>({
     id: 0,
@@ -66,28 +68,16 @@ export const useUserProfile = () => {
     const fetchUserProfile = async () => {
       try {
         setLoading(true);
-        const t = window.localStorage.getItem("token");
-        const u = window.localStorage.getItem("user");
         
-        setToken(t ?? null);
-        
-        let userId: number | null = null;
-
-        if (u) {
-          try {
-            const userData = JSON.parse(u);
-            setUser(userData);
-            setFormData(mapApiDataToForm(userData));
-            userId = userData.id;
-          } catch (error) {
-            console.error("Error parsing localStorage user:", error);
-          }
+        if (initialUser) {
+          setUser(initialUser);
+          setFormData(mapApiDataToForm(initialUser));
         }
 
-        if (t && userId) {
-          const tokenWithoutQuotes = t.replace(/^"|"$/g, '');
+        if (token && initialUser?.id) {
+          const tokenWithoutQuotes = token.replace(/^"|"$/g, '');
           
-          const response = await fetch(`${config.apiUrl}${config.endpoints.users.getById}`.replace(":id", userId.toString()), {
+          const response = await fetch(`${config.apiUrl}${config.endpoints.users.getById}`.replace(":id", initialUser.id.toString()), {
             headers: {
               "Authorization": `Bearer ${tokenWithoutQuotes}`,
               "Accept": "application/json"
@@ -111,12 +101,14 @@ export const useUserProfile = () => {
         });
       } finally {
         setLoading(false);
-        setMounted(true);
       }
     };
 
-    fetchUserProfile();
-  }, []);
+    // Solo ejecutar si authMounted es true (la autenticación está lista)
+    if (authMounted) {
+      fetchUserProfile();
+    }
+  }, [token, initialUser, authMounted]); // Dependencias del efecto
 
   const handleChange = (field: keyof UserData, value: string) => {
     setFormData(prev => ({
@@ -214,7 +206,7 @@ export const useUserProfile = () => {
   };
 
   return {
-    mounted,
+    mounted: authMounted, // ← Usar authMounted en lugar del estado local
     loading,
     saving,
     message,
