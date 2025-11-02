@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 import { z } from "zod"
 import {GoogleLoginButton} from "@/process/academic/auth/components/google-login-button";
 import { config } from "@/config/academic-config"
@@ -50,6 +52,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const [showPassword, setShowPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -133,12 +136,26 @@ export function LoginForm({
 
         <Field>
           <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-          <Input
-            id="password" 
-            type="password" 
-            placeholder="Ingresa tu contraseña"
-            {...register("password")}
-          />
+          <div className="relative">
+            <Input
+              id="password" 
+              type={showPassword ? "text" : "password"}
+              placeholder="Mínimo 8 caracteres"
+              className="pr-10"
+              {...register("password")}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
           )}
