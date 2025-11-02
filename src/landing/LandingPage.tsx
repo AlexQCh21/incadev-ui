@@ -1,6 +1,5 @@
 "use client"
 import React from "react";
-import { ModeToggle } from '@/components/core/ModeToggle';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,15 +8,7 @@ import { Label } from "@/components/ui/label";
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground p-8">
-      <header className="flex justify-between items-center mb-12">
-        <div>
-          <h1 className="text-3xl font-bold">Incadev</h1>
-          <p className="text-muted-foreground">Instituto de Capacitación y Desarrollo Virtual</p>
-        </div>
-        <ModeToggle />
-      </header>
-
+    <main className="p-8">
       <section className="text-center mb-16">
         <Badge variant="secondary" className="mb-4">Nuevos Cursos Disponibles</Badge>
         <h2 className="text-4xl font-bold mb-4">Capacitación Virtual de Calidad</h2>
@@ -90,14 +81,7 @@ const LandingPage: React.FC = () => {
           </CardContent>
         </Card>
       </section>
-
-      <footer className="mt-16 text-center text-sm text-muted-foreground">
-        <p>© 2024 Incadev. Todos los derechos reservados.</p>
-        <div className="mt-4">
-          <ModeToggle />
-        </div>
-      </footer>
-    </div>
+    </main>
   );
 };
 
