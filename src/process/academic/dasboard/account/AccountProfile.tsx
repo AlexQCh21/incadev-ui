@@ -2,12 +2,12 @@ import AcademicLayout from "@/process/academic/AcademicLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { IconUser } from "@tabler/icons-react";
-import { useUserProfile } from "./hooks/useUserProfile";
-import { ProfileHeader } from "./sections/ProfileHeader";
-import { PersonalInfoSection } from "./sections/PersonalInfoSection";
-import { LocationSection } from "./sections/LocationSection";
-import { AlertMessage } from "./sections/AlertMessage";
-import { ProfileSkeleton, ProfileFormSkeleton } from "./sections/ProfileSkeleton";
+import { useUserProfile } from "@/process/academic/dasboard/account/hooks/useUserProfile";
+import { ProfileHeader } from "@/process/academic/dasboard/account/sections/ProfileHeader";
+import { PersonalInfoSection } from "@/process/academic/dasboard/account/sections/PersonalInfoSection";
+import { LocationSection } from "@/process/academic/dasboard/account/sections/LocationSection";
+import { AlertMessage } from "@/process/academic/dasboard/account/sections/AlertMessage";
+import { ProfileSkeleton } from "@/process/academic/dasboard/account/sections/ProfileSkeleton";
 
 export default function AccountProfile() {
   const {
