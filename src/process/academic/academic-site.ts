@@ -209,13 +209,13 @@ export const navAdminSecondary: NavSimpleItem[] = [
 export const navMainOptions: NavSimpleItem[] = [
    {
     title: "Configuración",
-    url: "/academico/dashboard/configuracion",
+    url: "/academico/configuracion",
     icon: IconSettings,
     type: 'link'
   },
   {
     title: "Ayuda", 
-    url: "/academico/dashboard/ayuda",
+    url: "/academico/ayuda",
     icon: IconHelp,
     type: 'link'
   },
