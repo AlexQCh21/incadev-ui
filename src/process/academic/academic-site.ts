@@ -18,7 +18,8 @@ export const routes = {
   },
   dashboard:{
     index: "/academico/dashboard",
-    account: "/academico/account"
+    account: "/academico/account",
+    surveys: "/academico/encuesta",
   }
 };
 
@@ -56,6 +57,11 @@ export const navSimpleMain: NavSimpleItem[] = [
     title: "Mis Cursos",
     url: "/academico/dashboard/catalogo",
     icon: IconDatabase,
+  },
+  {
+    title: "Encuestas",
+    url: "/academico/encuesta",
+    icon: IconReport,
   },
 ];
 
