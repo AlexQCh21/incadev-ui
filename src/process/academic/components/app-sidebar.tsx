@@ -15,7 +15,6 @@ import {
   navMainCollapse, 
   navSimpleMain, 
   navMainOptions, 
-  navAdminSecondary
 } from "@/process/academic/academic-site"
 import {routes} from "@/process/academic/academic-site";
 
@@ -64,13 +63,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         <NavMain items={navMainCollapse} searchTerm={searchTerm} />
         
         <NavSecondary items={navSimpleMain}/>
-        
-        {isAdmin && (
-          <NavSecondary 
-            items={navAdminSecondary} 
-            className="border-t pt-4 mt-4"
-          />
-        )}
         
         <NavSecondary 
           items={navMainOptions} 
