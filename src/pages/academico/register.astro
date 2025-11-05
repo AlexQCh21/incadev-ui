@@ -1,5 +1,5 @@
 ---
-import ProtectedLayout from '@/layouts/ProtectedLayout.astro';
+import PublicLayout from '@/layouts/PublicLayout.astro';
 import { AuthPage } from '@/process/academic/auth/AuthPage';
 const robots = ["noindex", "nofollow"];
 
@@ -11,6 +11,6 @@ const imageOG = "/ISOLOGOTIPO_VERTICAL.svg";
 const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
 ---
 
-<ProtectedLayout {robots} {title} {description} {keywords} {url} {imageOG} {imagetwt}>
+<PublicLayout {robots} {title} {description} {keywords} {url} {imageOG} {imagetwt}>
 	<AuthPage mode='register' client:load/>
-</ProtectedLayout>
+</PublicLayout>
