@@ -20,6 +20,7 @@ export const routes = {
     index: "/academico/dashboard",
     account: "/academico/account",
     surveys: "/academico/encuesta",
+    tutoring: "/academico/tutoria",
   }
 };
 
@@ -61,6 +62,11 @@ export const navSimpleMain: NavSimpleItem[] = [
   {
     title: "Encuestas",
     url: "/academico/encuesta",
+    icon: IconReport,
+  },
+  {
+    title: "Tutorias",
+    url: "/academico/tutoria",
     icon: IconReport,
   },
 ];
