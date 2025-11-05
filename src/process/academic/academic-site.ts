@@ -69,6 +69,26 @@ export const navSimpleMain: NavSimpleItem[] = [
     url: "/academico/tutoria",
     icon: IconReport,
   },
+  {
+    title: "Grupos Disponibles",
+    url: "/academico/grupos/disponible",
+    icon: IconReport,
+  },
+  {
+    title: "Mis Grupos Académicos",
+    url: "/academico/grupos/joined",
+    icon: IconReport,
+  },
+  {
+    title: "Grupos Terminados",
+    url: "/academico/grupos/completado",
+    icon: IconReport,
+  },
+  {
+    title: "Grupos Académicos",
+    url: "/academico/grupos/teach",
+    icon: IconReport,
+  },
 ];
 
 export const navMainOptions: NavSimpleItem[] = [
