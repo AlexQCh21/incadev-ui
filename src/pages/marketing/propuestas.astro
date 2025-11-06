@@ -1,0 +1,362 @@
+---
+// src/pages/marketing/propuestas.astro
+import Layout from '../../layouts/MarketingLayout.astro';
+---
+
+<Layout title="Propuestas - INCADEV UI">
+  <div class="space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Propuestas de Contenido
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Gestiona todas las propuestas de cursos y campañas de marketing
+        </p>
+      </div>
+      <button
+        id="btnNuevaPropuesta"
+        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium smooth-transition flex items-center gap-2 shadow-lg hover:shadow-xl"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Nueva Propuesta
+      </button>
+    </div>
+
+    <!-- Filters and Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-blue-500 dark:border-blue-500 rounded-lg smooth-transition" data-filter="todas">
+        <div class="text-center">
+          <p class="text-2xl font-bold text-gray-900 dark:text-white">24</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Todas</p>
+        </div>
+      </button>
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-yellow-500 dark:hover:border-yellow-500 rounded-lg smooth-transition" data-filter="pendiente">
+        <div class="text-center">
+          <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">12</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Pendientes</p>
+        </div>
+      </button>
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 rounded-lg smooth-transition" data-filter="en_revision">
+        <div class="text-center">
+          <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">7</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">En Revisión</p>
+        </div>
+      </button>
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-green-500 dark:hover:border-green-500 rounded-lg smooth-transition" data-filter="aprobada">
+        <div class="text-center">
+          <p class="text-2xl font-bold text-green-600 dark:text-green-400">5</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Aprobadas</p>
+        </div>
+      </button>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="flex flex-col sm:flex-row gap-4">
+      <div class="flex-1">
+        <input
+          type="text"
+          placeholder="Buscar propuestas..."
+          class="w-full px-4 py-3 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+        />
+      </div>
+      <select class="px-4 py-3 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        <option>Todos los departamentos</option>
+        <option>Desarrollo</option>
+        <option>Móvil</option>
+        <option>Estrategia</option>
+        <option>Data Science</option>
+      </select>
+      <select class="px-4 py-3 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        <option>Todas las prioridades</option>
+        <option>Alta</option>
+        <option>Media</option>
+        <option>Baja</option>
+      </select>
+    </div>
+
+    <!-- Propuestas List -->
+    <div id="propuestasList" class="grid grid-cols-1 gap-4">
+      <!-- Las propuestas se cargarán aquí dinámicamente -->
+    </div>
+  </div>
+  <!-- Modal Nueva Propuesta -->
+  <div id="modalNuevaPropuesta" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-gray-950 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
+      <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+            Nueva Propuesta de Contenido
+          </h2>
+          <button id="btnCerrarModal" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg smooth-transition">
+            <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <form id="formNuevaPropuesta" class="p-6 space-y-6">
+        <!-- Tema -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Tema del Curso *
+          </label>
+          <input
+            type="text"
+            required
+            placeholder="Ej: Kotlin Avanzado para Android"
+            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+          />
+        </div>
+
+        <!-- Departamento y Prioridad -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Departamento *
+            </label>
+            <select required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white">
+              <option value="">Seleccionar...</option>
+              <option>Desarrollo</option>
+              <option>Móvil</option>
+              <option>Estrategia</option>
+              <option>Data Science</option>
+              <option>DevOps</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Prioridad *
+            </label>
+            <select required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white">
+              <option value="">Seleccionar...</option>
+              <option>Alta</option>
+              <option>Media</option>
+              <option>Baja</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Descripción
+          </label>
+          <textarea
+            rows="4"
+            placeholder="Describe la propuesta, objetivos y público objetivo..."
+            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+          ></textarea>
+        </div>
+
+        <!-- Target Audience -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Público Objetivo
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
+              <span class="text-sm text-gray-900 dark:text-white">Principiantes</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
+              <span class="text-sm text-gray-900 dark:text-white">Intermedios</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
+              <span class="text-sm text-gray-900 dark:text-white">Avanzados</span>
+            </label>
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
+              <span class="text-sm text-gray-900 dark:text-white">Profesionales</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Duración estimada -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Duración Estimada
+            </label>
+            <input
+              type="number"
+              placeholder="8"
+              class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Unidad
+            </label>
+            <select class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white">
+              <option>Semanas</option>
+              <option>Meses</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 pt-4">
+          <button
+            type="button"
+            id="btnCancelar"
+            class="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-900 smooth-transition"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium smooth-transition shadow-lg"
+          >
+            Crear Propuesta
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Datos mock de propuestas
+    const propuestas = [
+      { id: 1, tema: 'Kotlin Avanzado', departamento: 'Desarrollo', fecha: '2025-11-04', estado: 'pendiente', prioridad: 'alta', descripcion: 'Curso completo de Kotlin para desarrollo Android' },
+      { id: 2, tema: 'React Native 2025', departamento: 'Móvil', fecha: '2025-11-03', estado: 'aprobada', prioridad: 'media', descripcion: 'Desarrollo mobile con React Native' },
+      { id: 3, tema: 'IA para Negocios', departamento: 'Estrategia', fecha: '2025-11-02', estado: 'en_revision', prioridad: 'alta', descripcion: 'Aplicación de IA en estrategias empresariales' },
+      { id: 4, tema: 'Python Machine Learning', departamento: 'Data Science', fecha: '2025-11-01', estado: 'pendiente', prioridad: 'baja', descripcion: 'Introducción al ML con Python' },
+      { id: 5, tema: 'Docker y Kubernetes', departamento: 'DevOps', fecha: '2025-10-30', estado: 'aprobada', prioridad: 'alta', descripcion: 'Contenedores y orquestación' },
+      { id: 6, tema: 'Flutter Desarrollo', departamento: 'Móvil', fecha: '2025-10-28', estado: 'en_revision', prioridad: 'media', descripcion: 'Desarrollo multiplataforma con Flutter' },
+    ];
+
+    /** @type {{ [key: string]: { label: string; bg: string; text: string; border: string; } }} */
+    const estadoConfig = {
+      pendiente: {
+        label: 'Pendiente',
+        bg: 'bg-yellow-50 dark:bg-yellow-950/30',
+        text: 'text-yellow-700 dark:text-yellow-400',
+        border: 'border-yellow-200 dark:border-yellow-900/50'
+      },
+      aprobada: {
+        label: 'Aprobada',
+        bg: 'bg-green-50 dark:bg-green-950/30',
+        text: 'text-green-700 dark:text-green-400',
+        border: 'border-green-200 dark:border-green-900/50'
+      },
+      en_revision: {
+        label: 'En Revisión',
+        bg: 'bg-blue-50 dark:bg-blue-950/30',
+        text: 'text-blue-700 dark:text-blue-400',
+        border: 'border-blue-200 dark:border-blue-900/50'
+      }
+    };
+
+    const prioridadColor = {
+      alta: 'border-l-red-500',
+      media: 'border-l-yellow-500',
+      baja: 'border-l-green-500'
+    };
+
+    // Renderizar propuestas
+    function renderPropuestas(filtro = 'todas') {
+      const container = document.getElementById('propuestasList');
+      if (!container) return;
+      
+      const filteredPropuestas = filtro === 'todas' 
+        ? propuestas 
+        : propuestas.filter(p => p.estado === filtro);
+
+      container.innerHTML = filteredPropuestas.map(p => {
+        const estado = estadoConfig[p.estado as keyof typeof estadoConfig];
+        return `
+          <a href="/marketing/propuestas/${p.id}" 
+             class="block p-6 bg-white dark:bg-gray-950 border-l-4 ${prioridadColor[p.prioridad as keyof typeof prioridadColor]} border-y border-r border-gray-200 dark:border-gray-800 rounded-lg hover:shadow-lg smooth-transition group">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 smooth-transition">
+                  ${p.tema}
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  ${p.descripcion}
+                </p>
+                <div class="flex flex-wrap gap-3 text-sm">
+                  <span class="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    ${p.departamento}
+                  </span>
+                  <span class="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    ${new Date(p.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                </div>
+              </div>
+              <span class="px-3 py-1.5 ${estado.bg} ${estado.text} border ${estado.border} rounded-full text-xs font-medium whitespace-nowrap">
+                ${estado.label}
+              </span>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPropuestas();
+
+      // Filtros
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('border-blue-500', 'dark:border-blue-500');
+            b.classList.add('border-gray-200', 'dark:border-gray-800');
+          });
+          btn.classList.remove('border-gray-200', 'dark:border-gray-800');
+          btn.classList.add('border-blue-500', 'dark:border-blue-500');
+          
+          const filtro = btn.getAttribute('data-filter') ?? 'todas';
+          renderPropuestas(filtro);
+        });
+      });
+
+      // Modal
+      const modal = document.getElementById('modalNuevaPropuesta');
+      const btnAbrir = document.getElementById('btnNuevaPropuesta');
+      const btnCerrar = document.getElementById('btnCerrarModal');
+      const btnCancelar = document.getElementById('btnCancelar');
+
+      btnAbrir?.addEventListener('click', () => {
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex');
+      });
+
+      [btnCerrar, btnCancelar].forEach(btn => {
+        btn?.addEventListener('click', () => {
+          modal?.classList.add('hidden');
+          modal?.classList.remove('flex');
+        });
+      });
+
+      // Cerrar modal al hacer click fuera
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+      });
+
+      // Form submit
+      document.getElementById('formNuevaPropuesta')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('¡Propuesta creada con éxito! (Esta es una vista de ejemplo)');
+        modal?.classList.add('hidden');
+        modal?.classList.remove('flex');
+      });
+    });
+  </script>
+</Layout>
