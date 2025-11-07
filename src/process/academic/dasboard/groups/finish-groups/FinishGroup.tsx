@@ -56,7 +56,7 @@ export default function FinishGroup() {
       setError(null)
       const tokenWithoutQuotes = token.replace(/^"|"$/g, '')
       const response = await fetch(
-        `${config.apiUrl}${config.endpoints.groups.complete}?page=${currentPage}`,
+        `${config.apiUrl}${config.endpoints.groups.listComplete}?page=${currentPage}`,
         {
           method: "GET",
           headers: {
