@@ -117,9 +117,8 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <a href={routes.dashboard.account}>
-                  <IconUserCircle />
-                    Account
+                <a href={routes.dashboard.account} className="flex items-center gap-2">
+                  <IconUserCircle /> Account
                 </a>
               </DropdownMenuItem>
               <DropdownMenuItem>

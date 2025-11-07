@@ -7,6 +7,12 @@ import {
   IconHelp,
   IconSearch,
   IconSettings,
+  IconUsersPlus,
+  IconUserCheck,
+  IconCircleCheck,
+  IconChalkboard,
+  IconChecklist,
+  IconSchool,
   type Icon
 } from "@tabler/icons-react"
 
@@ -21,6 +27,8 @@ export const routes = {
     account: "/academico/account",
     surveys: "/academico/encuesta",
     tutoring: "/academico/tutoria",
+    detailGroup: "/academico/grupos/informacion",
+    detailTeachGroup: "/academico/grupos/detalle-teach",
   }
 };
 
@@ -55,19 +63,34 @@ export const navMainCollapse: NavItem[] = [];
 
 export const navSimpleMain: NavSimpleItem[] = [
   {
-    title: "Mis Cursos",
-    url: "/academico/dashboard/catalogo",
-    icon: IconDatabase,
+    title: "Grupos Disponibles",
+    url: "/academico/grupos/disponible",
+    icon: IconUsersPlus,
+  },
+  {
+    title: "Mis Grupos Académicos",
+    url: "/academico/grupos/joined",
+    icon: IconUserCheck,
+  },
+  {
+    title: "Grupos Terminados",
+    url: "/academico/grupos/completado",
+    icon: IconCircleCheck,
+  },
+  {
+    title: "Grupos Académicos",
+    url: "/academico/grupos/teach",
+    icon: IconChalkboard,
   },
   {
     title: "Encuestas",
     url: "/academico/encuesta",
-    icon: IconReport,
+    icon: IconChecklist,
   },
   {
     title: "Tutorias",
     url: "/academico/tutoria",
-    icon: IconReport,
+    icon: IconSchool,
   },
 ];
 

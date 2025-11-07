@@ -15,11 +15,11 @@ export function useAcademicAuth() {
     
     if (authDataStr) {
       const authData = JSON.parse(authDataStr);
-      localStorage.setItem('token', JSON.stringify(authData.token));
+      localStorage.setItem('token', JSON.stringify(authData.access_token));
       localStorage.setItem('user', JSON.stringify(authData.user));
       document.cookie = "auth_data=; path=/; max-age=0";
     }
-
+    
     const t = window.localStorage.getItem("token");
     const u = window.localStorage.getItem("user");
     setToken(t ?? null);
