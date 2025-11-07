@@ -3,6 +3,31 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { BookOpen, Users, Calendar, User } from "lucide-react"
 
+// Tipo para el teacher del API
+interface Teacher {
+  id: number
+  name: string
+  fullname: string
+  email: string
+  avatar: string | null
+}
+
+// Tipo para los datos del API
+export interface APIGroupData {
+  id: number
+  name: string
+  course_name: string
+  course_version: string
+  course_version_name: string
+  price: string
+  start_date: string
+  end_date: string
+  status: string
+  teachers: Teacher[]
+  created_at: string
+}
+
+// Tipo para el componente (compatible con ambas estructuras)
 export interface GroupData {
   id: string
   name: string
@@ -16,6 +41,8 @@ export interface GroupData {
   endDate?: string
   status?: "available" | "joined" | "completed" | "teaching"
   progress?: number
+  price?: string
+  teachers?: Teacher[]
 }
 
 interface GroupCardProps {
@@ -53,6 +80,16 @@ export function GroupCard({ group, variant = "available", onAction, actionLabel 
     )
   }
 
+  // Formatear fechas
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr)
+    return date.toLocaleDateString('es-PE', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    })
+  }
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative h-48 overflow-hidden bg-linear-to-br from-blue-500 to-purple-600">
@@ -70,6 +107,13 @@ export function GroupCard({ group, variant = "available", onAction, actionLabel 
         <div className="absolute top-3 right-3">
           {getStatusBadge()}
         </div>
+        {group.price && (
+          <div className="absolute bottom-3 left-3">
+            <Badge className="bg-white/90 text-gray-900 hover:bg-white">
+              S/ {group.price}
+            </Badge>
+          </div>
+        )}
       </div>
 
       <CardHeader className="pb-3">
@@ -80,21 +124,50 @@ export function GroupCard({ group, variant = "available", onAction, actionLabel 
       </CardHeader>
 
       <CardContent className="space-y-3 pb-3">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <User className="w-4 h-4" />
-          <span>{group.teacher}</span>
-        </div>
+        {/* Mostrar docentes */}
+        {group.teachers && group.teachers.length > 0 ? (
+          <div className="flex items-start gap-2 text-sm text-muted-foreground">
+            <User className="w-4 h-4 mt-0.5 shrink-0" />
+            <div className="flex flex-col gap-1">
+              {group.teachers.map((teacher, idx) => (
+                <span key={teacher.id}>
+                  {teacher.name}
+                  {idx < group.teachers!.length - 1 && ", "}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <User className="w-4 h-4" />
+            <span>{group.teacher}</span>
+          </div>
+        )}
 
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Calendar className="w-4 h-4" />
-          <span>{group.schedule}</span>
-        </div>
+        {/* Fechas */}
+        {group.schedule ? (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Calendar className="w-4 h-4" />
+            <span>{group.schedule}</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Calendar className="w-4 h-4" />
+            <span>
+              {formatDate(group.startDate)} - {group.endDate && formatDate(group.endDate)}
+            </span>
+          </div>
+        )}
 
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Users className="w-4 h-4" />
-          <span>{group.enrolled} / {group.capacity} estudiantes</span>
-        </div>
+        {/* Capacidad */}
+        {group.enrolled !== undefined && group.capacity !== undefined && (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Users className="w-4 h-4" />
+            <span>{group.enrolled} / {group.capacity} estudiantes</span>
+          </div>
+        )}
 
+        {/* Progreso para grupos completados */}
         {variant === "completed" && group.progress !== undefined && (
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
@@ -110,6 +183,7 @@ export function GroupCard({ group, variant = "available", onAction, actionLabel 
           </div>
         )}
 
+        {/* Progreso para grupos unidos */}
         {variant === "joined" && group.progress !== undefined && (
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
@@ -133,4 +207,23 @@ export function GroupCard({ group, variant = "available", onAction, actionLabel 
       )}
     </Card>
   )
+}
+
+// Función helper para convertir datos del API al formato del componente
+export function mapAPIGroupToGroupData(apiGroup: APIGroupData): GroupData {
+  return {
+    id: apiGroup.id.toString(),
+    name: apiGroup.name,
+    course: apiGroup.course_name,
+    teacher: apiGroup.teachers.map(t => t.name).join(", "),
+    image: "",
+    schedule: "", // Se mostrará el rango de fechas en su lugar
+    enrolled: 0, // No disponible en el API por ahora
+    capacity: 30, // Valor por defecto
+    startDate: apiGroup.start_date,
+    endDate: apiGroup.end_date,
+    status: "available",
+    price: apiGroup.price,
+    teachers: apiGroup.teachers
+  }
 }
