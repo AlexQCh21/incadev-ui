@@ -27,8 +27,12 @@ export const config = {
       enroll: "/api/available-groups/:group/enroll",
       mylist: "/api/enrolled-groups",
       infoEnroll: "/api/enrolled-groups/:group",
-      complete: "/api/student/completed-groups",
+      listComplete: "/api/student/completed-groups",
       certificate: "/api/student/certificates/:uuid/download",
+      teaching: "/api/teaching-groups",
+      specificTeaching: "/api/teaching-groups/:group",
+      canComplete: "/api/teaching-groups/:group/can-complete",
+      complete: "/api/teaching-groups/:group/complete",
     }
   },
 };

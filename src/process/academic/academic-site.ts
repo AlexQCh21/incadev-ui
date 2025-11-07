@@ -27,7 +27,8 @@ export const routes = {
     account: "/academico/account",
     surveys: "/academico/encuesta",
     tutoring: "/academico/tutoria",
-    detailGroup: "/academico/grupos/informacion"
+    detailGroup: "/academico/grupos/informacion",
+    detailTeachGroup: "/academico/grupos/detalle-teach",
   }
 };
 
