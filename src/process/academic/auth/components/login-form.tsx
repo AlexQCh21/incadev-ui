@@ -81,7 +81,7 @@ export function LoginForm({
       if (response.ok) {
         const responseData = await response.json();
         console.log("Login response:", responseData);
-        localStorage.setItem("token", JSON.stringify(responseData.token));
+        localStorage.setItem("token", JSON.stringify(responseData.access_token));
         localStorage.setItem("user", JSON.stringify(responseData.user));
         toast.success("¡Inicio de sesión exitoso!", {
           description: "Redirigiendo a tu dashboard.",
