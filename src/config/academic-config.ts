@@ -24,7 +24,9 @@ export const config = {
     },
     groups:{
       available: "/api/available-groups",
-      enroll: "/api/available-groups/:group/enroll"
+      enroll: "/api/available-groups/:group/enroll",
+      mylist: "/api/enrolled-groups",
+      infoEnroll: "/api/enrolled-groups/:group"
     }
   },
 };
