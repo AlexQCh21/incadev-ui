@@ -26,7 +26,9 @@ export const config = {
       available: "/api/available-groups",
       enroll: "/api/available-groups/:group/enroll",
       mylist: "/api/enrolled-groups",
-      infoEnroll: "/api/enrolled-groups/:group"
+      infoEnroll: "/api/enrolled-groups/:group",
+      complete: "/api/student/completed-groups",
+      certificate: "/api/student/certificates/:uuid/download",
     }
   },
 };
