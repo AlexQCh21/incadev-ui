@@ -48,11 +48,20 @@ export interface GroupData {
 interface GroupCardProps {
   group: GroupData
   variant?: "available" | "joined" | "completed" | "teaching"
-  onAction?: (groupId: string) => void
-  actionLabel?: string
+  onAction: (groupId: string) => void
+  actionLabel: string
+  actionDisabled?: boolean
+  actionVariant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive"
 }
 
-export function GroupCard({ group, variant = "available", onAction, actionLabel }: GroupCardProps) {
+export function GroupCard({ 
+  group, 
+  variant = "available", 
+  onAction, 
+  actionLabel,
+  actionDisabled = false,
+  actionVariant = "default"
+}: GroupCardProps) {
   const getStatusBadge = () => {
     switch (variant) {
       case "completed":
@@ -73,7 +82,8 @@ export function GroupCard({ group, variant = "available", onAction, actionLabel 
       <Button 
         onClick={() => onAction(group.id)}
         className="w-full"
-        variant={variant === "available" ? "default" : "outline"}
+        variant={actionVariant}
+        disabled={actionDisabled}
       >
         {actionLabel}
       </Button>
