@@ -1,8 +1,21 @@
 ---
 // src/pages/marketing/propuestas/[id].astro
 import Layout from '../../../layouts/MarketingLayout.astro';
----
 
+// Generar rutas estáticas para los IDs de propuestas
+export async function getStaticPaths() {
+  return [
+    { params: { id: '1' } },
+    { params: { id: '2' } },
+    { params: { id: '3' } },
+    { params: { id: '4' } },
+    { params: { id: '5' } },
+    { params: { id: '6' } },
+  ];
+}
+
+const { id } = Astro.params;
+---
 
 <Layout title="Detalle Propuesta - INCADEV UI">
   <div class="space-y-6">
