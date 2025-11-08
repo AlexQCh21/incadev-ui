@@ -2,29 +2,19 @@ import AcademicLayout from "@/process/academic/AcademicLayout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Calendar, BookOpen, Users, Loader2, AlertCircle, User } from "lucide-react"
+import { Calendar, Loader2, AlertCircle, TrendingUp, CheckCircle2 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { config } from "@/config/academic-config"
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-
-interface Teacher {
-  id: number
-  name: string
-  fullname: string
-  email: string
-  avatar: string | null
-}
-
-interface Module {
-  id: number
-  title: string
-  description: string
-  sort: number
-  classes: any[]
-  exams: any[]
-}
+import { 
+  TeachersSection, 
+  ModulesAccordion,
+  formatDate,
+  type Module,
+  type Teacher,
+  type Exam
+} from "@/process/academic/dasboard/groups/details-groups/components/GroupDetailComponents"
 
 interface GroupDetailData {
   id: number
@@ -108,24 +98,6 @@ export default function DetailGroup() {
     }
   }, [token])
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('es-PE', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    })
-  }
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
-  }
-
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
@@ -137,6 +109,32 @@ export default function DetailGroup() {
       default:
         return <Badge variant="outline">{status}</Badge>
     }
+  }
+
+  // Calcular estadísticas
+  const calculateStats = () => {
+    if (!groupData) return { totalClasses: 0, totalExams: 0, completedExams: 0, averageGrade: 0 }
+    
+    let totalClasses = 0
+    let totalExams = 0
+    let completedExams = 0
+    let totalGrade = 0
+
+    groupData.modules.forEach(module => {
+      totalClasses += module.classes.length
+      totalExams += module.exams.length
+      
+      module.exams.forEach(exam => {
+        if (exam.my_grade) {
+          completedExams++
+          totalGrade += parseFloat(exam.my_grade.grade)
+        }
+      })
+    })
+
+    const averageGrade = completedExams > 0 ? (totalGrade / completedExams).toFixed(2) : 0
+
+    return { totalClasses, totalExams, completedExams, averageGrade }
   }
 
   if (loading) {
@@ -167,18 +165,21 @@ export default function DetailGroup() {
     )
   }
 
+  const stats = calculateStats()
+
   return (
     <AcademicLayout title={groupData.name}>
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             
+            {/* Header del grupo */}
             <div className="px-4 lg:px-6">
-              <Card>
+              <Card className="border-l-4 border-l-primary">
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
+                  <div className="flex items-start justify-between flex-wrap gap-3">
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <CardTitle className="text-2xl">{groupData.name}</CardTitle>
                         {getStatusBadge(groupData.status)}
                       </div>
@@ -194,97 +195,94 @@ export default function DetailGroup() {
                 <CardContent className="space-y-4">
                   {groupData.course_description && (
                     <>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {groupData.course_description}
                       </p>
                       <Separator />
                     </>
                   )}
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">Inicio:</span>
-                      <span className="font-medium">{formatDate(groupData.start_date)}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">Fin:</span>
-                      <span className="font-medium">{formatDate(groupData.end_date)}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="px-4 lg:px-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5" />
-                    Docentes del grupo
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {groupData.teachers.map((teacher) => (
-                      <div key={teacher.id} className="flex items-center gap-3 p-3 border rounded-lg">
-                        <Avatar>
-                          <AvatarImage src={teacher.avatar || undefined} />
-                          <AvatarFallback>
-                            {getInitials(teacher.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-sm">{teacher.fullname}</p>
-                          <p className="text-xs text-muted-foreground truncate">{teacher.email}</p>
-                        </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2 text-sm p-3 bg-muted/50 rounded-lg">
+                      <Calendar className="w-4 h-4 text-primary" />
+                      <div>
+                        <span className="text-muted-foreground">Inicio:</span>
+                        <span className="font-medium ml-2">{formatDate(groupData.start_date)}</span>
                       </div>
-                    ))}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-3 bg-muted/50 rounded-lg">
+                      <Calendar className="w-4 h-4 text-primary" />
+                      <div>
+                        <span className="text-muted-foreground">Fin:</span>
+                        <span className="font-medium ml-2">{formatDate(groupData.end_date)}</span>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
 
+            {/* Estadísticas del estudiante */}
             <div className="px-4 lg:px-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
-                    Módulos del curso ({groupData.modules.length})
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {groupData.modules.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-8">
-                      No hay módulos disponibles aún
-                    </p>
-                  ) : (
-                    <div className="space-y-3">
-                      {groupData.modules.map((module) => (
-                        <div key={module.id} className="border rounded-lg p-4 hover:bg-accent/50 transition-colors">
-                          <div className="flex items-start justify-between">
-                            <div className="space-y-1 flex-1">
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline">Módulo {module.sort}</Badge>
-                                <h4 className="font-semibold">{module.title}</h4>
-                              </div>
-                              <p className="text-sm text-muted-foreground">
-                                {module.description}
-                              </p>
-                              <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
-                                <span>{module.classes.length} clases</span>
-                                <span>{module.exams.length} exámenes</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardDescription className="text-xs">Total de clases</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stats.totalClasses}</div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardDescription className="text-xs">Exámenes totales</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stats.totalExams}</div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardDescription className="text-xs flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" />
+                      Exámenes completados
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {stats.completedExams} / {stats.totalExams}
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardDescription className="text-xs flex items-center gap-1">
+                      <TrendingUp className="w-3 h-3" />
+                      Promedio actual
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-primary">
+                      {stats.averageGrade || "--"}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
+
+            {/* Docentes */}
+            <div className="px-4 lg:px-6">
+              <TeachersSection teachers={groupData.teachers} />
+            </div>
+
+            {/* Módulos con clases y exámenes */}
+            <div className="px-4 lg:px-6">
+              <ModulesAccordion modules={groupData.modules} />
+            </div>
+
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import AcademicLayout from "@/process/academic/AcademicLayout"
 import { GroupCard, type GroupData, type APIGroupData, mapAPIGroupToGroupData } from "@/process/academic/dasboard/groups/components/GroupCard"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Download, Loader2, AlertCircle } from "lucide-react"
+import { Search, Download, Loader2, AlertCircle, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import { config } from "@/config/academic-config"
@@ -16,9 +16,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { Badge } from "@/components/ui/badge"
+
+// Interfaz extendida para incluir los campos del certificado
+interface CompletedAPIGroupData extends APIGroupData {
+  has_certificate: boolean
+  certificate_download_url: string
+}
 
 interface APIResponse {
-  data: APIGroupData[]
+  data: CompletedAPIGroupData[]
   meta?: {
     current_page: number
     last_page: number
@@ -33,7 +40,7 @@ export default function FinishGroup() {
   const { token } = useAcademicAuth()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("recent")
-  const [groups, setGroups] = useState<GroupData[]>([])
+  const [groups, setGroups] = useState<CompletedAPIGroupData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [downloading, setDownloading] = useState<string | null>(null)
@@ -73,13 +80,7 @@ export default function FinishGroup() {
       const data: APIResponse = await response.json()
       console.log("Grupos completados cargados:", data)
       
-      const mappedGroups = data.data.map(group => ({
-        ...mapAPIGroupToGroupData(group),
-        status: "completed" as const,
-        progress: 100
-      }))
-      
-      setGroups(mappedGroups)
+      setGroups(data.data)
       setMeta(data.meta || null)
     } catch (error) {
       console.error("Error cargando grupos completados:", error)
@@ -89,39 +90,34 @@ export default function FinishGroup() {
     }
   }
 
-  const handleViewCertificate = async (groupId: string) => {
-    if (!token) {
-      console.error("No hay token de autenticación")
+  const handleViewCertificate = async (group: CompletedAPIGroupData) => {
+    if (!token || !group.has_certificate) {
+      console.error("No hay token de autenticación o el grupo no tiene certificado")
       return
     }
 
     try {
-      setDownloading(groupId)
-      const tokenWithoutQuotes = token.replace(/^"|"$/g, '')
+      setDownloading(group.id.toString())
       
-      // Buscar el UUID del certificado (asumiendo que viene en los datos del grupo)
-      // Si no está disponible, podrías necesitar hacer otra petición para obtenerlo
-      const certificateEndpoint = config.endpoints.groups.certificate.replace(':uuid', groupId)
-      
-      const response = await fetch(
-        `${config.apiUrl}${certificateEndpoint}`,
-        {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${tokenWithoutQuotes}`,
-          }
+      // Usar la URL completa del certificado que viene en la respuesta
+      const response = await fetch(group.certificate_download_url, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token.replace(/^"|"$/g, '')}`,
         }
-      )
+      })
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`)
       }
 
       const blob = await response.blob()
+      
+      // Crear URL temporal y descargar
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `certificado-grupo-${groupId}.pdf`
+      a.download = `certificado-${group.course_name}-${group.name}.pdf`
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -138,14 +134,15 @@ export default function FinishGroup() {
 
   const handleExportHistory = () => {
     const csvContent = [
-      ["Nombre", "Curso", "Docente", "Inicio", "Fin", "Estado"],
+      ["Nombre", "Curso", "Docente", "Inicio", "Fin", "Estado", "Certificado"],
       ...groups.map(group => [
         group.name,
-        group.course,
-        group.teacher,
-        group.startDate,
-        group.endDate || "",
-        "Completado"
+        group.course_name,
+        group.teachers.map(t => t.name).join(", "),
+        group.start_date,
+        group.end_date,
+        "Completado",
+        group.has_certificate ? "Sí" : "No"
       ])
     ].map(row => row.join(",")).join("\n")
 
@@ -163,18 +160,21 @@ export default function FinishGroup() {
   const filteredGroups = groups
     .filter(group =>
       group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      group.course.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      group.teacher.toLowerCase().includes(searchQuery.toLowerCase())
+      group.course_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      group.teachers.some(teacher => 
+        teacher.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        teacher.fullname.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     )
     .sort((a, b) => {
       if (sortBy === "recent") {
-        return new Date(b.endDate!).getTime() - new Date(a.endDate!).getTime()
+        return new Date(b.end_date).getTime() - new Date(a.end_date).getTime()
       }
       if (sortBy === "oldest") {
-        return new Date(a.endDate!).getTime() - new Date(b.endDate!).getTime()
+        return new Date(a.end_date).getTime() - new Date(b.end_date).getTime()
       }
       if (sortBy === "course") {
-        return a.course.localeCompare(b.course)
+        return a.course_name.localeCompare(b.course_name)
       }
       return 0
     })
@@ -196,6 +196,23 @@ export default function FinishGroup() {
     }
     
     return pages
+  }
+
+  const getCertificateBadge = (hasCertificate: boolean) => {
+    if (hasCertificate) {
+      return (
+        <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">
+          <FileText className="w-3 h-3 mr-1" />
+          Certificado disponible
+        </Badge>
+      )
+    }
+    return (
+      <Badge variant="outline" className="bg-gray-100 text-gray-600 hover:bg-gray-100">
+        <FileText className="w-3 h-3 mr-1" />
+        Sin certificado
+      </Badge>
+    )
   }
 
   if (loading) {
@@ -224,12 +241,14 @@ export default function FinishGroup() {
                   <div className="text-sm text-muted-foreground">Grupos completados</div>
                 </div>
                 <div className="bg-card border rounded-lg p-4">
-                  <div className="text-2xl font-bold">{new Set(groups.map(g => g.course)).size}</div>
+                  <div className="text-2xl font-bold">{new Set(groups.map(g => g.course_name)).size}</div>
                   <div className="text-sm text-muted-foreground">Cursos diferentes</div>
                 </div>
                 <div className="bg-card border rounded-lg p-4">
-                  <div className="text-2xl font-bold">100%</div>
-                  <div className="text-sm text-muted-foreground">Tasa de finalización</div>
+                  <div className="text-2xl font-bold">
+                    {groups.filter(g => g.has_certificate).length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">Certificados</div>
                 </div>
                 <div className="bg-card border rounded-lg p-4 flex items-center">
                   <Button onClick={handleExportHistory} variant="outline" className="w-full">
@@ -293,25 +312,43 @@ export default function FinishGroup() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredGroups.map((group) => (
-                    <div key={group.id} className="relative">
-                      <GroupCard
-                        group={group}
-                        variant="completed"
-                        onAction={handleViewCertificate}
-                        actionLabel={
-                          downloading === group.id 
-                            ? "Descargando..." 
-                            : "Ver certificado"
-                        }
-                      />
-                      {downloading === group.id && (
-                        <div className="absolute inset-0 bg-background/50 flex items-center justify-center rounded-lg">
-                          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                  {filteredGroups.map((group) => {
+                    const mappedGroup = mapAPIGroupToGroupData(group)
+                    
+                    return (
+                      <div key={group.id} className="relative">
+                        <GroupCard
+                          group={{
+                            ...mappedGroup,
+                            status: "completed" as const,
+                            progress: 100
+                          }}
+                          variant="completed"
+                          onAction={() => handleViewCertificate(group)}
+                          actionLabel={
+                            downloading === group.id.toString() 
+                              ? "Descargando..." 
+                              : group.has_certificate 
+                                ? "Descargar certificado" 
+                                : "Certificado no disponible"
+                          }
+                          actionDisabled={!group.has_certificate || downloading === group.id.toString()}
+                          actionVariant={group.has_certificate ? "default" : "outline"}
+                        />
+                        
+                        {/* Badge de certificado */}
+                        <div className="absolute top-3 left-3">
+                          {getCertificateBadge(group.has_certificate)}
                         </div>
-                      )}
-                    </div>
-                  ))}
+                        
+                        {downloading === group.id.toString() && (
+                          <div className="absolute inset-0 bg-background/50 flex items-center justify-center rounded-lg">
+                            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               )}
             </div>
