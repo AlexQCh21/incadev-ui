@@ -33,6 +33,34 @@ export const config = {
       specificTeaching: "/api/teaching-groups/:group",
       canComplete: "/api/teaching-groups/:group/can-complete",
       complete: "/api/teaching-groups/:group/complete",
-    }
+    },
+    classes:{
+      listAll: "/api/teaching-groups/:group/classes",
+      create: "/api/teaching-groups/:group/modules/:module/classes",
+      update: "/api/teaching-groups/classes/:class",
+      delete: "/api/teaching-groups/classes/:class",
+    },
+    materials:{
+      listAll: "/api/teaching-groups/classes/:class/materials",
+      create: "/api/teaching-groups/classes/:class/materials",
+      update: "/api/teaching-groups/materials/:material",
+      delete: "/api/teaching-groups/materials/:material",
+    },
+    exams:{
+      listAll: "/api/teaching-groups/:group/exams",
+      create: "/api/teaching-groups/:group/modules/:module/exams",
+      info: "/api/teaching-groups/exams/:exam",
+      update: "/api/teaching-groups/exams/:exam",
+      delete: "/api/teaching-groups/exams/:exam",
+      registerGrades: "/api/teaching-groups/exams/:exam/grades",
+      updateGrade: "/api/teaching-groups/grades/:grade"
+    },
+    attendances: {
+      listAll: "/api/teaching-groups/:group/attendances",
+      info: "/api/teaching-groups/classes/:class/attendances",
+      register: "/api/teaching-groups/classes/:class/attendances",
+      update: "/api/teaching-groups/attendances/:attendance",
+      statistics: "/api/teaching-groups/:group/attendance-statistics"
+    },
   },
 };
