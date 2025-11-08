@@ -7,9 +7,10 @@ import { useState, useEffect } from "react"
 import { config } from "@/config/academic-config"
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { GroupHeader } from "@/process/academic/dasboard/groups/details-teach/components/GroupHeader"
-import { CompletionStatusCard } from "@/process/academic/dasboard/groups/details-teach/components/CompletionStatusCard"
-import { ClassesManagement } from "@/process/academic/dasboard/groups/details-teach/classes/ClassesManagement"
+import { GroupHeader } from "./components/GroupHeader"
+import { CompletionStatusCard } from "./components/CompletionStatusCard"
+import { ClassesManagement } from "./classes/ClassesManagement"
+import { ExamsManagement } from "./exams/ExamsManagement"
 
 interface Teacher {
   id: number
@@ -261,6 +262,7 @@ export default function DetailTeachGroup() {
               <Tabs defaultValue="classes">
                 <TabsList>
                   <TabsTrigger value="classes">Clases</TabsTrigger>
+                  <TabsTrigger value="exams">Exámenes</TabsTrigger>
                   <TabsTrigger value="modules">Módulos</TabsTrigger>
                   <TabsTrigger value="students">Estudiantes</TabsTrigger>
                   <TabsTrigger value="teachers">Docentes</TabsTrigger>
@@ -269,6 +271,16 @@ export default function DetailTeachGroup() {
                 <TabsContent value="classes" className="mt-4">
                   {token && groupId && (
                     <ClassesManagement
+                      groupId={groupId}
+                      modules={groupData.modules}
+                      token={token}
+                    />
+                  )}
+                </TabsContent>
+
+                <TabsContent value="exams" className="mt-4">
+                  {token && groupId && (
+                    <ExamsManagement
                       groupId={groupId}
                       modules={groupData.modules}
                       token={token}

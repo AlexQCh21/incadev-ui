@@ -45,6 +45,15 @@ export const config = {
       create: "/api/teaching-groups/classes/:class/materials",
       update: "/api/teaching-groups/materials/:material",
       delete: "/api/teaching-groups/materials/:material",
+    },
+    exams:{
+      listAll: "/api/teaching-groups/:group/exams",
+      create: "/api/teaching-groups/:group/modules/:module/exams",
+      info: "/api/teaching-groups/exams/:exam",
+      update: "/api/teaching-groups/exams/:exam",
+      delete: "/api/teaching-groups/exams/:exam",
+      registerGrades: "/api/teaching-groups/exams/:exam/grades",
+      updateGrade: "/api/teaching-groups/grades/:grade"
     }
   },
 };
