@@ -175,7 +175,10 @@ export default function AutomatizacionesManager() {
             Configura respuestas automáticas para Messenger, WhatsApp y más
           </p>
         </div>
-        <Button onClick={handleCreate} className="gap-2">
+        <Button
+          onClick={handleCreate}
+          className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+        >
           <Plus className="w-4 h-4" />
           Nueva Automatización
         </Button>
@@ -183,47 +186,50 @@ export default function AutomatizacionesManager() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <button
+        <Button
           onClick={() => setFilterEstado('todos')}
-          className={`p-4 rounded-lg border-2 transition-all ${
+          variant="outline"
+          className={`p-4 h-auto border-2 transition-all ${
             filterEstado === 'todos'
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
+              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 hover:bg-blue-50 dark:hover:bg-blue-950/30'
               : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700'
           }`}
         >
-          <div className="text-center">
+          <div className="text-center w-full">
             <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total</p>
           </div>
-        </button>
+        </Button>
 
-        <button
+        <Button
           onClick={() => setFilterEstado('activos')}
-          className={`p-4 rounded-lg border-2 transition-all ${
+          variant="outline"
+          className={`p-4 h-auto border-2 transition-all ${
             filterEstado === 'activos'
-              ? 'border-green-500 bg-green-50 dark:bg-green-950/30'
+              ? 'border-green-500 bg-green-50 dark:bg-green-950/30 hover:bg-green-50 dark:hover:bg-green-950/30'
               : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700'
           }`}
         >
-          <div className="text-center">
+          <div className="text-center w-full">
             <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.activos}</p>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Activos</p>
           </div>
-        </button>
+        </Button>
 
-        <button
+        <Button
           onClick={() => setFilterEstado('inactivos')}
-          className={`p-4 rounded-lg border-2 transition-all ${
+          variant="outline"
+          className={`p-4 h-auto border-2 transition-all ${
             filterEstado === 'inactivos'
-              ? 'border-gray-500 bg-gray-50 dark:bg-gray-900/30'
+              ? 'border-gray-500 bg-gray-50 dark:bg-gray-900/30 hover:bg-gray-50 dark:hover:bg-gray-900/30'
               : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:border-gray-300 dark:hover:border-gray-700'
           }`}
         >
-          <div className="text-center">
+          <div className="text-center w-full">
             <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">{stats.inactivos}</p>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Inactivos</p>
           </div>
-        </button>
+        </Button>
       </div>
 
       {/* Search Bar */}

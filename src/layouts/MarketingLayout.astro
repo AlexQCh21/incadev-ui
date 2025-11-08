@@ -1,7 +1,7 @@
 ---
 // src/layouts/MarketingLayout.astro
 import '../styles/global.css';
-import Sidebar from '../components/marketing/Sidebar.tsx';
+import Sidebar from '../process/marketing/Sidebar.tsx';
 
 interface Props {
   title: string;
@@ -18,13 +18,13 @@ const { title } = Astro.props;
     <title>{title}</title>
     <meta name="description" content="Dashboard de Marketing para INCADEV - Gestión de propuestas, cursos y campañas" />
   </head>
-  <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen smooth-transition">
+  <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen transition-all duration-200 ease-in-out">
     <div class="flex">
       <!-- Sidebar -->
       <Sidebar client:load />
       
       <!-- Main Content -->
-      <main class="flex-1 p-6 lg:p-10 ml-0 lg:ml-64 smooth-transition">
+      <main class="flex-1 p-6 lg:p-10 ml-0 lg:ml-64 transition-all duration-200 ease-in-out">
         <slot />
       </main>
     </div>

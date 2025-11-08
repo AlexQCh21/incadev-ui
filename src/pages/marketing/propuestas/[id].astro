@@ -68,10 +68,10 @@ const { id } = Astro.params;
           </div>
         </div>
         <div class="flex gap-2">
-          <button class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 smooth-transition">
+          <button class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-200 ease-in-out">
             Editar
           </button>
-          <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg smooth-transition">
+          <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all duration-200 ease-in-out">
             Aprobar
           </button>
         </div>
@@ -90,13 +90,13 @@ const { id } = Astro.params;
     <div class="bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800">
       <div class="border-b border-gray-200 dark:border-gray-800">
         <nav class="flex gap-1 p-2">
-          <button class="tab-btn px-6 py-3 rounded-lg font-medium smooth-transition bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400" data-tab="campañas">
+          <button class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 ease-in-out bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400" data-tab="campañas">
             Campañas
           </button>
-          <button class="tab-btn px-6 py-3 rounded-lg font-medium smooth-transition text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900" data-tab="metricas">
+          <button class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 ease-in-out text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900" data-tab="metricas">
             Métricas
           </button>
-          <button class="tab-btn px-6 py-3 rounded-lg font-medium smooth-transition text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900" data-tab="recursos">
+          <button class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 ease-in-out text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900" data-tab="recursos">
             Recursos
           </button>
         </nav>
@@ -113,7 +113,7 @@ const { id } = Astro.params;
               Crea y gestiona campañas para promocionar este curso
             </p>
           </div>
-          <button id="btnNuevaCampaña" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium smooth-transition flex items-center gap-2 shadow-lg">
+          <button id="btnNuevaCampaña" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 ease-in-out flex items-center gap-2 shadow-lg">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -231,7 +231,7 @@ const { id } = Astro.params;
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
             Nueva Campaña de Marketing
           </h2>
-          <button id="btnCerrarModalCampaña" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg smooth-transition">
+          <button id="btnCerrarModalCampaña" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-all duration-200 ease-in-out">
             <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -305,7 +305,7 @@ const { id } = Astro.params;
           </h3>
           
           <div class="grid grid-cols-2 gap-4">
-            <label class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition border-2 border-transparent">
+            <label class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out border-2 border-transparent">
               <input type="checkbox" value="facebook" class="w-5 h-5 text-blue-600 rounded" />
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -318,7 +318,7 @@ const { id } = Astro.params;
               </div>
             </label>
 
-            <label class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition border-2 border-transparent">
+            <label class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out border-2 border-transparent">
               <input type="checkbox" value="instagram" class="w-5 h-5 text-blue-600 rounded" />
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
@@ -343,9 +343,9 @@ const { id } = Astro.params;
           </h3>
           
           <div class="grid grid-cols-3 gap-4">
-            <label class="group relative flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition border-2 border-transparent">
+            <label class="group relative flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out border-2 border-transparent">
               <input type="checkbox" value="posts" class="w-5 h-5 text-blue-600 rounded" />
-              <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 smooth-transition">
+              <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all duration-200 ease-in-out">
                 <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                 </svg>
@@ -356,9 +356,9 @@ const { id } = Astro.params;
               </div>
             </label>
 
-            <label class="group relative flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition border-2 border-transparent">
+            <label class="group relative flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out border-2 border-transparent">
               <input type="checkbox" value="videos" class="w-5 h-5 text-blue-600 rounded" />
-              <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 smooth-transition">
+              <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all duration-200 ease-in-out">
                 <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
@@ -369,9 +369,9 @@ const { id } = Astro.params;
               </div>
             </label>
 
-            <label class="group relative flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition border-2 border-transparent">
+            <label class="group relative flex flex-col items-center gap-3 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out border-2 border-transparent">
               <input type="checkbox" value="imagenes" class="w-5 h-5 text-blue-600 rounded" />
-              <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 smooth-transition">
+              <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all duration-200 ease-in-out">
                 <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -389,13 +389,13 @@ const { id } = Astro.params;
           <button
             type="button"
             id="btnCancelarCampaña"
-            class="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-900 smooth-transition"
+            class="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-200 ease-in-out"
           >
             Cancelar
           </button>
           <button
             type="submit"
-            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium smooth-transition shadow-lg"
+            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 ease-in-out shadow-lg"
           >
             Crear Campaña
           </button>
@@ -450,10 +450,10 @@ const { id } = Astro.params;
           : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700';
 
         return `
-          <div class="p-6 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl hover:shadow-lg smooth-transition group">
+          <div class="p-6 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all duration-200 ease-in-out group">
             <div class="flex items-start justify-between mb-4">
               <div class="flex-1">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 smooth-transition">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-200 ease-in-out">
                   ${c.nombre}
                 </h3>
                 <div class="flex items-center gap-2 mb-3">
@@ -492,10 +492,10 @@ const { id } = Astro.params;
             </div>
 
             <div class="flex gap-2">
-              <button class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium smooth-transition">
+              <button class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all duration-200 ease-in-out">
                 Ver Detalles
               </button>
-              <button class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 smooth-transition">
+              <button class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-200 ease-in-out">
                 Editar
               </button>
             </div>
