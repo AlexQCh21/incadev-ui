@@ -7,9 +7,9 @@ import { useState, useEffect } from "react"
 import { config } from "@/config/academic-config"
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { GroupHeader } from "./components/GroupHeader"
-import { CompletionStatusCard } from "./components/CompletionStatusCard"
-import { ClassesManagement } from "./components/ClassesManagement"
+import { GroupHeader } from "@/process/academic/dasboard/groups/details-teach/components/GroupHeader"
+import { CompletionStatusCard } from "@/process/academic/dasboard/groups/details-teach/components/CompletionStatusCard"
+import { ClassesManagement } from "@/process/academic/dasboard/groups/details-teach/classes/ClassesManagement"
 
 interface Teacher {
   id: number

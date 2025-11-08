@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Plus, Video, Clock, Edit, Trash2, Loader2, AlertCircle, ExternalLink } from "lucide-react"
 import { config } from "@/config/academic-config"
-import { ClassFormDialog } from "./ClassFormDialog"
+import { ClassFormDialog } from "@/process/academic/dasboard/groups/details-teach/classes/ClassFormDialog"
 
 interface ClassData {
   id: number
