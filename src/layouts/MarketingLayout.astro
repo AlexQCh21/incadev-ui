@@ -1,0 +1,58 @@
+---
+// src/layouts/MarketingLayout.astro
+import '../styles/global.css';
+import Sidebar from '../components/marketing/Sidebar.tsx';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content="Dashboard de Marketing para INCADEV - Gestión de propuestas, cursos y campañas" />
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen smooth-transition">
+    <div class="flex">
+      <!-- Sidebar -->
+      <Sidebar client:load />
+      
+      <!-- Main Content -->
+      <main class="flex-1 p-6 lg:p-10 ml-0 lg:ml-64 smooth-transition">
+        <slot />
+      </main>
+    </div>
+
+    <!-- Toast container for notifications (future use) -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+  </body>
+</html>
+
+<style is:global>
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom selection colors */
+  ::selection {
+    background-color: #2563eb;
+    color: white;
+  }
+
+  /* Focus visible styles */
+  *:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  .dark *:focus-visible {
+    outline-offset: 2px;
+  }
+</style>
