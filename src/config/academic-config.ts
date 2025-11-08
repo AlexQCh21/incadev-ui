@@ -54,6 +54,13 @@ export const config = {
       delete: "/api/teaching-groups/exams/:exam",
       registerGrades: "/api/teaching-groups/exams/:exam/grades",
       updateGrade: "/api/teaching-groups/grades/:grade"
-    }
+    },
+    attendances: {
+      listAll: "/api/teaching-groups/:group/attendances",
+      info: "/api/teaching-groups/classes/:class/attendances",
+      register: "/api/teaching-groups/classes/:class/attendances",
+      update: "/api/teaching-groups/attendances/:attendance",
+      statistics: "/api/teaching-groups/:group/attendance-statistics"
+    },
   },
 };

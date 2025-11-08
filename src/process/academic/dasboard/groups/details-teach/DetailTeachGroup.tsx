@@ -11,6 +11,7 @@ import { GroupHeader } from "@/process/academic/dasboard/groups/details-teach/co
 import { CompletionStatusCard } from "@/process/academic/dasboard/groups/details-teach/components/CompletionStatusCard"
 import { ClassesManagement } from "@/process/academic/dasboard/groups/details-teach/classes/ClassesManagement"
 import { ExamsManagement } from "@/process/academic/dasboard/groups/details-teach/exams/ExamsManagement"
+import { AttendancesManagement } from "@/process/academic/dasboard/groups/details-teach/attendances/AttendancesManagement"
 
 interface Teacher {
   id: number
@@ -263,6 +264,7 @@ export default function DetailTeachGroup() {
                 <TabsList>
                   <TabsTrigger value="classes">Clases</TabsTrigger>
                   <TabsTrigger value="exams">Exámenes</TabsTrigger>
+                  <TabsTrigger value="attendances">Asistencias</TabsTrigger>
                   <TabsTrigger value="modules">Módulos</TabsTrigger>
                   <TabsTrigger value="students">Estudiantes</TabsTrigger>
                   <TabsTrigger value="teachers">Docentes</TabsTrigger>
@@ -281,6 +283,16 @@ export default function DetailTeachGroup() {
                 <TabsContent value="exams" className="mt-4">
                   {token && groupId && (
                     <ExamsManagement
+                      groupId={groupId}
+                      modules={groupData.modules}
+                      token={token}
+                    />
+                  )}
+                </TabsContent>
+
+                <TabsContent value="attendances" className="mt-4">
+                  {token && groupId && (
+                    <AttendancesManagement
                       groupId={groupId}
                       modules={groupData.modules}
                       token={token}
