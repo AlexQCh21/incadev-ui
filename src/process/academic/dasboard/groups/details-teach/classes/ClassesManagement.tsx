@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Plus, Video, Clock, Edit, Trash2, Loader2, AlertCircle, ExternalLink } from "lucide-react"
 import { config } from "@/config/academic-config"
-import { ClassFormDialog } from "@/process/academic/dasboard/groups/details-teach/classes/ClassFormDialog"
+import { ClassFormDialog } from "./ClassFormDialog"
+import { MaterialsManagement } from "./MaterialsManagement"
 
 interface ClassData {
   id: number
@@ -76,19 +77,16 @@ export function ClassesManagement({ groupId, modules, token }: ClassesManagement
       let classesData: ClassData[] = []
       
       if (Array.isArray(data)) {
-        // Si la respuesta es directamente un array
         classesData = data
       } else if (data.data && Array.isArray(data.data)) {
-        // Si la respuesta tiene propiedad data que es un array
         classesData = data.data
       } else if (data.classes && Array.isArray(data.classes)) {
-        // Si la respuesta tiene propiedad classes que es un array
         classesData = data.classes
       } else {
         console.warn("Estructura de respuesta inesperada:", data)
         classesData = []
       }
-      console.log("clases data: ", classesData)
+      
       setClasses(classesData)
     } catch (error) {
       console.error("Error cargando clases:", error)
@@ -162,11 +160,6 @@ export function ClassesManagement({ groupId, modules, token }: ClassesManagement
     })
   }
 
-  const getModuleName = (moduleId: number) => {
-    const module = modules.find(m => m.id === moduleId)
-    return module ? `Módulo ${module.sort}: ${module.title}` : 'Módulo desconocido'
-  }
-
   const safeClasses = Array.isArray(classes) ? classes : []
   
   const classesByModule = modules.map(module => ({
@@ -228,56 +221,72 @@ export function ClassesManagement({ groupId, modules, token }: ClassesManagement
                 {moduleClasses.map((classData) => (
                   <Card key={classData.id} className="border-l-4 border-l-primary">
                     <CardContent className="py-4">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-start gap-2">
-                            <Video className="w-4 h-4 mt-1 text-primary shrink-0" />
-                            <div>
-                              <h4 className="font-medium">{classData.title}</h4>
-                              <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
-                                <div className="flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />
-                                  <span>{formatDateTime(classData.start_time)}</span>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-start gap-2">
+                              <Video className="w-4 h-4 mt-1 text-primary shrink-0" />
+                              <div>
+                                <h4 className="font-medium">{classData.title}</h4>
+                                <div className="flex items-center gap-3 text-sm text-muted-foreground mt-1">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    <span>{formatDateTime(classData.start_time)}</span>
+                                  </div>
+                                  <span>-</span>
+                                  <span>{new Date(classData.end_time).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}</span>
                                 </div>
-                                <span>-</span>
-                                <span>{new Date(classData.end_time).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}</span>
+                                {classData.meet_url && (
+                                  <a 
+                                    href={classData.meet_url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-sm text-primary hover:underline flex items-center gap-1 mt-1"
+                                  >
+                                    <ExternalLink className="w-3 h-3" />
+                                    Enlace de reunión
+                                  </a>
+                                )}
                               </div>
-                              {classData.meet_url && (
-                                <a 
-                                  href={classData.meet_url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-sm text-primary hover:underline flex items-center gap-1 mt-1"
-                                >
-                                  <ExternalLink className="w-3 h-3" />
-                                  Enlace de reunión
-                                </a>
-                              )}
                             </div>
                           </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEdit(classData)}
+                              disabled={deletingId === classData.id}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(classData.id)}
+                              disabled={deletingId === classData.id}
+                            >
+                              {deletingId === classData.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-4 h-4 text-destructive" />
+                              )}
+                            </Button>
+                          </div>
                         </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit(classData)}
-                            disabled={deletingId === classData.id}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete(classData.id)}
-                            disabled={deletingId === classData.id}
-                          >
-                            {deletingId === classData.id ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <Trash2 className="w-4 h-4 text-destructive" />
-                            )}
-                          </Button>
+
+                        {/* Botón de materiales */}
+                        <div className="flex items-center gap-2 pt-2 border-t">
+                          <MaterialsManagement
+                            classId={classData.id}
+                            className={classData.title}
+                            token={token}
+                          />
+                          {classData.materials && classData.materials.length > 0 && (
+                            <Badge variant="secondary" className="text-xs">
+                              {classData.materials.length} material{classData.materials.length !== 1 ? 'es' : ''}
+                            </Badge>
+                          )}
                         </div>
                       </div>
                     </CardContent>

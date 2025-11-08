@@ -39,6 +39,12 @@ export const config = {
       create: "/api/teaching-groups/:group/modules/:module/classes",
       update: "/api/teaching-groups/classes/:class",
       delete: "/api/teaching-groups/classes/:class",
+    },
+    materials:{
+      listAll: "/api/teaching-groups/classes/:class/materials",
+      create: "/api/teaching-groups/classes/:class/materials",
+      update: "/api/teaching-groups/materials/:material",
+      delete: "/api/teaching-groups/materials/:material",
     }
   },
 };
