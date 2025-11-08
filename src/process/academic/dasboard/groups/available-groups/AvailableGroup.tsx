@@ -1,5 +1,6 @@
 import AcademicLayout from "@/process/academic/AcademicLayout"
 import { GroupCard, type APIGroupData, mapAPIGroupToGroupData } from "@/process/academic/dasboard/groups/components/GroupCard"
+import { EnrollmentModal } from "@/process/academic/dasboard/groups/available-groups/components/EnrollmentModal"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search, Filter, Loader2, AlertCircle } from "lucide-react"
@@ -28,14 +29,32 @@ interface APIResponse {
   }
 }
 
+// Interfaz extendida para manejar el estado de inscripción
+interface ExtendedAPIGroupData extends APIGroupData {
+  user_enrollment_status?: 'pending' | 'active' | 'completed' | 'failed' | 'dropped'
+}
+
 export default function AvailableGroup() {
   const { token } = useAcademicAuth()
   const [searchQuery, setSearchQuery] = useState("")
-  const [groups, setGroups] = useState<APIGroupData[]>([])
+  const [groups, setGroups] = useState<ExtendedAPIGroupData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [meta, setMeta] = useState<APIResponse["meta"] | null>(null)
+  
+  // Estado para el modal
+  const [enrollmentModal, setEnrollmentModal] = useState<{
+    open: boolean
+    groupId: string
+    groupName: string
+    courseName: string
+  }>({
+    open: false,
+    groupId: "",
+    groupName: "",
+    courseName: ""
+  })
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -60,7 +79,15 @@ export default function AvailableGroup() {
 
         const data: APIResponse = await response.json()
         console.log("Grupos disponibles cargados:", data)
-        setGroups(data.data)
+        
+        // Aquí podrías enriquecer los datos con el estado de inscripción del usuario
+        // Por ahora, asumimos que todos los grupos no tienen inscripción pendiente
+        const groupsWithEnrollmentStatus: ExtendedAPIGroupData[] = data.data.map(group => ({
+          ...group,
+          user_enrollment_status: undefined // Esto vendría del backend
+        }))
+        
+        setGroups(groupsWithEnrollmentStatus)
         setMeta(data.meta)
       } catch (error) {
         console.error("Error cargando grupos disponibles:", error)
@@ -75,28 +102,35 @@ export default function AvailableGroup() {
     }
   }, [token, currentPage])
 
-  const handleJoinGroup = async (groupId: string) => {
-    try {
-      const tokenWithoutQuotes = token?.replace(/^"|"$/g, '')
-      const response = await fetch(
-        `${config.apiUrl}${config.endpoints.groups.enroll}`.replace(":group", groupId),
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${tokenWithoutQuotes}`,
-            "Content-Type": "application/json"
-          }
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error("Error al inscribirse al grupo")
-      }
-
-      console.log("Inscrito exitosamente al grupo:", groupId)
-    } catch (error) {
-      console.error("Error al inscribirse:", error)
+  const handleJoinClick = (group: ExtendedAPIGroupData) => {
+    // Verificar si ya tiene una inscripción pendiente o activa
+    if (group.user_enrollment_status === 'pending' || group.user_enrollment_status === 'active') {
+      return // No abrir modal si ya está inscrito o pendiente
     }
+
+    setEnrollmentModal({
+      open: true,
+      groupId: group.id.toString(),
+      groupName: group.name,
+      courseName: group.course_name
+    })
+  }
+
+  const handleEnrollmentSuccess = () => {
+    // Actualizar el estado local del grupo para mostrar el botón deshabilitado
+    setGroups(prevGroups => 
+      prevGroups.map(group => 
+        group.id.toString() === enrollmentModal.groupId 
+          ? { ...group, user_enrollment_status: 'pending' as const }
+          : group
+      )
+    )
+    
+    // Cerrar el modal
+    setEnrollmentModal(prev => ({ ...prev, open: false }))
+    
+    // Opcional: recargar los datos desde el servidor
+    // fetchGroups()
   }
 
   const filteredGroups = groups.filter(group =>
@@ -125,6 +159,38 @@ export default function AvailableGroup() {
     }
     
     return pages
+  }
+
+  const getActionButtonState = (group: ExtendedAPIGroupData) => {
+    if (group.user_enrollment_status === 'pending') {
+      return {
+        disabled: true,
+        label: "Inscripción Pendiente",
+        variant: "outline" as const
+      }
+    }
+    
+    if (group.user_enrollment_status === 'active') {
+      return {
+        disabled: true,
+        label: "Inscrito",
+        variant: "outline" as const
+      }
+    }
+
+    if (group.user_enrollment_status === 'completed') {
+      return {
+        disabled: true,
+        label: "Completado",
+        variant: "outline" as const
+      }
+    }
+
+    return {
+      disabled: false,
+      label: "Inscribirse",
+      variant: "default" as const
+    }
   }
 
   return (
@@ -187,15 +253,21 @@ export default function AvailableGroup() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {filteredGroups.map((group) => (
-                      <GroupCard
-                        key={group.id}
-                        group={mapAPIGroupToGroupData(group)}
-                        variant="available"
-                        onAction={handleJoinGroup}
-                        actionLabel="Inscribirse"
-                      />
-                    ))}
+                    {filteredGroups.map((group) => {
+                      const buttonState = getActionButtonState(group)
+                      
+                      return (
+                        <GroupCard
+                          key={group.id}
+                          group={mapAPIGroupToGroupData(group)}
+                          variant="available"
+                          onAction={() => handleJoinClick(group)}
+                          actionLabel={buttonState.label}
+                          actionDisabled={buttonState.disabled}
+                          actionVariant={buttonState.variant}
+                        />
+                      )
+                    })}
                   </div>
                 )}
               </div>
@@ -237,6 +309,22 @@ export default function AvailableGroup() {
           </div>
         </div>
       </div>
+
+      {/* Modal de inscripción - Solo se abre si no hay inscripción pendiente/activa */}
+      <EnrollmentModal
+        open={enrollmentModal.open}
+        onOpenChange={(open) => {
+          // Solo permitir cerrar el modal, no abrirlo si ya hay inscripción pendiente
+          if (!open) {
+            setEnrollmentModal(prev => ({ ...prev, open: false }))
+          }
+        }}
+        groupId={enrollmentModal.groupId}
+        groupName={enrollmentModal.groupName}
+        courseName={enrollmentModal.courseName}
+        token={token}
+        onEnrollmentSuccess={handleEnrollmentSuccess}
+      />
     </AcademicLayout>
   )
 }
