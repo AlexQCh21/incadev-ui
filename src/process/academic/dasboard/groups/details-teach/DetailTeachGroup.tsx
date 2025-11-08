@@ -1,23 +1,15 @@
 import AcademicLayout from "@/process/academic/AcademicLayout"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { 
-  Loader2, 
-  AlertCircle, 
-  Users, 
-  Calendar, 
-  BookOpen, 
-  GraduationCap,
-  CheckCircle2,
-  XCircle,
-  ArrowLeft
-} from "lucide-react"
+import { Loader2, AlertCircle, Users, GraduationCap, BookOpen, ArrowLeft } from "lucide-react"
 import { useState, useEffect } from "react"
 import { config } from "@/config/academic-config"
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { GroupHeader } from "./components/GroupHeader"
+import { CompletionStatusCard } from "./components/CompletionStatusCard"
+import { ClassesManagement } from "./components/ClassesManagement"
 
 interface Teacher {
   id: number
@@ -88,9 +80,10 @@ export default function DetailTeachGroup() {
     }
     return null
   }
-    const groupId = getGroupIdFromURL()
+  
+  const groupId = getGroupIdFromURL()
+  
   useEffect(() => {
-    
     if (groupId && token) {
       loadGroupDetail()
       loadCanComplete()
@@ -202,28 +195,6 @@ export default function DetailTeachGroup() {
     }
   }
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('es-PE', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    })
-  }
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return <Badge variant="default">Activo</Badge>
-      case "enrolling":
-        return <Badge variant="secondary">Matrícula Abierta</Badge>
-      case "completed":
-        return <Badge variant="outline">Completado</Badge>
-      default:
-        return <Badge>{status}</Badge>
-    }
-  }
-
   if (loading) {
     return (
       <AcademicLayout title="Detalle del grupo">
@@ -266,176 +237,66 @@ export default function DetailTeachGroup() {
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             
-            {/* Header con botón de volver */}
+            {/* Header */}
             <div className="px-4 lg:px-6">
-              <Button 
-                onClick={() => window.history.back()} 
-                variant="ghost"
-                className="mb-4"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Volver a mis grupos
-              </Button>
-
-              {/* Información general */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-2xl">{groupData.name}</CardTitle>
-                      <CardDescription className="text-base mt-1">
-                        {groupData.course_name}
-                      </CardDescription>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {groupData.course_description}
-                      </p>
-                    </div>
-                    {getStatusBadge(groupData.status)}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <Calendar className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Fecha de inicio</p>
-                        <p className="font-medium">{formatDate(groupData.start_date)}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-500/10 rounded-lg">
-                        <Calendar className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Fecha de fin</p>
-                        <p className="font-medium">{formatDate(groupData.end_date)}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-500/10 rounded-lg">
-                        <Users className="w-5 h-5 text-green-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Estudiantes</p>
-                        <p className="font-medium">{groupData.students.length}</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <GroupHeader 
+                groupData={groupData}
+                onBack={() => window.history.back()}
+              />
             </div>
 
             {/* Estado de completitud */}
             {canCompleteData && groupData.status !== "completed" && (
               <div className="px-4 lg:px-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      {canCompleteData.can_complete ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <XCircle className="w-5 h-5 text-destructive" />
-                      )}
-                      Estado de completitud
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                      <div className="flex items-center gap-2">
-                        {canCompleteData.reasons.has_students ? (
-                          <CheckCircle2 className="w-4 h-4 text-green-500" />
-                        ) : (
-                          <XCircle className="w-4 h-4 text-destructive" />
-                        )}
-                        <span className="text-sm">
-                          Estudiantes: {canCompleteData.reasons.total_students}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {canCompleteData.reasons.has_classes ? (
-                          <CheckCircle2 className="w-4 h-4 text-green-500" />
-                        ) : (
-                          <XCircle className="w-4 h-4 text-destructive" />
-                        )}
-                        <span className="text-sm">
-                          Clases: {canCompleteData.reasons.total_classes}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {canCompleteData.reasons.has_exams ? (
-                          <CheckCircle2 className="w-4 h-4 text-green-500" />
-                        ) : (
-                          <XCircle className="w-4 h-4 text-destructive" />
-                        )}
-                        <span className="text-sm">
-                          Exámenes: {canCompleteData.reasons.total_exams}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    {canCompleteData.can_complete ? (
-                      <Button 
-                        onClick={handleCompleteGroup}
-                        disabled={completing}
-                        className="w-full md:w-auto"
-                      >
-                        {completing ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Completando...
-                          </>
-                        ) : (
-                          <>
-                            <GraduationCap className="w-4 h-4 mr-2" />
-                            Completar grupo
-                          </>
-                        )}
-                      </Button>
-                    ) : (
-                      <Alert>
-                        <AlertCircle className="h-4 w-4" />
-                        <AlertDescription>
-                          Este grupo no puede completarse aún. Asegúrate de tener al menos un estudiante, una clase y un examen calificados en cada módulo.
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                  </CardContent>
-                </Card>
+                <CompletionStatusCard
+                  canCompleteData={canCompleteData}
+                  completing={completing}
+                  onComplete={handleCompleteGroup}
+                />
               </div>
             )}
 
-            {/* Tabs de información */}
+            {/* Tabs de gestión */}
             <div className="px-4 lg:px-6">
-              <Tabs defaultValue="modules">
+              <Tabs defaultValue="classes">
                 <TabsList>
+                  <TabsTrigger value="classes">Clases</TabsTrigger>
                   <TabsTrigger value="modules">Módulos</TabsTrigger>
                   <TabsTrigger value="students">Estudiantes</TabsTrigger>
                   <TabsTrigger value="teachers">Docentes</TabsTrigger>
                 </TabsList>
 
+                <TabsContent value="classes" className="mt-4">
+                  {token && groupId && (
+                    <ClassesManagement
+                      groupId={groupId}
+                      modules={groupData.modules}
+                      token={token}
+                    />
+                  )}
+                </TabsContent>
+
                 <TabsContent value="modules" className="mt-4">
                   <div className="grid gap-4">
                     {groupData.modules.map((module) => (
                       <Card key={module.id}>
-                        <CardHeader>
+                        <CardContent className="py-4">
                           <div className="flex items-start justify-between">
                             <div>
-                              <CardTitle className="text-lg">
-                                Módulo {module.sort}: {module.title}
-                              </CardTitle>
-                              <CardDescription className="mt-1">
+                              <div className="flex items-center gap-2">
+                                <BookOpen className="w-5 h-5 text-muted-foreground" />
+                                <h3 className="font-semibold text-lg">
+                                  Módulo {module.sort}: {module.title}
+                                </h3>
+                              </div>
+                              <p className="text-sm text-muted-foreground mt-1">
                                 {module.description}
-                              </CardDescription>
+                              </p>
+                              <div className="flex gap-4 text-sm text-muted-foreground mt-2">
+                                <span>Clases: {module.classes.length}</span>
+                                <span>Exámenes: {module.exams.length}</span>
+                              </div>
                             </div>
-                            <BookOpen className="w-5 h-5 text-muted-foreground" />
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex gap-4 text-sm text-muted-foreground">
-                            <span>Clases: {module.classes.length}</span>
-                            <span>Exámenes: {module.exams.length}</span>
                           </div>
                         </CardContent>
                       </Card>
