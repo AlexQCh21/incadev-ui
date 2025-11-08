@@ -15,8 +15,8 @@ import {
   GraduationCap
 } from "lucide-react"
 import { config } from "@/config/academic-config"
-import { ExamFormDialog } from "./ExamFormDialog"
-import { ExamGradesDialog } from "./ExamGradesDialog"
+import { ExamFormDialog } from "@/process/academic/dasboard/groups/details-teach/exams/ExamFormDialog"
+import { ExamGradesDialog } from "@/process/academic/dasboard/groups/details-teach/exams/ExamGradesDialog"
 
 interface ExamData {
   id: number
