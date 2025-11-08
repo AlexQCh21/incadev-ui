@@ -33,6 +33,12 @@ export const config = {
       specificTeaching: "/api/teaching-groups/:group",
       canComplete: "/api/teaching-groups/:group/can-complete",
       complete: "/api/teaching-groups/:group/complete",
+    },
+    classes:{
+      listAll: "/api/teaching-groups/:group/classes",
+      create: "/api/teaching-groups/:group/modules/:module/classes",
+      update: "/api/teaching-groups/classes/:class",
+      delete: "/api/teaching-groups/classes/:class",
     }
   },
 };
