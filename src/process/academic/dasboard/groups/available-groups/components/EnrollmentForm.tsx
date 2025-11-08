@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, AlertCircle, CheckCircle2 } from "lucide-react"
-
+import DriveUploader from "@/services/academico/DriveUploader"
+import { config } from "@/config/academic-config"
 export interface EnrollmentFormData {
   operation_number: string
   agency_number: string
@@ -50,13 +51,18 @@ export function EnrollmentForm({
       return
     }
 
+    if (!formData.evidence_path) {
+      setError("Debes subir el comprobante de pago antes de enviar la inscripción")
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
 
       const tokenWithoutQuotes = token.replace(/^"|"$/g, '')
       const response = await fetch(
-        `/api/available-groups/${groupId}/enroll`,
+        `${config.apiUrl}${config.endpoints.groups.enroll}`.replace(":group", groupId),
         {
           method: "POST",
           headers: {
@@ -90,6 +96,13 @@ export function EnrollmentForm({
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }))
+  }
+
+  const handleFileUpload = (url: string) => {
+    setFormData(prev => ({
+      ...prev,
+      evidence_path: url
     }))
   }
 
@@ -187,16 +200,28 @@ export function EnrollmentForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="evidence_path">Ruta del Comprobante *</Label>
-            <Input
-              id="evidence_path"
-              value={formData.evidence_path}
-              onChange={(e) => handleChange("evidence_path", e.target.value)}
-              placeholder="ruta/del/comprobante.jpg"
-              required
+            <Label htmlFor="evidence_path">Comprobante de Pago *</Label>
+            
+            <DriveUploader
+              onUpload={handleFileUpload}
+              label="Subir comprobante de pago"
             />
+            
+            {/* Mostrar la URL del archivo subido si existe */}
+            {formData.evidence_path && (
+              <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-sm text-green-700">
+                  <CheckCircle2 className="w-4 h-4 inline mr-1" />
+                  Comprobante subido correctamente
+                </p>
+                <p className="text-xs text-green-600 mt-1 truncate">
+                  {formData.evidence_path}
+                </p>
+              </div>
+            )}
+            
             <p className="text-xs text-muted-foreground">
-              Ingresa la ruta donde has almacenado el comprobante de pago
+              Sube una imagen o PDF del comprobante de pago. Formatos aceptados: JPG, PNG, PDF (Máx. 5MB)
             </p>
           </div>
 
@@ -212,7 +237,7 @@ export function EnrollmentForm({
             </Button>
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || !formData.evidence_path}
               className="flex-1"
             >
               {loading ? (
