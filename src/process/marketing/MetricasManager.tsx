@@ -1,6 +1,6 @@
 // src/components/marketing/MetricasManager.tsx
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, MessageSquare, Target, Filter } from 'lucide-react';
+import { TrendingUp, TrendingDown, MessageSquare, Target, Filter, DollarSign, GraduationCap } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -62,25 +62,39 @@ const kpisMock: KPI[] = [
     color: 'green'
   },
   {
-    label: 'Conversaciones Chat',
-    value: 234,
+    label: 'Mensajes Recibidos',
+    value: 168,
     trend: 18,
     icon: MessageSquare,
     color: 'orange'
   },
   {
-    label: 'Leads Generados',
-    value: 156,
+    label: 'Preinscripciones',
+    value: 86,
     trend: 12,
     icon: Target,
     color: 'blue'
   },
   {
-    label: 'Tasa de Conversión',
-    value: '50%',
-    trend: -3,
+    label: '% Intención Matrícula',
+    value: '51.2%',
+    trend: 5,
     icon: Target,
     color: 'orange'
+  },
+  {
+    label: 'CPA Promedio',
+    value: 'S/ 11.63',
+    trend: -8,
+    icon: DollarSign,
+    color: 'pink'
+  },
+  {
+    label: 'Matrículas Proyectadas',
+    value: 55,
+    trend: 10,
+    icon: GraduationCap,
+    color: 'green'
   },
 ];
 
@@ -137,7 +151,7 @@ export default function MetricasManager() {
       </div>
 
       {/* KPIs Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {kpisMock.map((kpi, index) => {
           const Icon = kpi.icon;
           return (

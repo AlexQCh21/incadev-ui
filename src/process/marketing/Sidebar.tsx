@@ -55,15 +55,15 @@ export default function Sidebar() {
   };
 
   return (
-    <nav className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 p-6 transition-all duration-200 ease-in-out z-50 overflow-y-auto">
+    <nav className="fixed left-0 top-0 h-full w-64 bg-card border-r border-border p-6 transition-all duration-200 ease-in-out z-50 overflow-y-auto">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">I</span>
+          <div className="w-10 h-10 flex items-center justify-center">
+            <img src="/LOGOTIPO_48x48.svg" alt="INCADEV Logo" className="w-10 h-10" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">INCADEV</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Marketing Hub</p>
+            <h2 className="text-lg font-bold text-foreground">INCADEV</h2>
+            <p className="text-xs text-muted-foreground">Marketing Hub</p>
           </div>
         </div>
         <ModeToggle />
@@ -86,7 +86,7 @@ export default function Sidebar() {
                     variant="ghost"
                     className={`w-full justify-start gap-3 h-auto px-4 py-3 ${isSubItemActive
                       ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-white'}`}
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}
                   >
                     <Icon className="w-5 h-5" />
                     <span className="font-medium flex-1 text-left">{item.label}</span>
@@ -106,7 +106,7 @@ export default function Sidebar() {
                             variant="ghost"
                             className={`w-full justify-start gap-3 h-auto px-4 py-2.5 ${isSubActive
                               ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20'
-                              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
+                              : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}
                           >
                             <a href={subItem.href}>
                               <SubIcon className="w-4 h-4" />
@@ -125,7 +125,7 @@ export default function Sidebar() {
                   variant="ghost"
                   className={`w-full justify-start gap-3 h-auto px-4 py-3 ${isActive
                     ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-white'}`}
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}
                 >
                   <a href={item.href}>
                     <Icon className="w-5 h-5" />
@@ -140,14 +140,14 @@ export default function Sidebar() {
       </div>
 
       <div className="absolute bottom-6 left-6 right-6">
-        <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border border-blue-100 dark:border-blue-900/30">
+        <div className="p-4 rounded-lg bg-muted border border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">MK</span>
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-semibold text-sm">MK</span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900 dark:text-white">Marketing Team</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Equipo activo</p>
+              <p className="text-sm font-semibold text-foreground">Marketing Team</p>
+              <p className="text-xs text-muted-foreground">Equipo activo</p>
             </div>
           </div>
         </div>

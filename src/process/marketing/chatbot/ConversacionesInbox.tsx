@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
+import { config } from '@/config/marketing-config';
 
 interface Mensaje {
   id: number;
@@ -39,7 +40,7 @@ const conversacionesMock: Conversacion[] = [
       { id: 1, tipo: 'usuario', contenido: 'Hola', timestamp: '2025-11-08 14:28' },
       { id: 2, tipo: 'bot', contenido: '¡Hola Juan! Bienvenido a Incadev. ¿En qué podemos ayudarte?', timestamp: '2025-11-08 14:28' },
       { id: 3, tipo: 'usuario', contenido: '¿Tienen curso de Python?', timestamp: '2025-11-08 14:30' },
-      { id: 4, tipo: 'bot', contenido: '¡Sí! Tenemos el curso de Python Básico. Puedes inscribirte aquí: https://instituto.com/matricula/python', timestamp: '2025-11-08 14:30' },
+      { id: 4, tipo: 'bot', contenido: `¡Sí! Tenemos el curso de Python Básico. Puedes inscribirte aquí: ${config.externalUrls.matricula.curso.replace(':slug', 'python')}`, timestamp: '2025-11-08 14:30' },
     ]
   },
   {

@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { config } from '@/config/marketing-config';
 
 interface Canal {
   id: string;
@@ -273,7 +274,7 @@ export default function CanalesManager() {
                   <Input
                     id="webhook"
                     readOnly
-                    value="https://instituto.com/api/webhook/wa"
+                    value={config.externalUrls.webhook.whatsapp}
                     className="bg-gray-50 dark:bg-gray-900"
                   />
                 </div>

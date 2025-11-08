@@ -17,6 +17,8 @@ interface PropuestaMetrica {
   leads: number;
   ctr: number;
   score: number;
+  gastoMarketing: number; // Gasto en marketing (S/)
+  tasaConversionHistorica: number; // Porcentaje de conversión esperado (0.66 = 66%)
   detalles?: {
     posts: Array<{
       texto: string;
@@ -32,6 +34,19 @@ interface PropuestaMetrica {
   };
 }
 
+// Funciones helper para cálculos
+const calcularCPA = (gasto: number, leads: number): number => {
+  return leads > 0 ? gasto / leads : 0;
+};
+
+const calcularMatriculasProyectadas = (leads: number, tasaConversion: number): number => {
+  return Math.round(leads * tasaConversion);
+};
+
+const calcularPorcentajeIntencion = (leads: number, conversaciones: number): number => {
+  return conversaciones > 0 ? (leads / conversaciones) * 100 : 0;
+};
+
 const propuestasMock: PropuestaMetrica[] = [
   {
     id: 1,
@@ -44,6 +59,8 @@ const propuestasMock: PropuestaMetrica[] = [
     leads: 23,
     ctr: 9.8,
     score: 8.5,
+    gastoMarketing: 230, // S/ 230
+    tasaConversionHistorica: 0.65, // 65% de conversión esperada
     detalles: {
       posts: [
         { texto: '¿Quieres aprender Kotlin? 🚀', alcance: 4200, likes: 234, comentarios: 45, compartidos: 12 },
@@ -68,6 +85,8 @@ const propuestasMock: PropuestaMetrica[] = [
     leads: 34,
     ctr: 11.2,
     score: 9.2,
+    gastoMarketing: 340, // S/ 340
+    tasaConversionHistorica: 0.70, // 70% de conversión esperada
   },
   {
     id: 3,
@@ -80,6 +99,8 @@ const propuestasMock: PropuestaMetrica[] = [
     leads: 2,
     ctr: 2.5,
     score: 3.1,
+    gastoMarketing: 100, // S/ 100
+    tasaConversionHistorica: 0.50, // 50% de conversión esperada
   },
   {
     id: 4,
@@ -92,6 +113,8 @@ const propuestasMock: PropuestaMetrica[] = [
     leads: 15,
     ctr: 7.5,
     score: 7.8,
+    gastoMarketing: 180, // S/ 180
+    tasaConversionHistorica: 0.60, // 60% de conversión esperada
   },
   {
     id: 5,
@@ -104,6 +127,8 @@ const propuestasMock: PropuestaMetrica[] = [
     leads: 12,
     ctr: 6.2,
     score: 6.5,
+    gastoMarketing: 150, // S/ 150
+    tasaConversionHistorica: 0.58, // 58% de conversión esperada
   },
 ];
 
@@ -170,7 +195,7 @@ export default function PropuestaMetricasTable() {
             </div>
 
             {/* Métricas principales en grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10 gap-4">
               <div className="text-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-400">Posts</p>
                 <p className="text-xl font-bold text-gray-900 dark:text-white">
@@ -193,14 +218,14 @@ export default function PropuestaMetricasTable() {
               </div>
 
               <div className="text-center p-3 bg-green-50 dark:bg-green-950/30 rounded-lg">
-                <p className="text-sm text-gray-600 dark:text-gray-400">Chats</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Mensajes</p>
                 <p className="text-xl font-bold text-green-600 dark:text-green-400">
                   {propuesta.conversaciones}
                 </p>
               </div>
 
               <div className="text-center p-3 bg-orange-50 dark:bg-orange-950/30 rounded-lg">
-                <p className="text-sm text-gray-600 dark:text-gray-400">Leads</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Preinscripciones</p>
                 <p className="text-xl font-bold text-orange-600 dark:text-orange-400">
                   {propuesta.leads}
                 </p>
@@ -210,6 +235,28 @@ export default function PropuestaMetricasTable() {
                 <p className="text-sm text-gray-600 dark:text-gray-400">CTR</p>
                 <p className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
                   {propuesta.ctr}%
+                </p>
+              </div>
+
+              {/* NUEVAS MÉTRICAS */}
+              <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">% Intención</p>
+                <p className="text-xl font-bold text-yellow-600 dark:text-yellow-400">
+                  {calcularPorcentajeIntencion(propuesta.leads, propuesta.conversaciones).toFixed(1)}%
+                </p>
+              </div>
+
+              <div className="text-center p-3 bg-pink-50 dark:bg-pink-950/30 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">CPA</p>
+                <p className="text-xl font-bold text-pink-600 dark:text-pink-400">
+                  S/ {calcularCPA(propuesta.gastoMarketing, propuesta.leads).toFixed(2)}
+                </p>
+              </div>
+
+              <div className="text-center p-3 bg-teal-50 dark:bg-teal-950/30 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Proyección</p>
+                <p className="text-xl font-bold text-teal-600 dark:text-teal-400">
+                  {calcularMatriculasProyectadas(propuesta.leads, propuesta.tasaConversionHistorica)}
                 </p>
               </div>
 
@@ -282,6 +329,69 @@ export default function PropuestaMetricasTable() {
                       💡 Tasa de conversión: Chat → Lead: {((propuesta.leads / propuesta.conversaciones) * 100).toFixed(1)}%
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* NUEVA SECCIÓN: Métricas de conversión esperada */}
+              <div className="lg:col-span-2 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  📊 Conversión Esperada y Costos
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* % Intención de Matrícula */}
+                  <Card className="p-4 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-900">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        % Intención de Matrícula
+                      </p>
+                      <span className="text-2xl">🎯</span>
+                    </div>
+                    <p className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-1">
+                      {calcularPorcentajeIntencion(propuesta.leads, propuesta.conversaciones).toFixed(1)}%
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      {propuesta.leads} de {propuesta.conversaciones} interesados
+                    </p>
+                  </Card>
+
+                  {/* CPA - Costo por Persona Interesada */}
+                  <Card className="p-4 bg-gradient-to-br from-pink-50 to-red-50 dark:from-pink-950/20 dark:to-red-950/20 border-pink-200 dark:border-pink-900">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        CPA (Costo por Lead)
+                      </p>
+                      <span className="text-2xl">💰</span>
+                    </div>
+                    <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">
+                      S/ {calcularCPA(propuesta.gastoMarketing, propuesta.leads).toFixed(2)}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Gasto: S/ {propuesta.gastoMarketing} ÷ {propuesta.leads} leads
+                    </p>
+                  </Card>
+
+                  {/* Proyección de Matrículas Reales */}
+                  <Card className="p-4 bg-gradient-to-br from-teal-50 to-green-50 dark:from-teal-950/20 dark:to-green-950/20 border-teal-200 dark:border-teal-900">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Matrículas Proyectadas
+                      </p>
+                      <span className="text-2xl">🎓</span>
+                    </div>
+                    <p className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-1">
+                      {calcularMatriculasProyectadas(propuesta.leads, propuesta.tasaConversionHistorica)}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      {propuesta.leads} leads × {(propuesta.tasaConversionHistorica * 100).toFixed(0)}% conversión
+                    </p>
+                  </Card>
+                </div>
+
+                <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+                  <p className="text-sm font-medium text-green-900 dark:text-green-100">
+                    ✅ Se estima que de {propuesta.leads} preinscripciones, aproximadamente {calcularMatriculasProyectadas(propuesta.leads, propuesta.tasaConversionHistorica)} estudiantes concretarán su matrícula ({(propuesta.tasaConversionHistorica * 100).toFixed(0)}%)
+                  </p>
                 </div>
               </div>
             </div>
