@@ -1,0 +1,262 @@
+---
+const menuItems = [
+  { 
+    href: '/administrativo/dashboard', 
+    label: 'Dashboard', 
+    icon: '<path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />'
+  },
+  { 
+    href: '/administrativo/matricula', 
+    label: 'Matrícula',
+    icon: '<path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm0-80h640v-440H600q0 33-23.5 56.5T520-520h-80q-33 0-56.5-23.5T360-600H160v440Zm80-80h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-200-60q25 0 42.5-17.5T420-420q0-25-17.5-42.5T360-480q-25 0-42.5 17.5T300-420q0 25 17.5 42.5T360-360Zm200-60h160v-60H560v60ZM440-600h80v-200h-80v200Zm40 220Z"/>'
+  },
+  { 
+    href: '/administrativo/pagos', 
+    label: 'Pagos y Facturación',
+    icon: '<path d="M880-720v480q0 33-23.5 56.5T800-160H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720Zm-720 80h640v-80H160v80Zm0 160v240h640v-240H160Zm0 240v-480 480Z"/>'
+  },
+  { 
+    href: '/administrativo/financiera', 
+    label: 'Gestión Financiera',
+    icon: '<path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z"/>'
+  },
+  { 
+    label: 'Recursos Humanos',
+    icon: '<path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Z"/>',
+    submenu: [
+      { href: '/administrativo/rrhh/empleados', label: 'Empleados' },
+      { href: '/administrativo/rrhh/capacitaciones', label: 'Capacitaciones' },
+      { href: '/administrativo/rrhh/vacantes', label: 'Vacantes' },
+      { href: '/administrativo/rrhh/postulantes', label: 'Postulantes' }
+    ]
+  },
+  { 
+    href: '/administrativo/documentos', 
+    label: 'Gestión Documental',
+    icon: '<path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/>'
+  },
+  { 
+    href: '/administrativo/kpis', 
+    label: 'Indicadores (KPIs)',
+    icon: '<path d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z"/>'
+  }
+];
+
+const normalizePath = (path: string) => {
+  if (!path || path === '/') return '/';
+  return path.endsWith('/') ? path.slice(0, -1) : path;
+};
+
+const currentPath = normalizePath(Astro.url.pathname);
+
+const isActive = (href: string) => {
+  const normalizedHref = normalizePath(href);
+  return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+};
+---
+
+<div id="admin-overlay" class="fixed inset-0 z-30 hidden bg-black/60 md:hidden" aria-hidden="true"></div>
+
+<aside
+  id="admin-sidebar"
+  class="fixed inset-y-0 left-0 z-40 flex w-72 max-w-full transform flex-col justify-between border-r border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/95 px-5 pb-6 pt-8 shadow-2xl transition-transform duration-300 ease-out -translate-x-full md:static md:inset-auto md:translate-x-0 md:transform-none md:bg-slate-50 dark:md:bg-slate-900/60 md:shadow-none md:transition-none"
+  data-bound="false"
+>
+  <div class="space-y-8">
+    <header class="space-y-3">
+      <div class="flex items-center justify-between">
+        <img src="/img/logo_incadev-r.png" alt="INCADEV" class="h-14" onerror="this.style.display='none'">
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-[0.35em] text-sky-600 dark:text-sky-400/80">Administrativo</p>
+        <h1 class="text-2xl font-semibold text-slate-900 dark:text-white">Incadev</h1>
+        <p class="text-sm text-slate-600 dark:text-slate-400/90">Panel de control</p>
+      </div>
+    </header>
+
+    <nav class="space-y-2">
+      <ul class="space-y-2">
+        {menuItems.map((item) => {
+          if (item.submenu) {
+            const hasActiveSubmenu = item.submenu.some((sub: any) => isActive(sub.href));
+            return (
+              <li class="space-y-1">
+                <button
+                  class="group flex w-full items-center justify-between gap-3 rounded-xl border border-transparent px-4 py-2 text-sm font-medium transition-colors duration-200 hover:border-slate-300 dark:hover:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                  data-submenu-toggle="rrhh"
+                >
+                  <div class="flex items-center gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="22"
+                      viewBox="0 -960 960 960"
+                      width="22"
+                      fill="currentColor"
+                      class="text-slate-400 dark:text-slate-500 transition-colors duration-200 group-hover:text-sky-500 dark:group-hover:text-sky-400"
+                      set:html={item.icon}
+                    />
+                    <span>{item.label}</span>
+                  </div>
+                  <svg class="h-4 w-4 transition-transform duration-300" data-arrow="rrhh" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+                <ul class="ml-4 space-y-1 hidden" data-submenu="rrhh">
+                  {item.submenu.map((subItem: any) => {
+                    const subActive = isActive(subItem.href);
+                    return (
+                      <li>
+                        <a
+                          href={subItem.href}
+                          class:list={{
+                            'block rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200': true,
+                            'bg-sky-500/10 text-sky-700 dark:text-sky-200': subActive,
+                            'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-white': !subActive,
+                          }}
+                        >
+                          {subItem.label}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            );
+          } else {
+            const active = isActive(item.href);
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={{
+                    'group flex items-center gap-3 rounded-xl border px-4 py-2 text-sm font-medium transition-colors duration-200': true,
+                    'border-sky-500/40 bg-sky-500/10 text-sky-700 dark:text-sky-200 shadow-[0_0_25px_rgba(14,165,233,0.18)]': active,
+                    'border-transparent text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700/70 hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-white': !active,
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="22"
+                    viewBox="0 -960 960 960"
+                    width="22"
+                    fill="currentColor"
+                    class:list={{
+                      'text-sky-400 drop-shadow-[0_0_12px_rgba(14,165,233,0.35)]': active,
+                      'text-slate-400 dark:text-slate-500 transition-colors duration-200 group-hover:text-sky-500 dark:group-hover:text-sky-400': !active,
+                    }}
+                    set:html={item.icon}
+                  />
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            );
+          }
+        })}
+      </ul>
+    </nav>
+  </div>
+
+  <footer class="mt-6 space-y-4">
+    <!-- Botón de cambio de tema -->
+    <button
+      id="theme-toggle"
+      type="button"
+      class="group flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 dark:border-slate-700/70 bg-slate-50 dark:bg-slate-800/50 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 transition-all hover:border-sky-300 dark:hover:border-sky-600/50 hover:bg-sky-50 dark:hover:bg-sky-900/20 hover:shadow-md"
+      aria-label="Cambiar tema de color"
+    >
+      <div class="flex items-center gap-3">
+        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-slate-700 transition-colors group-hover:bg-sky-100 dark:group-hover:bg-sky-900/40">
+          <svg id="theme-icon-light" class="h-5 w-5 hidden dark:block text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+          </svg>
+          <svg id="theme-icon-dark" class="h-5 w-5 block dark:hidden text-slate-600" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="text-left">
+          <span id="theme-label-light" class="hidden dark:block">Modo claro</span>
+          <span id="theme-label-dark" class="block dark:hidden">Modo oscuro</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">Cambiar apariencia</span>
+        </div>
+      </div>
+      <svg class="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+
+    <div class="rounded-2xl border border-slate-200 dark:border-slate-800/50 bg-slate-50 dark:bg-slate-900/60 p-4 text-sm text-slate-700 dark:text-slate-300">
+      <div class="flex items-center gap-3 mb-3">
+        <img src="/img/icons_sidebar/icon_usuario.png" alt="User Icon" class="h-10 w-10 rounded-full border border-slate-300 dark:border-slate-700/70" onerror="this.style.display='none'">
+        <div>
+          <p class="font-semibold text-slate-900 dark:text-white">Administrador</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Panel interno</p>
+        </div>
+      </div>
+
+      <form action="#" method="GET">
+        <button class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 transition hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-700 dark:hover:text-rose-200">Cerrar sesión</button>
+      </form>
+    </div>
+  </footer>
+</aside>
+
+<button
+  id="admin-toggle"
+  class="fixed left-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-xl bg-sky-500 text-white shadow-lg shadow-sky-500/40 transition hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 md:hidden"
+  aria-label="Abrir menú administrativo"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+  </svg>
+</button>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('admin-toggle');
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('admin-overlay');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    if (toggle && sidebar && overlay) {
+      toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+      });
+
+      overlay.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      });
+    }
+
+    const submenuToggles = document.querySelectorAll('[data-submenu-toggle]');
+    submenuToggles.forEach((button) => {
+      button.addEventListener('click', () => {
+        const submenuId = button.getAttribute('data-submenu-toggle');
+        const submenu = document.querySelector(`[data-submenu="${submenuId}"]`);
+        const arrow = document.querySelector(`[data-arrow="${submenuId}"]`);
+        
+        if (submenu) {
+          submenu.classList.toggle('hidden');
+        }
+        if (arrow) {
+          arrow.classList.toggle('rotate-180');
+        }
+      });
+    });
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        if (isDark) {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('theme', 'theme-light');
+        } else {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      });
+    }
+  });
+</script>

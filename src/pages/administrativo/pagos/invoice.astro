@@ -1,0 +1,376 @@
+---
+const paymentId = Astro.url.searchParams.get('id');
+const stream = Astro.url.searchParams.get('stream') === 'true';
+
+const title = 'Factura de Pago';
+const description = 'Comprobante de pago del estudiante';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Factura {paymentId ? `#${paymentId}` : ''}</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 12px;
+      color: #111827;
+      margin: 0;
+      padding: 24px 32px;
+      background: white;
+    }
+    .header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      padding-right: 180px;
+      min-height: 120px;
+    }
+    .logo-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      text-align: right;
+    }
+    .brand {
+      flex: 1;
+    }
+    .brand h1 {
+      font-size: 20px;
+      margin: 0 0 4px 0;
+      color: #1f2937;
+    }
+    .brand-logo {
+      width: 120px;
+    }
+    .invoice-meta {
+      text-align: right;
+      color: #374151;
+      line-height: 1.6;
+    }
+    .section-title {
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      color: #6b7280;
+      font-weight: 600;
+    }
+    .info-grid {
+      margin: 32px auto 32px;
+      max-width: 95%;
+      overflow: hidden;
+    }
+    .info-block {
+      float: left;
+      width: calc(50% - 16px);
+      padding: 16px 18px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #f9fafb;
+      line-height: 1.6;
+      box-sizing: border-box;
+    }
+    .info-block + .info-block {
+      margin-left: 32px;
+    }
+    .info-grid::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+    }
+    th {
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      text-align: left;
+      color: #6b7280;
+      padding: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .totals {
+      margin-top: 24px;
+      width: 220px;
+      margin-left: auto;
+      border-top: 2px solid #111827;
+    }
+    .totals td {
+      padding: 6px 0;
+    }
+    .totals td.label {
+      text-align: left;
+    }
+    .totals td.amount {
+      text-align: right;
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 10px;
+      color: #6b7280;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      color: #6b7280;
+    }
+    @media print {
+      body {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingState" class="loading">
+    <p>Cargando factura...</p>
+  </div>
+
+  <div id="invoiceContent" style="display: none;">
+    <div class="header">
+      <div class="brand">
+        <h1>INCADEV</h1>
+        <div class="section-title">Instituto de Capacitación y Desarrollo</div>
+      </div>
+      <div class="logo-container">
+        
+        <div class="invoice-meta">
+          <div class="section-title">Factura</div>
+          <div><strong>Número:</strong> <span id="invoiceNumber">N/D</span></div>
+          <div><strong>Emitida:</strong> <span id="issueDate">N/D</span></div>
+          <div><strong>Generada:</strong> <span id="generatedDate"></span></div>
+          <div id="invoiceStatusBadge" class="badge">Pendiente</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-block">
+        <div class="section-title">Facturar a</div>
+        <div><strong id="studentName">Estudiante</strong></div>
+        <div id="documentNumber"></div>
+        <div id="studentEmail"></div>
+      </div>
+      <div class="info-block">
+        <div class="section-title">Detalles del pago</div>
+        <div id="paymentId">ID Pago: P-000</div>
+        <div id="paymentMethod">Método: Sin método</div>
+        <div id="paymentDate">Fecha de pago: N/D</div>
+        <div id="paymentStatus">Estado del pago: Pendiente</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Precio unitario</th>
+          <th>Importe</th>
+        </tr>
+      </thead>
+      <tbody id="itemsTableBody">
+        <tr>
+          <td>Servicios educativos - Matrícula y mensualidad</td>
+          <td>1</td>
+          <td id="unitPrice">S/0.00</td>
+          <td id="totalPrice">S/0.00</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="totals">
+      <tr>
+        <td class="label">Subtotal</td>
+        <td class="amount" id="subtotal">S/0.00</td>
+      </tr>
+      <tr>
+        <td class="label">IGV (0%)</td>
+        <td class="amount">S/0.00</td>
+      </tr>
+      <tr>
+        <td class="label">Total</td>
+        <td class="amount" id="total">S/0.00</td>
+      </tr>
+    </table>
+
+    <div class="footer">
+      Gracias por su pago. Ante cualquier consulta comunicarse con tesorería. Este documento ha sido generado electrónicamente mediante INCADEV.
+    </div>
+  </div>
+
+  <script>
+
+    async function loadInvoiceData() {
+      const loadingState = document.getElementById('loadingState');
+      const invoiceContent = document.getElementById('invoiceContent');
+
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('id');
+
+        if (!paymentId) {
+          throw new Error('No se especificó el ID de pago');
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const data = {
+          invoice_number: `INV-${String(paymentId).padStart(6, '0')}`,
+          issue_date: '2024-11-01',
+          invoice_status: 'PAID',
+          payment_id: paymentId,
+          student: {
+            first_name: 'Juan',
+            last_name: 'Pérez López',
+            document_number: '12345678',
+            email: 'juan.perez@example.com'
+          },
+          payment_method: 'PayPal',
+          payment_date: '2024-11-01',
+          payment_status: 'PAID',
+          amount: 500.00
+        };
+
+        displayInvoiceData(data);
+
+        if (loadingState) loadingState.style.display = 'none';
+        if (invoiceContent) invoiceContent.style.display = 'block';
+
+        const stream = urlParams.get('stream');
+        if (stream === 'true') {
+          setTimeout(() => window.print(), 500);
+        }
+
+      } catch (error) {
+        console.error('Error al cargar factura:', error);
+        if (loadingState) {
+          loadingState.innerHTML = '<p style="color: #ef4444;">Error al cargar la factura</p>';
+        }
+      }
+    }
+
+    function displayInvoiceData(data: any) {
+
+      const invoiceNumber = document.getElementById('invoiceNumber');
+      if (invoiceNumber) {
+        invoiceNumber.textContent = data.invoice_number || 'N/D';
+      }
+
+      const issueDate = document.getElementById('issueDate');
+      if (issueDate && data.issue_date) {
+        issueDate.textContent = new Date(data.issue_date).toLocaleDateString('es-PE');
+      }
+
+      const generatedDate = document.getElementById('generatedDate');
+      if (generatedDate) {
+        const now = new Date();
+        generatedDate.textContent = `${now.toLocaleDateString('es-PE')} ${now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}`;
+      }
+
+      const invoiceStatusBadge = document.getElementById('invoiceStatusBadge');
+      if (invoiceStatusBadge) {
+        const statusMap: Record<string, string> = {
+          'PAID': 'Pagado',
+          'PENDING': 'Pendiente',
+          'OVERDUE': 'Vencido',
+          'CANCELLED': 'Cancelado'
+        };
+        invoiceStatusBadge.textContent = statusMap[data.invoice_status] || data.invoice_status;
+      }
+
+      const studentName = document.getElementById('studentName');
+      if (studentName) {
+        const fullName = `${data.student.first_name || ''} ${data.student.last_name || ''}`.trim();
+        studentName.textContent = fullName || 'Estudiante';
+      }
+
+      const documentNumber = document.getElementById('documentNumber');
+      if (documentNumber && data.student.document_number) {
+        documentNumber.textContent = `Documento: ${data.student.document_number}`;
+      }
+
+      const studentEmail = document.getElementById('studentEmail');
+      if (studentEmail && data.student.email) {
+        studentEmail.textContent = `Email: ${data.student.email}`;
+      }
+
+      const paymentIdEl = document.getElementById('paymentId');
+      if (paymentIdEl) {
+        paymentIdEl.textContent = `ID Pago: P-${String(data.payment_id).padStart(3, '0')}`;
+      }
+
+      const paymentMethod = document.getElementById('paymentMethod');
+      if (paymentMethod) {
+        paymentMethod.textContent = `Método: ${data.payment_method || 'Sin método'}`;
+      }
+
+      const paymentDate = document.getElementById('paymentDate');
+      if (paymentDate && data.payment_date) {
+        paymentDate.textContent = `Fecha de pago: ${new Date(data.payment_date).toLocaleDateString('es-PE')}`;
+      }
+
+      const paymentStatus = document.getElementById('paymentStatus');
+      if (paymentStatus) {
+        const statusMap: Record<string, string> = {
+          'PAID': 'Pagado',
+          'PENDING': 'Pendiente',
+          'FAILED': 'Fallido',
+          'REFUNDED': 'Reembolsado'
+        };
+        paymentStatus.textContent = `Estado del pago: ${statusMap[data.payment_status] || data.payment_status}`;
+      }
+
+      const amount = data.amount || 0;
+      const formattedAmount = `S/${amount.toFixed(2)}`;
+
+      const unitPrice = document.getElementById('unitPrice');
+      if (unitPrice) unitPrice.textContent = formattedAmount;
+
+      const totalPrice = document.getElementById('totalPrice');
+      if (totalPrice) totalPrice.textContent = formattedAmount;
+
+      const subtotal = document.getElementById('subtotal');
+      if (subtotal) subtotal.textContent = formattedAmount;
+
+      const total = document.getElementById('total');
+      if (total) total.textContent = formattedAmount;
+    }
+
+    document.addEventListener('DOMContentLoaded', loadInvoiceData);
+  </script>
+</body>
+</html>

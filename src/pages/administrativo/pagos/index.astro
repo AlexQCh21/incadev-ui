@@ -1,0 +1,664 @@
+---
+import Sidebar from '../sidebar.astro';
+
+const title = 'Pagos y Facturación';
+const description = 'Gestiona pagos, boletas y facturas del instituto';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="stylesheet" href="/src/styles/global.css" />
+  <script is:inline>
+    (function(){const e=localStorage.getItem("theme");if(e==="dark"||(e!=="theme-light"&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}})();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+  
+<div class="relative flex min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+  <Sidebar />
+
+  <section class="relative flex-1">
+  <main class="mx-auto max-w-7xl space-y-10 px-5 py-14 text-slate-900 dark:text-slate-100">
+    
+    
+    <header class="rounded-3xl border border-slate-200 dark:border-slate-800/60 bg-gradient-to-br from-sky-500 to-sky-700 px-6 py-7 shadow-xl">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.28em] text-sky-100/90">
+          Gestión Financiera
+        </p>
+        <h1 class="mt-3 text-3xl font-semibold text-white md:text-4xl">
+          Pagos y Facturación
+        </h1>
+        <p class="mt-2 max-w-xl text-sm text-sky-100/80">
+          Gestiona pagos, boletas y facturas del instituto
+        </p>
+      </div>
+    </header>
+
+    
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      
+      
+      <div class="flex flex-col justify-between rounded-3xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-200/50 dark:shadow-slate-950/30">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Ingresos mensuales</span>
+          <svg class="h-6 w-6 text-sky-500 dark:text-sky-400" fill="currentColor" viewBox="0 -960 960 960">
+            <path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
+          </svg>
+        </div>
+        <div class="mb-2 text-4xl font-bold text-slate-900 dark:text-white" id="monthlyIncome">$0.00</div>
+        <div id="monthlyVariation" class="text-sm font-medium text-slate-500 dark:text-slate-400">
+          Sin variación disponible
+        </div>
+      </div>
+
+      
+      <div class="flex flex-col justify-between rounded-3xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-200/50 dark:shadow-slate-950/30">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Pagos pendientes</span>
+          <svg class="h-6 w-6 text-yellow-500 dark:text-yellow-400" fill="currentColor" viewBox="0 -960 960 960">
+            <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
+          </svg>
+        </div>
+        <div class="mb-2 text-4xl font-bold text-slate-900 dark:text-white" id="pendingAmount">$0.00</div>
+        <div id="pendingStudents" class="text-sm text-slate-500 dark:text-slate-400">
+          0 estudiantes con deuda
+        </div>
+      </div>
+
+      
+      <div class="flex flex-col justify-between rounded-3xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/70 p-6 shadow-xl shadow-slate-200/50 dark:shadow-slate-950/30">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Tasa de cobro</span>
+          <svg class="h-6 w-6 text-sky-500 dark:text-sky-400" fill="currentColor" viewBox="0 -960 960 960">
+            <path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Z" />
+          </svg>
+        </div>
+        <div class="mb-2 text-4xl font-bold text-slate-900 dark:text-white" id="collectionRate">--%</div>
+        <div class="text-sm text-slate-500 dark:text-slate-400">
+          Pagos completados sobre facturas emitidas
+        </div>
+      </div>
+
+    </div>
+
+    
+    <section id="statusBreakdown" class="hidden rounded-3xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/70 px-6 py-7 shadow-xl shadow-slate-200/50 dark:shadow-slate-950/30">
+      <h2 class="mb-2 text-2xl font-semibold text-slate-900 dark:text-white">Estado de pagos</h2>
+      <p class="mb-6 text-sm text-slate-600 dark:text-slate-300/80">Distribución actual de los registros</p>
+      <div id="statusBadges" class="flex flex-wrap gap-3">
+        
+      </div>
+    </section>
+
+    
+    <section class="rounded-3xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/70 px-6 py-7 shadow-xl shadow-slate-200/50 dark:shadow-slate-950/30">
+      
+      
+      <div class="mb-6 space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 class="mb-1 text-2xl font-semibold text-slate-900 dark:text-white">Registro de pagos</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300/80">Historial de pagos realizados y pendientes</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="rounded-xl border border-sky-200 dark:border-sky-800/60 bg-sky-50 dark:bg-sky-500/10 px-4 py-2 text-sm font-semibold text-sky-700 dark:text-sky-300">
+              <span id="totalRecords">0</span> registros
+            </div>
+            <div class="relative" x-data="{ open: false }">
+              <button
+                type="button"
+                @click="open = !open"
+                @click.outside="open = false"
+                class="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-sky-600"
+              >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Exportar
+                <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div
+                x-show="open"
+                x-transition
+                class="absolute right-0 z-20 mt-2 w-40 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900 shadow-xl"
+              >
+                <a
+                  href="#"
+                  onclick="exportCSV(); return false;"
+                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800/50"
+                >
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                  </svg>
+                  CSV
+                </a>
+                <a
+                  href="#"
+                  onclick="exportPDF(); return false;"
+                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800/50"
+                >
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                  </svg>
+                  PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <form id="searchForm" class="flex flex-wrap gap-3">
+          <div class="relative flex-1 min-w-[280px]">
+            <svg class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              name="search"
+              placeholder="Buscar por nombre del estudiante o ID de pago..."
+              class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 py-2.5 pl-10 pr-4 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:border-sky-500 dark:focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+            />
+          </div>
+          <button
+            type="submit"
+            class="rounded-xl bg-sky-500 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-sky-600"
+          >
+            Buscar
+          </button>
+          <button
+            type="button"
+            id="clearSearch"
+            class="text-sm font-medium text-slate-600 underline transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+          >
+            Limpiar
+          </button>
+        </form>
+      </div>
+
+      
+      <div id="loadingState" class="flex items-center justify-center py-16">
+        <div class="text-center">
+          <div class="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-slate-200 dark:border-slate-800 border-t-sky-500"></div>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Cargando pagos...</p>
+        </div>
+      </div>
+
+      
+      <div id="paymentsTable" class="hidden overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-slate-50 dark:bg-slate-800/50">
+            <tr>
+              <th class="cursor-pointer px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 transition-colors hover:text-sky-600 dark:hover:text-sky-400" onclick="sortTable('id')">
+                <div class="flex items-center gap-1">
+                  ID Pago
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                  </svg>
+                </div>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Estudiante</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Método</th>
+              <th class="cursor-pointer px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 transition-colors hover:text-sky-600 dark:hover:text-sky-400" onclick="sortTable('amount')">
+                <div class="flex items-center gap-1">
+                  Monto
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                  </svg>
+                </div>
+              </th>
+              <th class="cursor-pointer px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 transition-colors hover:text-sky-600 dark:hover:text-sky-400" onclick="sortTable('date')">
+                <div class="flex items-center gap-1">
+                  Fecha
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                  </svg>
+                </div>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Estado</th>
+              <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody" class="divide-y divide-slate-200 dark:divide-slate-800/60">
+            
+          </tbody>
+        </table>
+      </div>
+
+      
+      <div id="emptyState" class="hidden py-12 text-center">
+        <svg class="mx-auto mb-4 h-16 w-16 text-slate-400 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        <p class="text-slate-600 dark:text-slate-400">No hay pagos que coincidan con la búsqueda</p>
+      </div>
+
+      
+      <div id="pagination" class="mt-6 hidden flex items-center justify-between">
+        <div class="text-sm text-slate-600 dark:text-slate-400">
+          Mostrando <span id="pageInfo">1-10 de 50</span>
+        </div>
+        <div class="flex gap-2">
+          <button
+            id="prevPage"
+            onclick="changePage('prev')"
+            class="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/70 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Anterior
+          </button>
+          <button
+            id="nextPage"
+            onclick="changePage('next')"
+            class="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/70 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+  </section>
+</div>
+</body>
+</html>
+
+<script>
+
+  
+  let allPayments: any[] = [];
+  let filteredPayments: any[] = [];
+  let currentPage = 1;
+  const itemsPerPage = 10;
+
+  async function loadPayments() {
+    const loadingState = document.getElementById('loadingState');
+    const paymentsTable = document.getElementById('paymentsTable');
+    const emptyState = document.getElementById('emptyState');
+
+    try {
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const data = {
+        stats: {
+          monthly_income: 15430.50,
+          monthly_variation: 12.5,
+          pending_amount: 3250.00,
+          pending_students: 8,
+          collection_rate: 82.3
+        },
+        status_breakdown: {
+          paid: 45,
+          pending: 12,
+          failed: 3,
+          partial: 5
+        },
+        payments: [
+          {
+            payment_id: 1,
+            student_name: 'Juan Pérez López',
+            payment_method: 'PayPal',
+            amount: 500.00,
+            payment_date: '2024-11-01',
+            status: 'paid'
+          },
+          {
+            payment_id: 2,
+            student_name: 'María García',
+            payment_method: 'Transferencia bancaria',
+            amount: 750.00,
+            payment_date: '2024-11-03',
+            status: 'pending'
+          },
+          {
+            payment_id: 3,
+            student_name: 'Carlos Ramírez',
+            payment_method: 'Efectivo',
+            amount: 450.00,
+            payment_date: '2024-11-05',
+            status: 'paid'
+          }
+        ],
+        total: 3
+      };
+
+      updateMetrics(data.stats);
+      updateStatusBreakdown(data.status_breakdown);
+
+      allPayments = data.payments;
+      filteredPayments = [...allPayments];
+      
+      displayPayments();
+
+      if (loadingState) loadingState.classList.add('hidden');
+      if (paymentsTable) paymentsTable.classList.remove('hidden');
+
+    } catch (error) {
+      console.error('Error al cargar pagos:', error);
+      if (loadingState) {
+        loadingState.innerHTML = `
+          <div class="text-center">
+            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Error al cargar los pagos</p>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function updateMetrics(stats: any) {
+    const monthlyIncome = document.getElementById('monthlyIncome');
+    const monthlyVariation = document.getElementById('monthlyVariation');
+    const pendingAmount = document.getElementById('pendingAmount');
+    const pendingStudents = document.getElementById('pendingStudents');
+    const collectionRate = document.getElementById('collectionRate');
+
+    if (monthlyIncome) {
+      monthlyIncome.textContent = `$${stats.monthly_income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    if (monthlyVariation && stats.monthly_variation !== null) {
+      const variation = stats.monthly_variation;
+      const color = variation >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
+      monthlyVariation.className = `text-sm font-medium ${color}`;
+      monthlyVariation.textContent = `${variation >= 0 ? '+' : ''}${variation.toFixed(1)}% vs mes anterior`;
+    }
+
+    if (pendingAmount) {
+      pendingAmount.textContent = `$${stats.pending_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    if (pendingStudents) {
+      pendingStudents.textContent = `${stats.pending_students} estudiantes con deuda`;
+    }
+
+    if (collectionRate) {
+      collectionRate.textContent = stats.collection_rate !== null ? `${stats.collection_rate.toFixed(1)}%` : '--%';
+    }
+  }
+
+  function updateStatusBreakdown(breakdown: any) {
+    const statusBreakdown = document.getElementById('statusBreakdown');
+    const statusBadges = document.getElementById('statusBadges');
+
+    if (!statusBadges || !breakdown) return;
+
+    const labels: Record<string, string> = {
+      paid: 'Pagados',
+      completed: 'Completados',
+      pending: 'Pendientes',
+      failed: 'Fallidos',
+      cancelled: 'Cancelados',
+      partial: 'Parciales'
+    };
+
+    const styles: Record<string, string> = {
+      paid: 'bg-sky-500/20 text-sky-700 dark:text-sky-300 border-sky-500/30',
+      completed: 'bg-sky-500/20 text-sky-700 dark:text-sky-300 border-sky-500/30',
+      pending: 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/30',
+      failed: 'bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/30',
+      cancelled: 'bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-500/30',
+      partial: 'bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/30'
+    };
+
+    statusBadges.innerHTML = Object.entries(breakdown).map(([status, count]) => {
+      const label = labels[status] || status;
+      const style = styles[status] || 'bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-500/30';
+      return `<span class="inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium ${style}">${label} · ${count}</span>`;
+    }).join('');
+
+    if (statusBreakdown) statusBreakdown.classList.remove('hidden');
+  }
+
+  function displayPayments() {
+    const tbody = document.getElementById('paymentsTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const paymentsTable = document.getElementById('paymentsTable');
+    const pagination = document.getElementById('pagination');
+    const totalRecords = document.getElementById('totalRecords');
+
+    if (!tbody) return;
+
+    if (totalRecords) {
+      totalRecords.textContent = filteredPayments.length.toString();
+    }
+
+    if (filteredPayments.length === 0) {
+      if (paymentsTable) paymentsTable.classList.add('hidden');
+      if (emptyState) emptyState.classList.remove('hidden');
+      if (pagination) pagination.classList.add('hidden');
+      return;
+    }
+
+    if (paymentsTable) paymentsTable.classList.remove('hidden');
+    if (emptyState) emptyState.classList.add('hidden');
+    if (pagination) pagination.classList.remove('hidden');
+
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pagePayments = filteredPayments.slice(start, end);
+
+    tbody.innerHTML = pagePayments.map((payment: any) => {
+      const statusMap: Record<string, { text: string; class: string }> = {
+        paid: { text: 'Pagado', class: 'bg-sky-500/20 text-sky-700 dark:text-sky-300' },
+        completed: { text: 'Completado', class: 'bg-sky-500/20 text-sky-700 dark:text-sky-300' },
+        pending: { text: 'Pendiente', class: 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300' },
+        partial: { text: 'Parcial', class: 'bg-green-500/20 text-green-700 dark:text-green-300' },
+        failed: { text: 'Fallido', class: 'bg-red-500/20 text-red-700 dark:text-red-300' },
+        cancelled: { text: 'Cancelado', class: 'bg-slate-500/20 text-slate-700 dark:text-slate-300' }
+      };
+      const status = statusMap[payment.status] || { text: payment.status, class: 'bg-slate-500/20 text-slate-700 dark:text-slate-300' };
+
+      return `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
+          <td class="px-6 py-4 text-sm font-semibold text-slate-900 dark:text-white">P-${String(payment.payment_id).padStart(3, '0')}</td>
+          <td class="px-6 py-4 text-sm text-slate-900 dark:text-white">${payment.student_name || 'Sin asignar'}</td>
+          <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${payment.payment_method || 'Sin método'}</td>
+          <td class="px-6 py-4 text-sm font-semibold text-sky-600 dark:text-sky-400">$${payment.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">${payment.payment_date || 'Sin fecha'}</td>
+          <td class="px-6 py-4">
+            <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold ${status.class}">${status.text}</span>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center justify-center gap-4">
+              <a href="/administrativo/pagos/invoice?id=${payment.payment_id}&stream=true" target="_blank" class="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 transition-colors" title="Emitir comprobante">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </a>
+              <a href="/administrativo/pagos/invoice?id=${payment.payment_id}" class="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors" title="Descargar PDF">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    updatePaginationInfo();
+  }
+
+  function updatePaginationInfo() {
+    const pageInfo = document.getElementById('pageInfo');
+    const prevPage = document.getElementById('prevPage') as HTMLButtonElement;
+    const nextPage = document.getElementById('nextPage') as HTMLButtonElement;
+
+    const start = (currentPage - 1) * itemsPerPage + 1;
+    const end = Math.min(currentPage * itemsPerPage, filteredPayments.length);
+
+    if (pageInfo) {
+      pageInfo.textContent = `${start}-${end} de ${filteredPayments.length}`;
+    }
+
+    if (prevPage) {
+      prevPage.disabled = currentPage === 1;
+    }
+
+    if (nextPage) {
+      nextPage.disabled = end >= filteredPayments.length;
+    }
+  }
+
+  function changePage(direction: 'prev' | 'next') {
+    if (direction === 'prev' && currentPage > 1) {
+      currentPage--;
+    } else if (direction === 'next' && currentPage * itemsPerPage < filteredPayments.length) {
+      currentPage++;
+    }
+    displayPayments();
+  }
+
+  function searchPayments(query: string) {
+    const lowerQuery = query.toLowerCase().trim();
+    
+    if (!lowerQuery) {
+      filteredPayments = [...allPayments];
+    } else {
+      filteredPayments = allPayments.filter((payment: any) => {
+        const studentName = (payment.student_name || '').toLowerCase();
+        const paymentId = `p-${String(payment.payment_id).padStart(3, '0')}`.toLowerCase();
+        return studentName.includes(lowerQuery) || paymentId.includes(lowerQuery);
+      });
+    }
+    
+    currentPage = 1;
+    displayPayments();
+  }
+
+  function sortTable(column: string) {
+    console.log('Sort by:', column);
+  }
+
+  function exportCSV() {
+    if (filteredPayments.length === 0) {
+      alert('No hay datos para exportar');
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('es-PE', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    const timeStr = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+    
+    let totalIncome = 0;
+    let completedCount = 0;
+    let pendingCount = 0;
+
+    filteredPayments.forEach((payment: any) => {
+      if (payment.status === 'paid' || payment.status === 'completed') {
+        totalIncome += payment.amount;
+        completedCount++;
+      } else if (payment.status === 'pending') {
+        pendingCount++;
+      }
+    });
+
+    const csvLines = [
+      'INCADEV - REPORTE DE PAGOS',
+      `Fecha de Generación,${dateStr} ${timeStr}`,
+      `Total de Registros,${filteredPayments.length}`,
+      '',
+      'RESUMEN',
+      `Total Ingresos,$${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      `Pagos Completados,${completedCount}`,
+      `Pagos Pendientes,${pendingCount}`,
+      '',
+      'DETALLE DE PAGOS',
+      'ID Pago,Estudiante,Método de Pago,Monto (USD),Fecha,Estado',
+      ...filteredPayments.map((payment: any) => {
+        const statusMap: Record<string, string> = {
+          paid: 'Pagado',
+          completed: 'Completado',
+          pending: 'Pendiente',
+          partial: 'Parcial',
+          failed: 'Fallido',
+          cancelled: 'Cancelado'
+        };
+        
+        const formattedDate = payment.payment_date 
+          ? new Date(payment.payment_date).toLocaleDateString('es-PE')
+          : 'Sin fecha';
+        
+        return [
+          `P-${String(payment.payment_id).padStart(3, '0')}`,
+          `"${payment.student_name || 'Sin asignar'}"`,
+          `"${payment.payment_method || 'Sin método'}"`,
+          `$${payment.amount.toFixed(2)}`,
+          formattedDate,
+          statusMap[payment.status] || payment.status
+        ].join(',');
+      })
+    ];
+
+    const csvContent = csvLines.join('\n');
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const filename = `reporte_pagos_incadev_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}.csv`;
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function exportPDF() {
+    if (filteredPayments.length === 0) {
+      alert('No hay datos para exportar');
+      return;
+    }
+
+    localStorage.setItem('paymentsExportData', JSON.stringify({ payments: filteredPayments }));
+    window.open('/administrativo/pagos/export-pdf', '_blank');
+  }
+
+  (window as any).exportCSV = exportCSV;
+  (window as any).exportPDF = exportPDF;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadPayments();
+
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+    const clearSearch = document.getElementById('clearSearch');
+
+    if (searchForm) {
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (searchInput) {
+          searchPayments(searchInput.value);
+        }
+      });
+    }
+
+    if (clearSearch && searchInput) {
+      clearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        searchPayments('');
+      });
+    }
+  });
+</script>

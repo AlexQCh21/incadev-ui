@@ -1,0 +1,410 @@
+---
+const title = 'Reporte de Pagos';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>{title}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 11px;
+      color: #1f2937;
+      padding: 30px 40px;
+      background: white;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #0ea5e9;
+    }
+    .logo-section {
+      flex: 1;
+    }
+    .logo-section h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+    .logo-section .subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .report-info {
+      text-align: right;
+      flex: 1;
+    }
+    .report-info h2 {
+      font-size: 20px;
+      color: #1f2937;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .report-info .meta {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .report-info .meta strong {
+      color: #374151;
+      font-weight: 600;
+    }
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .summary-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px 15px;
+    }
+    .summary-card .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    .summary-card .value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .summary-card.highlight {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #60a5fa;
+    }
+    .summary-card.highlight .value {
+      color: #1e40af;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    th {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 2px solid #0ea5e9;
+    }
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 11px;
+    }
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    tbody tr:hover {
+      background: #f1f5f9;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .status-paid {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+    .status-failed {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .status-completed {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+    .status-cancelled {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+    .footer {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 2px solid #e5e7eb;
+      text-align: center;
+      font-size: 10px;
+      color: #9ca3af;
+    }
+    .footer strong {
+      color: #374151;
+    }
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      color: #6b7280;
+    }
+    @media print {
+      body {
+        padding: 15px 20px;
+      }
+      .summary-cards {
+        page-break-inside: avoid;
+      }
+      table {
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingState" class="loading">
+    <p>Cargando reporte de pagos...</p>
+  </div>
+
+  <div id="reportContent" style="display: none;">
+    <div class="header">
+      <div class="logo-section">
+        <h1>INCADEV</h1>
+        <div class="subtitle">Instituto de Capacitación y Desarrollo</div>
+      </div>
+      <div class="report-info">
+        <h2>Reporte de Pagos</h2>
+        <div class="meta">
+          <div><strong>Fecha:</strong> <span id="generatedDate"></span></div>
+          <div><strong>Total registros:</strong> <span id="totalRecords">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-cards" id="summaryCards" style="display: none;">
+      <div class="summary-card highlight">
+        <div class="label">Total Ingresos</div>
+        <div class="value" id="totalIncome">$0.00</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">Pagos Completados</div>
+        <div class="value" id="completedCount">0</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">Pagos Pendientes</div>
+        <div class="value" id="pendingCount">0</div>
+      </div>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID Pago</th>
+          <th>Estudiante</th>
+          <th>Método de Pago</th>
+          <th style="width: 90px;">Monto</th>
+          <th style="width: 90px;">Fecha</th>
+          <th style="width: 90px;">Estado</th>
+        </tr>
+      </thead>
+      <tbody id="paymentsTableBody">
+        
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <strong>INCADEV</strong> - Instituto de Capacitación y Desarrollo | 
+      Reporte generado automáticamente | 
+      Para consultas contactar a tesorería
+    </div>
+
+    <div id="emptyState" style="display: none; text-align: center; padding: 60px 20px; color: #9ca3af;">
+      <p style="font-size: 14px; margin-bottom: 8px; color: #6b7280;">No hay pagos registrados</p>
+      <p style="font-size: 11px;">No se encontraron datos para mostrar en este reporte</p>
+    </div>
+  </div>
+
+  <script>
+
+    async function loadReportData() {
+      const loadingState = document.getElementById('loadingState');
+      const reportContent = document.getElementById('reportContent');
+      const paymentsTableBody = document.getElementById('paymentsTableBody');
+      const emptyState = document.getElementById('emptyState');
+
+      try {
+        let data;
+        
+        const storedData = localStorage.getItem('paymentsExportData');
+        if (storedData) {
+          data = JSON.parse(storedData);
+          localStorage.removeItem('paymentsExportData');
+        } else {
+          await new Promise(resolve => setTimeout(resolve, 800));
+
+          data = {
+            payments: [
+              {
+                payment_id: 1,
+                student_name: 'Juan Pérez López',
+                payment_method: 'PayPal',
+                amount: 500.00,
+                payment_date: '2024-11-01',
+                status: 'paid',
+                invoice_number: 'INV-000001'
+              },
+              {
+                payment_id: 2,
+                student_name: 'María García',
+                payment_method: 'Transferencia bancaria',
+                amount: 750.00,
+                payment_date: '2024-11-03',
+                status: 'pending',
+                invoice_number: 'INV-000002'
+              },
+              {
+                payment_id: 3,
+                student_name: 'Carlos Ramírez',
+                payment_method: 'Efectivo',
+                amount: 450.00,
+                payment_date: '2024-11-05',
+                status: 'paid',
+                invoice_number: 'INV-000003'
+              }
+            ]
+          };
+        }
+
+        const generatedDate = document.getElementById('generatedDate');
+        if (generatedDate) {
+          const now = new Date();
+          generatedDate.textContent = `${now.toLocaleDateString('es-PE', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })} - ${now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}`;
+        }
+
+        const totalRecords = document.getElementById('totalRecords');
+        if (totalRecords) {
+          totalRecords.textContent = data.payments.length.toString();
+        }
+
+        let totalIncome = 0;
+        let completedCount = 0;
+        let pendingCount = 0;
+
+        data.payments.forEach((payment: any) => {
+          if (payment.status === 'paid' || payment.status === 'completed') {
+            totalIncome += payment.amount;
+            completedCount++;
+          } else if (payment.status === 'pending') {
+            pendingCount++;
+          }
+        });
+
+        const summaryCards = document.getElementById('summaryCards');
+        if (summaryCards && data.payments.length > 0) {
+          summaryCards.style.display = 'grid';
+          
+          const totalIncomeEl = document.getElementById('totalIncome');
+          if (totalIncomeEl) {
+            totalIncomeEl.textContent = `$${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          }
+
+          const completedCountEl = document.getElementById('completedCount');
+          if (completedCountEl) {
+            completedCountEl.textContent = completedCount.toString();
+          }
+
+          const pendingCountEl = document.getElementById('pendingCount');
+          if (pendingCountEl) {
+            pendingCountEl.textContent = pendingCount.toString();
+          }
+        }
+
+        if (data.payments.length === 0) {
+          if (emptyState) emptyState.style.display = 'block';
+        } else {
+          if (paymentsTableBody) {
+            paymentsTableBody.innerHTML = data.payments.map((payment: any) => {
+              const statusMap: Record<string, string> = {
+                'paid': 'Pagado',
+                'pending': 'Pendiente',
+                'failed': 'Fallido',
+                'cancelled': 'Cancelado',
+                'completed': 'Completado',
+                'partial': 'Parcial'
+              };
+              const statusText = statusMap[payment.status] || payment.status;
+              
+              const formattedDate = payment.payment_date 
+                ? new Date(payment.payment_date).toLocaleDateString('es-PE', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })
+                : 'Sin fecha';
+
+              return `
+                <tr>
+                  <td style="font-weight: 600; color: #0369a1;">P-${String(payment.payment_id).padStart(3, '0')}</td>
+                  <td style="font-weight: 500;">${payment.student_name || 'Sin asignar'}</td>
+                  <td style="color: #6b7280;">${payment.payment_method || 'Sin método'}</td>
+                  <td style="font-weight: 600; color: #059669;">$${payment.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  <td style="color: #6b7280;">${formattedDate}</td>
+                  <td><span class="status-badge status-${payment.status}">${statusText}</span></td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+
+        if (loadingState) loadingState.style.display = 'none';
+        if (reportContent) reportContent.style.display = 'block';
+
+        setTimeout(() => window.print(), 500);
+
+      } catch (error) {
+        console.error('Error al cargar reporte:', error);
+        if (loadingState) {
+          loadingState.innerHTML = '<p style="color: #ef4444;">Error al cargar el reporte</p>';
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadReportData);
+  </script>
+</body>
+</html>
