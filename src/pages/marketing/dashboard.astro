@@ -1,6 +1,150 @@
 ---
 // src/pages/marketing/dashboard.astro
 import Layout from '../../layouts/MarketingLayout.astro';
+import StatCard from '../../process/marketing/StatCard.tsx';
+import PropuestasPreview from '../../process/marketing/PropuestasPreview.tsx';
+import CursosProximos from '../../process/marketing/CursosProximos.tsx';
+import AlumnosResumen from '../../process/marketing/AlumnosResumen.tsx';
+---
+
+<Layout title="Dashboard Marketing - INCADEV UI">
+  <div class="space-y-8">
+    <!-- Header Section -->
+    <section>
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Dashboard de Marketing
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Bienvenido de nuevo. Aquí está el resumen de hoy.
+        </p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard 
+          client:load 
+          title="Propuestas Pendientes" 
+          value="12" 
+          icon="file-text" 
+          color="blue"
+          trend={{ value: 8, label: 'vs. mes anterior' }}
+        />
+        <StatCard 
+          client:load 
+          title="Cursos Próximos" 
+          value="5" 
+          icon="calendar" 
+          color="green"
+          trend={{ value: 15, label: 'más que el mes pasado' }}
+        />
+        <StatCard 
+          client:load 
+          title="Alumnos Activos" 
+          value="342" 
+          icon="users" 
+          color="purple"
+          trend={{ value: 12, label: 'crecimiento mensual' }}
+        />
+        <StatCard 
+          client:load 
+          title="Campañas Activas" 
+          value="8" 
+          icon="megaphone" 
+          color="orange"
+          trend={{ value: -3, label: 'finalizaron esta semana' }}
+        />
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Propuestas (2/3 width) -->
+      <section class="lg:col-span-2">
+        <PropuestasPreview client:load />
+      </section>
+
+      <!-- Cursos Próximos (1/3 width) -->
+      <section>
+        <CursosProximos client:load />
+      </section>
+    </div>
+
+    <!-- Alumnos Resumen (Full width) -->
+    <section>
+      <AlumnosResumen client:load />
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a 
+        href="/marketing/propuestas"
+        class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-900/50 hover:shadow-lg transition-all duration-200 ease-in-out group"
+      >
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 ease-in-out">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
+              Nueva Propuesta
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Crea una propuesta de contenido
+            </p>
+          </div>
+        </div>
+      </a>
+
+      <a 
+        href="/marketing/cursos"
+        class="p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/30 dark:to-green-900/20 rounded-xl border border-green-200 dark:border-green-900/50 hover:shadow-lg transition-all duration-200 ease-in-out group"
+      >
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-green-600 dark:bg-green-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 ease-in-out">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
+              Gestionar Cursos
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Ver y editar cursos activos
+            </p>
+          </div>
+        </div>
+      </a>
+
+      <a 
+        href="/marketing/alumnos"
+        class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-900/50 hover:shadow-lg transition-all duration-200 ease-in-out group"
+      >
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-purple-600 dark:bg-purple-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 ease-in-out">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
+              Ver Alumnos
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Seguimiento y análisis
+            </p>
+          </div>
+        </div>
+      </a>
+    </section>
+  </div>
+</Layout>
+---
+// src/pages/marketing/dashboard.astro
+import Layout from '../../layouts/MarketingLayout.astro';
 import StatCard from '../../components/marketing/StatCard.tsx';
 import PropuestasPreview from '../../components/marketing/PropuestasPreview.tsx';
 import CursosProximos from '../../components/marketing/CursosProximos.tsx';

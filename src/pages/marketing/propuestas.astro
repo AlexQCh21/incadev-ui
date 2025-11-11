@@ -17,7 +17,7 @@ import Layout from '../../layouts/MarketingLayout.astro';
       </div>
       <button
         id="btnNuevaPropuesta"
-        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium smooth-transition flex items-center gap-2 shadow-lg hover:shadow-xl"
+        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 ease-in-out flex items-center gap-2 shadow-lg hover:shadow-xl"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -28,25 +28,25 @@ import Layout from '../../layouts/MarketingLayout.astro';
 
     <!-- Filters and Stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-blue-500 dark:border-blue-500 rounded-lg smooth-transition" data-filter="todas">
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-blue-500 dark:border-blue-500 rounded-lg transition-all duration-200 ease-in-out" data-filter="todas">
         <div class="text-center">
           <p class="text-2xl font-bold text-gray-900 dark:text-white">24</p>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Todas</p>
         </div>
       </button>
-      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-yellow-500 dark:hover:border-yellow-500 rounded-lg smooth-transition" data-filter="pendiente">
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-yellow-500 dark:hover:border-yellow-500 rounded-lg transition-all duration-200 ease-in-out" data-filter="pendiente">
         <div class="text-center">
           <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">12</p>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Pendientes</p>
         </div>
       </button>
-      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 rounded-lg smooth-transition" data-filter="en_revision">
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 rounded-lg transition-all duration-200 ease-in-out" data-filter="en_revision">
         <div class="text-center">
           <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">7</p>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">En Revisión</p>
         </div>
       </button>
-      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-green-500 dark:hover:border-green-500 rounded-lg smooth-transition" data-filter="aprobada">
+      <button class="filter-btn p-4 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-800 hover:border-green-500 dark:hover:border-green-500 rounded-lg transition-all duration-200 ease-in-out" data-filter="aprobada">
         <div class="text-center">
           <p class="text-2xl font-bold text-green-600 dark:text-green-400">5</p>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Aprobadas</p>
@@ -91,7 +91,7 @@ import Layout from '../../layouts/MarketingLayout.astro';
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
             Nueva Propuesta de Contenido
           </h2>
-          <button id="btnCerrarModal" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg smooth-transition">
+          <button id="btnCerrarModal" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-all duration-200 ease-in-out">
             <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -159,19 +159,19 @@ import Layout from '../../layouts/MarketingLayout.astro';
             Público Objetivo
           </label>
           <div class="grid grid-cols-2 gap-3">
-            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out">
               <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
               <span class="text-sm text-gray-900 dark:text-white">Principiantes</span>
             </label>
-            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out">
               <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
               <span class="text-sm text-gray-900 dark:text-white">Intermedios</span>
             </label>
-            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out">
               <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
               <span class="text-sm text-gray-900 dark:text-white">Avanzados</span>
             </label>
-            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition">
+            <label class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out">
               <input type="checkbox" class="w-4 h-4 text-blue-600 rounded" />
               <span class="text-sm text-gray-900 dark:text-white">Profesionales</span>
             </label>
@@ -206,13 +206,13 @@ import Layout from '../../layouts/MarketingLayout.astro';
           <button
             type="button"
             id="btnCancelar"
-            class="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-900 smooth-transition"
+            class="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-200 ease-in-out"
           >
             Cancelar
           </button>
           <button
             type="submit"
-            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium smooth-transition shadow-lg"
+            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-medium transition-all duration-200 ease-in-out shadow-lg"
           >
             Crear Propuesta
           </button>
@@ -272,10 +272,10 @@ import Layout from '../../layouts/MarketingLayout.astro';
         const estado = estadoConfig[p.estado as keyof typeof estadoConfig];
         return `
           <a href="/marketing/propuestas/${p.id}" 
-             class="block p-6 bg-white dark:bg-gray-950 border-l-4 ${prioridadColor[p.prioridad as keyof typeof prioridadColor]} border-y border-r border-gray-200 dark:border-gray-800 rounded-lg hover:shadow-lg smooth-transition group">
+             class="block p-6 bg-white dark:bg-gray-950 border-l-4 ${prioridadColor[p.prioridad as keyof typeof prioridadColor]} border-y border-r border-gray-200 dark:border-gray-800 rounded-lg hover:shadow-lg transition-all duration-200 ease-in-out group">
             <div class="flex items-start justify-between mb-3">
               <div class="flex-1">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 smooth-transition">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-200 ease-in-out">
                   ${p.tema}
                 </h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
