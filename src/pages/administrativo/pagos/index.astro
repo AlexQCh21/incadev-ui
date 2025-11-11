@@ -20,10 +20,10 @@ const description = 'Gestiona pagos, boletas y facturas del instituto';
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
   
-<div class="relative flex min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+<div class="relative flex h-screen overflow-hidden bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
   <Sidebar />
 
-  <section class="relative flex-1">
+  <section class="relative flex-1 overflow-y-auto">
   <main class="mx-auto max-w-7xl space-y-10 px-5 py-14 text-slate-900 dark:text-slate-100">
     
     
@@ -276,6 +276,8 @@ const description = 'Gestiona pagos, boletas y facturas del instituto';
 
 <script>
 
+  import { config } from '@/config/administrative-config';
+
   
   let allPayments: any[] = [];
   let filteredPayments: any[] = [];
@@ -289,50 +291,20 @@ const description = 'Gestiona pagos, boletas y facturas del instituto';
 
     try {
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const apiUrl = `${config.apiUrl}${config.endpoints.pagos}`;
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
 
-      const data = {
-        stats: {
-          monthly_income: 15430.50,
-          monthly_variation: 12.5,
-          pending_amount: 3250.00,
-          pending_students: 8,
-          collection_rate: 82.3
-        },
-        status_breakdown: {
-          paid: 45,
-          pending: 12,
-          failed: 3,
-          partial: 5
-        },
-        payments: [
-          {
-            payment_id: 1,
-            student_name: 'Juan Pérez López',
-            payment_method: 'PayPal',
-            amount: 500.00,
-            payment_date: '2024-11-01',
-            status: 'paid'
-          },
-          {
-            payment_id: 2,
-            student_name: 'María García',
-            payment_method: 'Transferencia bancaria',
-            amount: 750.00,
-            payment_date: '2024-11-03',
-            status: 'pending'
-          },
-          {
-            payment_id: 3,
-            student_name: 'Carlos Ramírez',
-            payment_method: 'Efectivo',
-            amount: 450.00,
-            payment_date: '2024-11-05',
-            status: 'paid'
-          }
-        ],
-        total: 3
-      };
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
 
       updateMetrics(data.stats);
       updateStatusBreakdown(data.status_breakdown);
@@ -355,7 +327,8 @@ const description = 'Gestiona pagos, boletas y facturas del instituto';
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </div>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Error al cargar los pagos</p>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Error al cargar los pagos: ${error.message}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-500 mt-2">Verifica que el backend esté corriendo en ${config.apiUrl}</p>
           </div>
         `;
       }
@@ -548,90 +521,12 @@ const description = 'Gestiona pagos, boletas y facturas del instituto';
   }
 
   function exportCSV() {
-    if (filteredPayments.length === 0) {
-      alert('No hay datos para exportar');
-      return;
-    }
-
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('es-PE', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-    const timeStr = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
-    
-    let totalIncome = 0;
-    let completedCount = 0;
-    let pendingCount = 0;
-
-    filteredPayments.forEach((payment: any) => {
-      if (payment.status === 'paid' || payment.status === 'completed') {
-        totalIncome += payment.amount;
-        completedCount++;
-      } else if (payment.status === 'pending') {
-        pendingCount++;
-      }
-    });
-
-    const csvLines = [
-      'INCADEV - REPORTE DE PAGOS',
-      `Fecha de Generación,${dateStr} ${timeStr}`,
-      `Total de Registros,${filteredPayments.length}`,
-      '',
-      'RESUMEN',
-      `Total Ingresos,$${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      `Pagos Completados,${completedCount}`,
-      `Pagos Pendientes,${pendingCount}`,
-      '',
-      'DETALLE DE PAGOS',
-      'ID Pago,Estudiante,Método de Pago,Monto (USD),Fecha,Estado',
-      ...filteredPayments.map((payment: any) => {
-        const statusMap: Record<string, string> = {
-          paid: 'Pagado',
-          completed: 'Completado',
-          pending: 'Pendiente',
-          partial: 'Parcial',
-          failed: 'Fallido',
-          cancelled: 'Cancelado'
-        };
-        
-        const formattedDate = payment.payment_date 
-          ? new Date(payment.payment_date).toLocaleDateString('es-PE')
-          : 'Sin fecha';
-        
-        return [
-          `P-${String(payment.payment_id).padStart(3, '0')}`,
-          `"${payment.student_name || 'Sin asignar'}"`,
-          `"${payment.payment_method || 'Sin método'}"`,
-          `$${payment.amount.toFixed(2)}`,
-          formattedDate,
-          statusMap[payment.status] || payment.status
-        ].join(',');
-      })
-    ];
-
-    const csvContent = csvLines.join('\n');
-    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    const filename = `reporte_pagos_incadev_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}.csv`;
-    
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const url = `${config.apiUrl}${config.endpoints.pagosExportCsv}`;
+    window.open(url, '_blank');
   }
 
   function exportPDF() {
-    if (filteredPayments.length === 0) {
-      alert('No hay datos para exportar');
-      return;
-    }
 
-    localStorage.setItem('paymentsExportData', JSON.stringify({ payments: filteredPayments }));
     window.open('/administrativo/pagos/export-pdf', '_blank');
   }
 

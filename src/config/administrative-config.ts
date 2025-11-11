@@ -9,6 +9,11 @@ export const config = {
   //apiUrl:"http://127.0.0.1:8000",
   environment:"development",
   endpoints: {
-
+    pagos: "/api/pagos",
+    pagosExportCsv: "/api/pagos/export-csv",
+    pagosExportPdf: "/api/pagos/export-pdf",
+    pagosExportData: "/api/pagos/export-data",
+    pagosInvoice: (id: number) => `/api/pagos/${id}/invoice`,
+    pagosInvoiceData: (id: number) => `/api/pagos/${id}/invoice-data`,
   },
 };

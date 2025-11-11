@@ -20,8 +20,13 @@ const description = 'Comprobante de pago del estudiante';
       font-size: 12px;
       color: #111827;
       margin: 0;
-      padding: 24px 32px;
+      padding: 0;
       background: white;
+    }
+    .page-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 60px;
     }
     .header {
       position: relative;
@@ -148,8 +153,11 @@ const description = 'Comprobante de pago del estudiante';
       color: #6b7280;
     }
     @media print {
-      body {
-        padding: 16px;
+      .page-container {
+        padding: 30px 50px;
+      }
+      @page {
+        margin: 1.5cm 2cm;
       }
     }
   </style>
@@ -160,6 +168,7 @@ const description = 'Comprobante de pago del estudiante';
   </div>
 
   <div id="invoiceContent" style="display: none;">
+    <div class="page-container">
     <div class="header">
       <div class="brand">
         <h1>INCADEV</h1>
@@ -230,6 +239,7 @@ const description = 'Comprobante de pago del estudiante';
     <div class="footer">
       Gracias por su pago. Ante cualquier consulta comunicarse con tesorería. Este documento ha sido generado electrónicamente mediante INCADEV.
     </div>
+    </div>
   </div>
 
   <script>
@@ -246,24 +256,19 @@ const description = 'Comprobante de pago del estudiante';
           throw new Error('No se especificó el ID de pago');
         }
 
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        const data = {
-          invoice_number: `INV-${String(paymentId).padStart(6, '0')}`,
-          issue_date: '2024-11-01',
-          invoice_status: 'PAID',
-          payment_id: paymentId,
-          student: {
-            first_name: 'Juan',
-            last_name: 'Pérez López',
-            document_number: '12345678',
-            email: 'juan.perez@example.com'
+        const response = await fetch(`/api/pagos/${paymentId}/invoice-data`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
           },
-          payment_method: 'PayPal',
-          payment_date: '2024-11-01',
-          payment_status: 'PAID',
-          amount: 500.00
-        };
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
 
         displayInvoiceData(data);
 
@@ -304,6 +309,9 @@ const description = 'Comprobante de pago del estudiante';
       const invoiceStatusBadge = document.getElementById('invoiceStatusBadge');
       if (invoiceStatusBadge) {
         const statusMap: Record<string, string> = {
+          'approved': 'Aprobado',
+          'pending': 'Pendiente',
+          'rejected': 'Rechazado',
           'PAID': 'Pagado',
           'PENDING': 'Pendiente',
           'OVERDUE': 'Vencido',
@@ -314,18 +322,17 @@ const description = 'Comprobante de pago del estudiante';
 
       const studentName = document.getElementById('studentName');
       if (studentName) {
-        const fullName = `${data.student.first_name || ''} ${data.student.last_name || ''}`.trim();
-        studentName.textContent = fullName || 'Estudiante';
+        studentName.textContent = data.student_name || 'Estudiante';
       }
 
       const documentNumber = document.getElementById('documentNumber');
-      if (documentNumber && data.student.document_number) {
-        documentNumber.textContent = `Documento: ${data.student.document_number}`;
+      if (documentNumber && data.document_number) {
+        documentNumber.textContent = `Documento: ${data.document_number}`;
       }
 
       const studentEmail = document.getElementById('studentEmail');
-      if (studentEmail && data.student.email) {
-        studentEmail.textContent = `Email: ${data.student.email}`;
+      if (studentEmail && data.email) {
+        studentEmail.textContent = `Email: ${data.email}`;
       }
 
       const paymentIdEl = document.getElementById('paymentId');
