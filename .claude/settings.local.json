@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm update:*)",
+      "Bash(pnpm dev)",
+      "Bash(dir /B /A \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\")",
+      "Bash(tree /F /A \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\")",
+      "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\public\\tecnologico\\landing\")",
+      "Bash(findstr:*)",
+      "Bash(dir /B /A \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\pages\")",
+      "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\services\")",
+      "Bash(cat:*)",
+      "Bash(test:*)",
+      "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\pages\\tecnologico\\admin\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
