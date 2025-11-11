@@ -135,7 +135,7 @@ class ApiClient {
    */
   private getToken(): string | null {
     if (typeof window === "undefined") return null;
-    const token = localStorage.getItem("tech_token");
+    const token = localStorage.getItem("token");
     if (!token) return null;
     // Limpia comillas si existen
     return token.replace(/^"|"$/g, "");
@@ -194,8 +194,8 @@ class ApiClient {
       // Error 401: Token inválido o expirado - limpiar sesión automáticamente
       if (response.status === 401) {
         if (typeof window !== "undefined") {
-          localStorage.removeItem("tech_token");
-          localStorage.removeItem("tech_user");
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
           // Solo redirigir si no estamos ya en la página de login
           if (!window.location.pathname.includes("/login")) {
             window.location.href = "/tecnologico/login";
@@ -603,8 +603,8 @@ export const technologyApi = {
  */
 export const saveAuthSession = (token: string, user: User): void => {
   if (typeof window === "undefined") return;
-  localStorage.setItem("tech_token", token);
-  localStorage.setItem("tech_user", JSON.stringify(user));
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
 };
 
 /**
@@ -612,8 +612,8 @@ export const saveAuthSession = (token: string, user: User): void => {
  */
 export const clearAuthSession = (): void => {
   if (typeof window === "undefined") return;
-  localStorage.removeItem("tech_token");
-  localStorage.removeItem("tech_user");
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 
 /**
@@ -621,7 +621,7 @@ export const clearAuthSession = (): void => {
  */
 export const getStoredUser = (): User | null => {
   if (typeof window === "undefined") return null;
-  const userStr = localStorage.getItem("tech_user");
+  const userStr = localStorage.getItem("user");
   return userStr ? JSON.parse(userStr) : null;
 };
 
@@ -630,6 +630,6 @@ export const getStoredUser = (): User | null => {
  */
 export const getStoredToken = (): string | null => {
   if (typeof window === "undefined") return null;
-  const token = localStorage.getItem("tech_token");
+  const token = localStorage.getItem("token");
   return token ? token.replace(/^"|"$/g, "") : null;
 };

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -15,6 +15,9 @@ import { TwoFactorForm } from "./login/TwoFactorForm"
 
 // Hooks
 import { useLoginAuth } from "../hooks/useLoginAuth"
+
+// Routes
+import { routes } from "../../technology-site"
 
 // Form Schema
 const FormSchema = z.object({
@@ -67,6 +70,26 @@ export function LoginForm() {
     handle2FAVerification,
     resetAuth
   } = useLoginAuth()
+
+  // Auto-redirect if user is already authenticated
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    const userStr = localStorage.getItem("user")
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr)
+        if (user.role) {
+          const dashboardRoute = routes.dashboard[user.role as keyof typeof routes.dashboard] || routes.dashboard.index
+          window.location.href = dashboardRoute
+        }
+      } catch (error) {
+        // If there's an error parsing user data, clear the session
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+      }
+    }
+  }, [])
 
   const {
     register,

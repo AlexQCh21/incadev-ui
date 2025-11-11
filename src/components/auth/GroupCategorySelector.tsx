@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { MODULE_CATEGORIES, type ModuleCategory } from "@/types/module-categories";
 import { ModeToggle } from "@/components/core/ModeToggle";
+import { routes as techRoutes } from "@/process/technology/technology-site";
 
 // Mapeo de iconos
 const iconMap: Record<string, any> = {
@@ -18,6 +19,27 @@ const iconMap: Record<string, any> = {
 
 export function GroupCategorySelector() {
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Auto-redirect if user is already authenticated
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        if (user.role) {
+          // For technology module users, redirect to their dashboard
+          const dashboardRoute = techRoutes.dashboard[user.role as keyof typeof techRoutes.dashboard] || techRoutes.dashboard.index;
+          window.location.href = dashboardRoute;
+        }
+      } catch (error) {
+        // If there's an error parsing user data, clear the session
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
 
   const filteredCategories = MODULE_CATEGORIES.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
