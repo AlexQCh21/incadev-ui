@@ -126,8 +126,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       zod:
-        specifier: 3.23.8
-        version: 3.23.8
+        specifier: 4.1.12
+        version: 4.1.12
     devDependencies:
       '@types/react':
         specifier: ^19.2.2
