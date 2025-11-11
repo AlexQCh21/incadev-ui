@@ -5,10 +5,9 @@ import React from "react";
 // Section imports
 import HeroSection from "./sections/HeroSection";
 import CoursesSection from "./sections/CoursesSection";
-import GroupsSection from "./sections/GroupsSection";
 import TeachersSection from "./sections/TeachersSection";
 import TestimonialsSection from "./sections/TestimonialsSection";
-import AboutSection from "./sections/AboutSection";
+import NewsSection from "./sections/NewsSection";
 import ContactSection from "./sections/ContactSection";
 
 // Component imports
@@ -31,7 +30,7 @@ const LandingPage: React.FC = () => {
           <HeroSection />
         </section>
 
-        {/* Courses Section - Cursos disponibles */}
+        {/* Courses Section - Cursos destacados */}
         <section
           id="courses"
           className="relative bg-background py-16 md:py-20 lg:py-24"
@@ -39,18 +38,10 @@ const LandingPage: React.FC = () => {
           <CoursesSection />
         </section>
 
-        {/* Groups Section - Grupos abiertos */}
-        <section
-          id="groups"
-          className="relative bg-muted/30 py-16 md:py-20 lg:py-24"
-        >
-          <GroupsSection />
-        </section>
-
         {/* Teachers Section - Profesores destacados */}
         <section
           id="teachers"
-          className="relative bg-background py-16 md:py-20 lg:py-24"
+          className="relative bg-muted/30 py-16 md:py-20 lg:py-24"
         >
           <TeachersSection />
         </section>
@@ -58,23 +49,23 @@ const LandingPage: React.FC = () => {
         {/* Testimonials Section - Reseñas de estudiantes */}
         <section
           id="testimonials"
-          className="relative bg-muted/30 py-16 md:py-20 lg:py-24"
+          className="relative bg-background py-16 md:py-20 lg:py-24"
         >
           <TestimonialsSection />
         </section>
 
-        {/* About Section - Acerca de nosotros */}
+        {/* News Section - Noticias recientes */}
         <section
-          id="about"
-          className="relative bg-background py-16 md:py-20 lg:py-24"
+          id="news"
+          className="relative bg-muted/30 py-16 md:py-20 lg:py-24"
         >
-          <AboutSection />
+          <NewsSection />
         </section>
 
         {/* Contact Section - Formulario de contacto */}
         <section
           id="contact"
-          className="relative bg-muted/30 py-16 md:py-20 lg:py-24"
+          className="relative bg-background py-16 md:py-20 lg:py-24"
         >
           <ContactSection />
         </section>

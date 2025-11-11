@@ -182,6 +182,9 @@ export default function ProfilePage() {
             password: "",
             password_confirmation: "",
           })
+
+          // Recargar perfil para ver los cambios actualizados
+          loadProfile()
         }
       } else {
         const errorData = await response.json()
@@ -210,10 +213,10 @@ export default function ProfilePage() {
       })
 
       if (response.ok) {
-        const data = await response.json()
-        setQrCodeUrl(data.qr_code_url)
-        setSecret(data.secret)
-        setRecoveryCodes(data.recovery_codes || [])
+        const responseData = await response.json()
+        setQrCodeUrl(responseData.data.qr_code_url)
+        setSecret(responseData.data.secret)
+        setRecoveryCodes(responseData.data.recovery_codes || [])
         setShow2FASetup(true)
         toast.info("Escanea el código QR con Google Authenticator")
       } else {
@@ -317,8 +320,8 @@ export default function ProfilePage() {
       })
 
       if (response.ok) {
-        const data = await response.json()
-        setRecoveryCodes(data.recovery_codes || [])
+        const responseData = await response.json()
+        setRecoveryCodes(responseData.data.recovery_codes || [])
         toast.success("Códigos regenerados. Guárdalos en un lugar seguro.")
       } else {
         const errorData = await response.json()

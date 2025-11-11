@@ -11,7 +11,15 @@
       "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\services\")",
       "Bash(cat:*)",
       "Bash(test:*)",
-      "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\pages\\tecnologico\\admin\")"
+      "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\pages\\tecnologico\\admin\")",
+      "Bash(dir /B \"c:\\Users\\anton\\Documents\\GitHub\\incadev-ui\\src\\pages\\tecnologico\")",
+      "Bash(dir:*)",
+      "Bash(find:*)",
+      "Bash(git log:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(xcopy:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

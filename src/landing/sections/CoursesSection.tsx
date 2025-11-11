@@ -135,7 +135,7 @@ export default function CoursesSection() {
       {/* Ver todos los cursos */}
       <div className="text-center mt-12">
         <Button variant="outline" size="lg" className="gap-2" asChild>
-          <a href="/academico/grupos/disponible">
+          <a href="/tecnologico/web/cursos">
             Ver todos los cursos
             <ArrowRight className="h-4 w-4" />
           </a>

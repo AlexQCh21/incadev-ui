@@ -12,82 +12,47 @@ interface NavLink {
   id: string;
   label: string;
   icon: React.ReactNode;
-  sectionId: string;
+  href: string;
 }
 
 const navLinks: NavLink[] = [
-  { id: "inicio", label: "Inicio", icon: <Home className="h-4 w-4" />, sectionId: "hero" },
-  { id: "cursos", label: "Cursos", icon: <BookOpen className="h-4 w-4" />, sectionId: "courses" },
-  { id: "grupos", label: "Grupos", icon: <Users className="h-4 w-4" />, sectionId: "groups" },
-  { id: "profesores", label: "Profesores", icon: <GraduationCap className="h-4 w-4" />, sectionId: "teachers" },
-  { id: "testimonios", label: "Testimonios", icon: <MessageCircle className="h-4 w-4" />, sectionId: "testimonials" },
-  { id: "nosotros", label: "Nosotros", icon: <Info className="h-4 w-4" />, sectionId: "about" },
-  { id: "contacto", label: "Contacto", icon: <Phone className="h-4 w-4" />, sectionId: "contact" }
+  { id: "inicio", label: "Inicio", icon: <Home className="h-4 w-4" />, href: "/" },
+  { id: "cursos", label: "Cursos", icon: <BookOpen className="h-4 w-4" />, href: "/tecnologico/web/cursos" },
+  { id: "nosotros", label: "Nosotros", icon: <Info className="h-4 w-4" />, href: "/tecnologico/web/nosotros" },
+  { id: "noticias", label: "Noticias", icon: <MessageCircle className="h-4 w-4" />, href: "/tecnologico/web/noticias" }
 ];
 
 export function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [activeSection, setActiveSection] = useState("hero");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
+
+  // Detectar página activa basada en la URL
+  const [activePage, setActivePage] = useState("/");
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setActivePage(window.location.pathname);
+    }
+  }, []);
 
   // Manejar scroll para ocultar/mostrar navbar
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Solo ocultar si NO estamos en scroll automático y scrolleamos hacia abajo
-      if (!isAutoScrolling && currentScrollY > lastScrollY && currentScrollY > 100) {
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
-      } else if (!isAutoScrolling) {
+      } else {
         setIsVisible(true);
       }
 
       setLastScrollY(currentScrollY);
-
-      // Detectar sección activa
-      const sections = navLinks.map(link => link.sectionId);
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
-      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY, isAutoScrolling]);
-
-  // Función para navegar suavemente a una sección
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const navbarHeight = 80; // Altura del navbar
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
-
-      // Marcar que estamos en scroll automático
-      setIsAutoScrolling(true);
-      setIsVisible(true); // Asegurar que el navbar esté visible
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-
-      // Resetear el flag después de que termine la animación (aproximadamente 1 segundo)
-      setTimeout(() => {
-        setIsAutoScrolling(false);
-      }, 1000);
-    }
-    setMobileMenuOpen(false);
-  };
+  }, [lastScrollY]);
 
   return (
     <header
@@ -114,18 +79,18 @@ export function Navbar() {
           {/* Navegación Desktop */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <button
+              <a
                 key={link.id}
-                onClick={() => scrollToSection(link.sectionId)}
+                href={link.href}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  activeSection === link.sectionId
+                  activePage === link.href
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                 }`}
               >
                 {link.icon}
                 <span>{link.label}</span>
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -155,18 +120,19 @@ export function Navbar() {
                       Navegación
                     </h3>
                     {navLinks.map((link) => (
-                      <button
+                      <a
                         key={link.id}
-                        onClick={() => scrollToSection(link.sectionId)}
+                        href={link.href}
+                        onClick={() => setMobileMenuOpen(false)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all ${
-                          activeSection === link.sectionId
+                          activePage === link.href
                             ? 'bg-primary text-primary-foreground'
                             : 'text-foreground hover:bg-accent'
                         }`}
                       >
                         {link.icon}
                         <span className="font-medium">{link.label}</span>
-                      </button>
+                      </a>
                     ))}
                   </div>
 

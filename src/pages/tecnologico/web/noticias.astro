@@ -1,0 +1,11 @@
+---
+import TechWebLayout from "@/layouts/TechWebLayout.astro";
+import NewsPage from "@/landing/components/NewsPage";
+---
+
+<TechWebLayout
+  title="Noticias | INCADEV Tecnológico"
+  description="Mantente al día con las últimas noticias, eventos y novedades del mundo tecnológico y educativo de INCADEV."
+>
+  <NewsPage client:load />
+</TechWebLayout>

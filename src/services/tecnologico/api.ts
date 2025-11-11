@@ -348,7 +348,7 @@ export const technologyApi = {
     updateProfile: async (data: UpdateProfileData): Promise<ProfileResponse> => {
       return apiClient.put<ProfileResponse>(config.endpoints.auth.profile, data);
     },
-
+    
     /**
      * Solicita un email de recuperación de contraseña
      */

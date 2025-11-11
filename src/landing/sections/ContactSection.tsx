@@ -104,8 +104,8 @@ export default function ContactSection() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {/* Información de Contacto + Imagen */}
-        <div className="lg:col-span-1 space-y-6">
+        {/* Información de Contacto */}
+        <div className="lg:col-span-1">
           <Card>
             <CardHeader>
               <CardTitle>Información de Contacto</CardTitle>
@@ -135,16 +135,6 @@ export default function ContactSection() {
               })}
             </CardContent>
           </Card>
-
-          {/* Imagen decorativa */}
-          <div className="relative hidden lg:block">
-            <img
-              src="/tecnologico/landing/mujer-sonriente-con-auriculares-trabajando-en-equipo-portatil.jpg"
-              alt="Soporte INCADEV"
-              className="w-full h-auto rounded-2xl"
-              loading="lazy"
-            />
-          </div>
         </div>
 
         {/* Formulario de Contacto */}
