@@ -19,7 +19,8 @@
       "Bash(git ls-tree:*)",
       "Bash(xcopy:*)",
       "Bash(cp:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(/dev/null)"
     ],
     "deny": [],
     "ask": []

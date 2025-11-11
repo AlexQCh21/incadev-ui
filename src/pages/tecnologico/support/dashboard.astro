@@ -1,154 +1,42 @@
 ---
-import TechDashboardLayout from '@/layouts/TechDashboardLayout.astro';
+import SupportDashboard from '@/process/technology/dashboard/SupportDashboard';
+import '@/styles/global.css';
 
 const title = "Dashboard Soporte Técnico | INCADEV Tecnológico";
 const description = "Panel de control del soporte técnico";
+const robots = ["noindex", "nofollow"];
+const keywords = ["INCADEV", "tecnológico", "soporte", "dashboard", "tickets"];
+const url = "https://instituto.cetivirgendelapuerta.com/tecnologico/support/dashboard";
+const imageOG = "/ISOLOGOTIPO_VERTICAL.svg";
+const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
 ---
 
-<TechDashboardLayout {title} {description}>
-  <div class="min-h-screen bg-linear-to-br from-blue-500/5 via-background to-blue-500/10">
-    <!-- Contenedor principal -->
-    <div class="container mx-auto px-4 py-8">
-      <!-- Header del dashboard -->
-      <div class="mb-8">
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-4xl font-bold text-foreground mb-2">
-              Dashboard Soporte Técnico
-            </h1>
-            <p class="text-lg text-muted-foreground">
-              Gestión de Tickets y Solución de Problemas Técnicos
-            </p>
-          </div>
-          <div class="flex items-center gap-4">
-            <a
-              href="/tecnologico/login"
-              class="px-6 py-3 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-semibold transition-all hover:scale-105 shadow-md"
-            >
-              Cerrar Sesión
-            </a>
-          </div>
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content={keywords.join(", ")} />
+  <meta name="robots" content={robots.join(", ")} />
 
-      <!-- Tarjeta de bienvenida -->
-      <div class="bg-linear-to-br from-blue-500/10 via-blue-500/5 to-transparent border-2 border-blue-500/20 rounded-2xl p-10 mb-8 shadow-xl">
-        <div class="flex items-center gap-6">
-          <div class="w-20 h-20 rounded-2xl bg-linear-to-br from-blue-500/30 to-blue-500/10 flex items-center justify-center shadow-lg">
-            <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-3xl font-bold text-foreground mb-2">
-              ¡Bienvenido, Soporte Técnico!
-            </h2>
-            <p class="text-lg text-muted-foreground">
-              Panel de control para gestión de tickets y atención a usuarios
-            </p>
-          </div>
-        </div>
-      </div>
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={url} />
+  <meta property="og:image" content={imageOG} />
+  <meta property="og:type" content="website" />
 
-      <!-- Grid de funcionalidades -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Card 1: Tickets Pendientes -->
-        <div class="bg-background/50 backdrop-blur-sm border-2 rounded-xl p-6 hover:shadow-lg hover:border-blue-500/30 transition-all">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center">
-              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-foreground">Tickets Pendientes</h3>
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Gestión de tickets sin resolver
-          </p>
-        </div>
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={imagetwt} />
 
-        <!-- Card 2: Tickets en Proceso -->
-        <div class="bg-background/50 backdrop-blur-sm border-2 rounded-xl p-6 hover:shadow-lg hover:border-blue-500/30 transition-all">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-foreground">En Proceso</h3>
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Tickets actualmente en atención
-          </p>
-        </div>
-
-        <!-- Card 3: Tickets Resueltos -->
-        <div class="bg-background/50 backdrop-blur-sm border-2 rounded-xl p-6 hover:shadow-lg hover:border-blue-500/30 transition-all">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-foreground">Resueltos</h3>
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Historial de tickets completados
-          </p>
-        </div>
-
-        <!-- Card 4: Base de Conocimientos -->
-        <div class="bg-background/50 backdrop-blur-sm border-2 rounded-xl p-6 hover:shadow-lg hover:border-blue-500/30 transition-all">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
-              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-foreground">Base de Conocimientos</h3>
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Soluciones y documentación técnica
-          </p>
-        </div>
-
-        <!-- Card 5: Usuarios Activos -->
-        <div class="bg-background/50 backdrop-blur-sm border-2 rounded-xl p-6 hover:shadow-lg hover:border-blue-500/30 transition-all">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-foreground">Atención a Usuarios</h3>
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Gestión de solicitudes de usuarios
-          </p>
-        </div>
-
-        <!-- Card 6: Reportes -->
-        <div class="bg-background/50 backdrop-blur-sm border-2 rounded-xl p-6 hover:shadow-lg hover:border-blue-500/30 transition-all">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
-              <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-foreground">Reportes</h3>
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Estadísticas de soporte técnico
-          </p>
-        </div>
-      </div>
-
-      <!-- Footer info -->
-      <div class="mt-12 pt-8 border-t-2 border-dashed">
-        <p class="text-center text-sm text-muted-foreground">
-          Panel de soporte técnico. Las funcionalidades se irán agregando progresivamente.
-        </p>
-      </div>
-    </div>
-  </div>
-</TechDashboardLayout>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <SupportDashboard client:load />
+</body>
+</html>

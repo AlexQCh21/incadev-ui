@@ -18,12 +18,38 @@ export const routes = {
   },
   dashboard: {
     index: "/tecnologico/admin/dashboard",
+    admin: "/tecnologico/admin/dashboard",
+    support: "/tecnologico/support/dashboard",
+    infrastructure: "/tecnologico/infrastructure/dashboard",
+    security: "/tecnologico/security/dashboard",
+    academic_analyst: "/tecnologico/academic_analyst/dashboard",
+    web: "/tecnologico/web/dashboard",
   },
   admin: {
     users: "/tecnologico/admin/usuarios",
     roles: "/tecnologico/admin/roles",
     permissions: "/tecnologico/admin/permisos",
     profile: "/tecnologico/admin/perfil",
+  },
+  support: {
+    tickets: "/tecnologico/support/tickets",
+    profile: "/tecnologico/support/perfil",
+  },
+  infrastructure: {
+    servers: "/tecnologico/infrastructure/servidores",
+    profile: "/tecnologico/infrastructure/perfil",
+  },
+  security: {
+    incidents: "/tecnologico/security/incidentes",
+    profile: "/tecnologico/security/perfil",
+  },
+  academic_analyst: {
+    reports: "/tecnologico/academic_analyst/reportes",
+    profile: "/tecnologico/academic_analyst/perfil",
+  },
+  web: {
+    projects: "/tecnologico/web/proyectos",
+    profile: "/tecnologico/web/perfil",
   }
 };
 

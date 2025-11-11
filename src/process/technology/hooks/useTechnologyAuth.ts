@@ -4,6 +4,7 @@ export function useTechnologyAuth() {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const t = window.localStorage.getItem("token");
@@ -15,7 +16,8 @@ export function useTechnologyAuth() {
       setUser(null);
     }
     setMounted(true);
+    setLoading(false);
   }, []);
 
-  return { token, user, mounted };
+  return { token, user, mounted, loading };
 }

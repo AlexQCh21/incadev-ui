@@ -12,7 +12,7 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
-import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings } from "@tabler/icons-react";
+import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
 
@@ -21,6 +21,7 @@ interface User {
   name: string
   email: string
   avatar?: string
+  role?: string
 }
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
@@ -70,7 +71,283 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
   };
 
   const handleGoToProfile = () => {
-    window.location.href = routes.admin.profile;
+    const userRole = user?.role || 'admin';
+    const profileRoutes: Record<string, string> = {
+      admin: routes.admin.profile,
+      support: routes.support.profile,
+      infrastructure: routes.infrastructure.profile,
+      security: routes.security.profile,
+      academic_analyst: routes.academic_analyst.profile,
+      web: routes.web.profile,
+    };
+    window.location.href = profileRoutes[userRole] || routes.admin.profile;
+  };
+
+  // Obtener el rol del usuario
+  const userRole = user?.role || 'admin';
+
+  // Configuración de navegación por rol
+  const getRoleNavigation = () => {
+    const dashboardRoute = routes.dashboard[userRole as keyof typeof routes.dashboard] || routes.dashboard.index;
+
+    switch (userRole) {
+      case 'admin':
+        return (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={dashboardRoute}>
+                        <IconHome className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Gestión de Acceso</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.users}>
+                        <IconUsers className="h-4 w-4" />
+                        <span>Usuarios</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.roles}>
+                        <IconShield className="h-4 w-4" />
+                        <span>Roles</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.permissions}>
+                        <IconKey className="h-4 w-4" />
+                        <span>Permisos</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        );
+
+      case 'support':
+        return (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={dashboardRoute}>
+                        <IconHome className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Soporte Técnico</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.support.tickets}>
+                        <IconTicket className="h-4 w-4" />
+                        <span>Tickets</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        );
+
+      case 'infrastructure':
+        return (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={dashboardRoute}>
+                        <IconHome className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Infraestructura</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.infrastructure.servers}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Servidores</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        );
+
+      case 'security':
+        return (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={dashboardRoute}>
+                        <IconHome className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Seguridad</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.security.incidents}>
+                        <IconAlertTriangle className="h-4 w-4" />
+                        <span>Incidentes</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        );
+
+      case 'academic_analyst':
+        return (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={dashboardRoute}>
+                        <IconHome className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Análisis Académico</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.academic_analyst.reports}>
+                        <IconFileText className="h-4 w-4" />
+                        <span>Reportes</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        );
+
+      case 'web':
+        return (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={dashboardRoute}>
+                        <IconHome className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Desarrollo Web</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.projects}>
+                        <IconCode className="h-4 w-4" />
+                        <span>Proyectos</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        );
+
+      default:
+        return (
+          <SidebarGroup>
+            <SidebarGroupLabel>General</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <a href={dashboardRoute}>
+                      <IconHome className="h-4 w-4" />
+                      <span>Dashboard</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        );
+    }
   };
 
   return (
@@ -79,7 +356,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
-              <a href={routes.dashboard.index} title="Dashboard" className="flex items-center space-x-2">
+              <a href={routes.dashboard[userRole as keyof typeof routes.dashboard] || routes.dashboard.index} title="Dashboard" className="flex items-center space-x-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-md">
                   <span><img src="/LOGOTIPO_1024x1024.svg" alt="Logotipo Incadev" title="Logotipo Incadev"/></span>
                 </div>
@@ -90,53 +367,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>General</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href={routes.dashboard.index}>
-                    <IconHome className="h-4 w-4" />
-                    <span>Dashboard</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Gestión de Acceso</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href={routes.admin.users}>
-                    <IconUsers className="h-4 w-4" />
-                    <span>Usuarios</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href={routes.admin.roles}>
-                    <IconShield className="h-4 w-4" />
-                    <span>Roles</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href={routes.admin.permissions}>
-                    <IconKey className="h-4 w-4" />
-                    <span>Permisos</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {getRoleNavigation()}
       </SidebarContent>
       <SidebarFooter>
         <div className="p-4 border-t space-y-3">
