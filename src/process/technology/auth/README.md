@@ -10,7 +10,7 @@ Componente raíz que maneja el flujo completo de autenticación:
 - Formulario de login
 - Navegación entre estados
 
-**Ubicación:** `src/components/auth/RoleBasedAuth.tsx`
+**Ubicación:** `src/process/technology/auth/components/RoleBasedAuth.tsx`
 
 ### 2. RoleSelector
 Interfaz de selección de roles con las siguientes características:
@@ -19,7 +19,7 @@ Interfaz de selección de roles con las siguientes características:
 - Tarjetas de rol con iconos personalizados
 - Diseño responsive (grid adaptable)
 
-**Ubicación:** `src/components/auth/RoleSelector.tsx`
+**Ubicación:** `src/process/technology/auth/components/RoleSelector.tsx`
 
 ### 3. RoleLoginForm
 Formulario de inicio de sesión específico para cada rol:
@@ -29,7 +29,7 @@ Formulario de inicio de sesión específico para cada rol:
 - Opción de "olvidé mi contraseña"
 - Botón para volver a selección de roles
 
-**Ubicación:** `src/components/auth/RoleLoginForm.tsx`
+**Ubicación:** `src/process/technology/auth/components/RoleLoginForm.tsx`
 
 ## Tipos y Datos
 
@@ -76,7 +76,7 @@ Contiene:
 ### En una página Astro:
 ```astro
 ---
-import { RoleBasedAuth } from '@/components/auth/RoleBasedAuth';
+import { RoleBasedAuth } from '@/process/technology/auth/components/RoleBasedAuth';
 ---
 
 <RoleBasedAuth client:load />

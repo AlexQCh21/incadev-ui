@@ -1,6 +1,5 @@
+import { useState, useRef, useEffect } from "react"
 import type { UseFormRegister, UseFormSetValue } from "react-hook-form"
-import { Field, FieldLabel } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { IconShieldCheck } from "@tabler/icons-react"
 
@@ -28,10 +27,56 @@ export function TwoFactorForm({
   setValue,
   onBack
 }: TwoFactorFormProps) {
+  const [code, setCode] = useState<string[]>(["", "", "", "", "", ""])
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+
   const handleBack = () => {
     setValue("code", "")
+    setCode(["", "", "", "", "", ""])
     onBack()
   }
+
+  const handleChange = (index: number, value: string) => {
+    // Solo permitir dígitos
+    if (value && !/^\d$/.test(value)) return
+
+    const newCode = [...code]
+    newCode[index] = value
+    setCode(newCode)
+
+    // Actualizar el valor del formulario
+    setValue("code", newCode.join(""))
+
+    // Mover al siguiente input si hay un valor
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus()
+    }
+  }
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !code[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus()
+    }
+  }
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault()
+    const pastedData = e.clipboardData.getData("text").trim()
+
+    // Solo permitir si son 6 dígitos
+    if (/^\d{6}$/.test(pastedData)) {
+      const newCode = pastedData.split("")
+      setCode(newCode)
+      setValue("code", pastedData)
+      // Enfocar el último input
+      inputRefs.current[5]?.focus()
+    }
+  }
+
+  useEffect(() => {
+    // Auto-focus en el primer input
+    inputRefs.current[0]?.focus()
+  }, [])
 
   return (
     <>
@@ -42,25 +87,40 @@ export function TwoFactorForm({
         </p>
       </div>
 
-      <Field>
-        <FieldLabel htmlFor="code">Código de Autenticación (6 dígitos)</FieldLabel>
-        <Input
-          id="code"
-          type="text"
-          placeholder="123456"
-          maxLength={6}
-          {...register("code")}
-          disabled={isSubmitting}
-          autoFocus
-          className="text-center text-2xl tracking-widest"
-        />
+      <div className="space-y-4">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold mb-2">Ingresa el código de verificación</h3>
+          <p className="text-sm text-muted-foreground">
+            Ingresa el código de 6 dígitos de tu aplicación de autenticación
+          </p>
+        </div>
+
+        <div className="flex justify-center gap-3" onPaste={handlePaste}>
+          {code.map((digit, index) => (
+            <input
+              key={index}
+              ref={(el) => (inputRefs.current[index] = el)}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              disabled={isSubmitting}
+              className="w-12 h-14 text-center text-2xl font-semibold border-2 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              aria-label={`Dígito ${index + 1}`}
+            />
+          ))}
+        </div>
+
         {errors.code && (
-          <p className="text-sm text-red-500 mt-1">{errors.code.message}</p>
+          <p className="text-sm text-red-500 text-center">{errors.code.message}</p>
         )}
-        <p className="text-xs text-muted-foreground mt-2">
-          Ingresa el código generado por tu aplicación de autenticación
+
+        <p className="text-xs text-muted-foreground text-center">
+          Serás redirigido automáticamente después de ingresar el código
         </p>
-      </Field>
+      </div>
 
       <Button
         type="button"

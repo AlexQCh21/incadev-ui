@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FieldGroup } from "@/components/ui/field"
 import { Field } from "@/components/ui/field"
@@ -30,33 +30,32 @@ export function LoginCard({
   onSubmit
 }: LoginCardProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-background to-purple-500/5">
-      {/* Main Content */}
-      <div className="flex min-h-screen items-center justify-center p-4 pt-32">
-        <Card className="w-full max-w-md shadow-lg border-muted">
-          <CardHeader className="space-y-3 text-center pb-8">
-            <div className="flex justify-center mb-2">
-              <div className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${selectedRole?.color || "from-primary to-primary"}`}>
-                <RoleIcon className="h-9 w-9 text-white" />
-              </div>
-            </div>
-            <CardTitle className="text-2xl font-bold">
-              {selectedRole?.name || "Procesos Tecnológicos"}
-            </CardTitle>
-            <CardDescription className="text-base">
-              {requires2FA
-                ? "Ingresa tu código de autenticación de dos factores"
-                : "Ingresa tus credenciales para acceder"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form
-              className="flex flex-col gap-6"
-              onSubmit={onSubmit}
-            >
+    <div className="bg-muted flex min-h-screen flex-col items-center justify-center p-6 md:p-10 pt-32">
+      <div className="w-full max-w-sm md:max-w-4xl">
+        <Card className="overflow-hidden p-0">
+          <CardContent className="grid p-0 md:grid-cols-2">
+            {/* Formulario - Columna izquierda */}
+            <form className="p-6 md:p-8" onSubmit={onSubmit}>
               <FieldGroup>
+                {/* Header del formulario */}
+                <div className="flex flex-col items-center gap-2 text-center mb-6">
+                  <div className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${selectedRole?.color || "from-primary to-primary"} mb-2`}>
+                    <RoleIcon className="h-9 w-9 text-white" />
+                  </div>
+                  <h1 className="text-2xl font-bold">
+                    {requires2FA ? "Verificación 2FA" : "Bienvenido"}
+                  </h1>
+                  <p className="text-muted-foreground text-balance">
+                    {requires2FA
+                      ? "Ingresa tu código de verificación"
+                      : `Inicia sesión como ${selectedRole?.name || "usuario"}`}
+                  </p>
+                </div>
+
+                {/* Campos del formulario (children) */}
                 {children}
 
+                {/* Botón de envío */}
                 <Field>
                   <Button
                     type="submit"
@@ -67,7 +66,7 @@ export function LoginCard({
                     {isSubmitting ? (
                       <>
                         <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                        {requires2FA ? "Verificando código..." : "Iniciando sesión..."}
+                        {requires2FA ? "Verificando..." : "Iniciando sesión..."}
                       </>
                     ) : (
                       requires2FA ? "Verificar código" : "Iniciar sesión"
@@ -76,8 +75,39 @@ export function LoginCard({
                 </Field>
               </FieldGroup>
             </form>
+
+            {/* Imagen - Columna derecha (solo visible en desktop) */}
+            <div className="bg-muted relative hidden md:block">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20" />
+              <img
+                src="/ISOLOGOTIPO_VERTICAL.svg"
+                alt="INCADEV Tecnológico"
+                className="absolute inset-0 h-full w-full object-contain p-16 dark:brightness-[0.9]"
+              />
+              <div className="absolute bottom-8 left-8 right-8 text-center">
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  INCADEV Tecnológico
+                </h2>
+                <p className="text-muted-foreground">
+                  Sistema de gestión de procesos tecnológicos
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
+
+        {/* Footer con términos */}
+        <p className="px-6 text-center text-sm text-muted-foreground mt-6">
+          Al continuar, aceptas nuestros{" "}
+          <a href="#" className="underline underline-offset-4 hover:text-foreground">
+            Términos de Servicio
+          </a>{" "}
+          y{" "}
+          <a href="#" className="underline underline-offset-4 hover:text-foreground">
+            Política de Privacidad
+          </a>
+          .
+        </p>
       </div>
     </div>
   )
