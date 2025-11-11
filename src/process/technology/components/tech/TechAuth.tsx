@@ -44,7 +44,7 @@ export function TechAuth() {
             {/* Controles */}
             <div className="flex items-center gap-4">
               <a
-                href="/login-roles"
+                href="/login-modules"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
               >
                 <ArrowLeft className="h-4 w-4" />

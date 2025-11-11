@@ -68,8 +68,8 @@ Contiene:
 
 ## Página de Acceso
 
-**URL:** `/login-roles`
-**Archivo:** `src/pages/login-roles.astro`
+**URL:** `/login-modules`
+**Archivo:** `src/pages/login-modules.astro`
 
 ## Uso
 
@@ -91,13 +91,14 @@ const iconMap: Record<string, any> = {
 ```
 
 ### Flujo de Autenticación
-1. Usuario accede a `/login-roles`
-2. Ve todas las tarjetas de roles organizadas por grupo
-3. Puede buscar o filtrar roles
-4. Selecciona un rol haciendo clic en la tarjeta
-5. Se muestra el formulario de login específico del rol
-6. Ingresa credenciales (email + password)
-7. Sistema valida y redirige al dashboard correspondiente
+1. Usuario accede a `/login-modules`
+2. Ve todas las tarjetas de categorías de módulos organizadas
+3. Puede buscar o filtrar módulos
+4. Selecciona una categoría haciendo clic en la tarjeta
+5. Se muestra la página de login del módulo seleccionado
+6. Selecciona un rol específico dentro del módulo
+7. Ingresa credenciales (email + password)
+8. Sistema valida y redirige al dashboard correspondiente
 
 ## Componentes shadcn/ui Utilizados
 

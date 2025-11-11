@@ -98,7 +98,7 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex gap-2">
               <Button variant="ghost" size="sm" asChild>
-                <a href="/login-roles">Ingresar</a>
+                <a href="/login-modules">Ingresar</a>
               </Button>
               <Button size="sm" asChild>
                 <a href="/academico/register">Registrarse</a>
@@ -139,7 +139,7 @@ export function Navbar() {
                   <div className="border-t pt-6">
                     <div className="flex flex-col gap-2">
                       <Button variant="outline" className="w-full" asChild>
-                        <a href="/login-roles">Ingresar</a>
+                        <a href="/login-modules">Ingresar</a>
                       </Button>
                       <Button className="w-full" asChild>
                         <a href="/academico/register">Registrarse</a>
