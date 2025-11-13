@@ -19,7 +19,7 @@ import {
 import {routes} from "@/process/academic/academic-site";
 
 interface User {
-  first_name?: string;
+  fullname?: string;
   email?: string;
   avatar?: string;
   role?: string | string[];
@@ -35,14 +35,11 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
   const [searchTerm, setSearchTerm] = React.useState('')
 
   const shownUser = {
-    name: user?.first_name ?? "Invitado",
+    name: user?.fullname ?? "Invitado",
     email: user?.email ?? "—",
     avatar: user?.avatar ?? `${routes.base}9440461.webp`,
     token: token ?? "token_invalido"
   };
-
-  const isAdmin = user?.role?.includes('admin') || user?.roles?.includes('admin');
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
