@@ -57,12 +57,6 @@ export default function AccountProfile() {
                     onChange={handleChange}
                   />
 
-                  <LocationSection
-                    formData={formData}
-                    isEditing={isEditing}
-                    onChange={handleChange}
-                  />
-
                   {isEditing && (
                     <div className="flex gap-3">
                       <Button
