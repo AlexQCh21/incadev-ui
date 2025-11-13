@@ -2,7 +2,7 @@ import {
   IconChalkboard,
   IconSchool,
   IconHome2,
-  IconGauge,
+  IconCreditCard,
   IconChartBar,
   IconFileText,
   IconUsers, 
@@ -95,12 +95,12 @@ export const adminNavItems: NavItem[] = [
   {
     title: "Pagos",
     url: "#",
-    icon: IconGauge,
+    icon: IconCreditCard,
     items: [
-      { title: "Validar Pagos", url: "/administrativo/payment-approval" },
-      { title: "Pagos Rechazados", url: "/administrativo/payment-rejected" },
-      { title: "Pagos en Revisión", url: "/administrativo/payment-review" },
-      { title: "Historial de Pagos", url: "/administrativo/payment-history" },
+      { title: "Historial de Pagos", url: "/administrativo/pagos/history" },
+      { title: "Validar Pagos", url: "/administrativo/pagos/approval" },
+      //{ title: "Pagos Rechazados", url: "/administrativo/pagos/rejected" },
+      //{ title: "Pagos en Revisión", url: "/administrativo/pagos/review" },
     ],
   },
 
