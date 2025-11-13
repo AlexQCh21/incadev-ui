@@ -76,6 +76,7 @@ export function LoginForm({
         console.log("Login response:", responseData.data);
         localStorage.setItem("token", JSON.stringify(responseData.data.token));
         localStorage.setItem("user", JSON.stringify(responseData.data.user));
+        localStorage.setItem("role", data.role);
         toast.success("¡Inicio de sesión exitoso!", {
           description: "Redirigiendo a tu dashboard.",
         });

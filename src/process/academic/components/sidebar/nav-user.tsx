@@ -57,7 +57,7 @@ export function NavUser({
       if (response.ok) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-
+        localStorage.removeItem("role");
         toast.success("¡Has cerrado sesión exitosamente!");
 
         setTimeout(() => {
@@ -71,7 +71,6 @@ export function NavUser({
       toast.error("No se pudo cerrar sesión, intenta nuevamente.");
     }
   };
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
