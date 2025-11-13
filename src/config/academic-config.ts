@@ -11,8 +11,8 @@ export const config = {
   endpoints: {
 
     users: {
-      getById: "/api/users/:id",
-      update: "/api/users/:id"
+      me: "http://127.0.0.1:8001/api/auth/me",
+      update: "http://127.0.0.1:8001/api/auth/profile"
     },
 
     auth: {
