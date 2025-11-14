@@ -1,5 +1,7 @@
 ---
 import "@/styles/global.css";
+import { Navbar } from "@/components/core/Navbar";
+import { Footer } from "@/components/core/Footer";
 
 export interface SEOFields {
 	robots: string[];
@@ -62,9 +64,11 @@ const {
 
 	</head>
 	<body class="min-h-screen flex flex-col">
-		<main class="flex-grow">
+		<Navbar client:load/>
+		<main class="grow">
 			<slot />
 		</main>
+		<Footer client:load/>
 	</body>
 </html>
 

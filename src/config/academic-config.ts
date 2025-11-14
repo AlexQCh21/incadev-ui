@@ -22,86 +22,45 @@ export const config = {
       redirect: "/auth/google/redirect",
       callback: "/auth/google/callback",
     },
-      
-    groups: {
-      getById: "/api/groups/:id",
-      getAnnouncements: "/api/groups/:id/announcements",
-      createAnnouncement: "/api/groups/:id/announcements",
-      getParticipants: "/api/groups/:id/participants",
-      create: "/api/groups",
-      complete: "/api/groups/:groupId/complete",
-      join: "/api/groups/:id/join",
-      getGroupsCompleted: "/api/groups/completed/:userId",
-      getGroupsByTeacher: "/api/group-participants/teacher/:userId",
-      getGroupsByStudent: "/api/group-participants/student/:userId",
-      getStudentsByGroup: "/api/group-participants/group/:groupId/students",
+    groups:{
+      available: "/api/available-groups",
+      enroll: "/api/available-groups/:group/enroll",
+      mylist: "/api/enrolled-groups",
+      infoEnroll: "/api/enrolled-groups/:group",
+      listComplete: "/api/student/completed-groups",
+      certificate: "/api/student/certificates/:uuid/download",
+      teaching: "/api/teaching-groups",
+      specificTeaching: "/api/teaching-groups/:group",
+      canComplete: "/api/teaching-groups/:group/can-complete",
+      complete: "/api/teaching-groups/:group/complete",
     },
-    
-    courses: {
-      getAll: "/api/courses",
-      getById: "/api/courses/:id",
-      getGroups: "/api/courses/:id/groups",
-      create: "/api/courses",
+    classes:{
+      listAll: "/api/teaching-groups/:group/classes",
+      create: "/api/teaching-groups/:group/modules/:module/classes",
+      update: "/api/teaching-groups/classes/:class",
+      delete: "/api/teaching-groups/classes/:class",
     },
-
-    graduates: {
-      // Employment Profile
-      getProfile: "/api/employment-profile",
-      updateProfile: "/api/employment-profile",
-      deleteProfile: "/api/employment-profile",
-      
-      // Surveys
-      getSurveys: "/api/surveys",
-      getSurveyById: "/api/surveys/:id",
-      submitSurvey: "/api/surveys/:id/response",
-      
-      // Admin: Survey Management
-      createSurvey: "/api/surveys",
-      updateSurvey: "/api/surveys/:id",
-      deleteSurvey: "/api/surveys/:id",
-      
-      // Admin: Statistics
-      getStatistics: "/api/graduate-statistics",
-      exportReport: "/api/graduate-statistics/export",
+    materials:{
+      listAll: "/api/teaching-groups/classes/:class/materials",
+      create: "/api/teaching-groups/classes/:class/materials",
+      update: "/api/teaching-groups/materials/:material",
+      delete: "/api/teaching-groups/materials/:material",
     },
-
-    classes: {
-      getByGroup: "/api/classes/group/:groupId",
-      create: "/api/classes",
-      update: "/api/classes/:class",
-      delete: "/api/classes/:class",
+    exams:{
+      listAll: "/api/teaching-groups/:group/exams",
+      create: "/api/teaching-groups/:group/modules/:module/exams",
+      info: "/api/teaching-groups/exams/:exam",
+      update: "/api/teaching-groups/exams/:exam",
+      delete: "/api/teaching-groups/exams/:exam",
+      registerGrades: "/api/teaching-groups/exams/:exam/grades",
+      updateGrade: "/api/teaching-groups/grades/:grade"
     },
-
-    materials: {
-      list: "/api/class-materials",
-      create: "/api/class-materials",
-      update: "/api/class-materials/:materialId",
-      delete: "/api/class-materials/:materialId",
-      getByClass: "/api/classes/:classId/materials",
+    attendances: {
+      listAll: "/api/teaching-groups/:group/attendances",
+      info: "/api/teaching-groups/classes/:class/attendances",
+      register: "/api/teaching-groups/classes/:class/attendances",
+      update: "/api/teaching-groups/attendances/:attendance",
+      statistics: "/api/teaching-groups/:group/attendance-statistics"
     },
-
-    attendance: {
-      create: "/api/attendances",
-      getAttendancesByClass: "/api/attendances/class/:classId",
-      getStudentAttendances: "/api/attendances/student/:userId/group/:groupId"
-    },
-
-    certificates: {
-      generate: "/api/credentials/:credentialId/pdf",
-      download: "/api/certificates/download/:certificateId",
-      verify: "/api/certificates/verify/:code",
-    },
-
-    evaluations: {
-      getByGroup: "/api/evaluations/group/:groupId",
-      create: "/api/evaluations",
-    },
-
-    grades: {
-      getByGroup: "/api/grade-records/group/:groupId",
-      create: "/api/grade-records",
-      update: "/api/grade-records/:gradeRecordId",
-      delete: "/api/grade-records/:gradeRecordId",
-    }
   },
 };
