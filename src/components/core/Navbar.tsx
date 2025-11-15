@@ -114,7 +114,7 @@ export function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <div className="flex flex-col gap-6 mt-8">
+                <div className="flex flex-col gap-6 mt-8 p-6">
                   <div className="flex flex-col gap-2">
                     <h3 className="text-sm font-semibold text-muted-foreground mb-2">
                       Navegación

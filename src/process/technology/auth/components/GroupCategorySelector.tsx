@@ -45,7 +45,7 @@ export function GroupCategorySelector() {
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     category.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  
   const handleCategoryClick = (category: ModuleCategory) => {
     window.location.href = category.loginPath;
   };

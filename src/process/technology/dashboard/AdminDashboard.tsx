@@ -1,19 +1,22 @@
-import TechnologyLayout from "@/process/technology/TechnologyLayout"
+import { TechnologyLayout } from "@/process/technology/components/TechnologyLayout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { IconUsers, IconShieldLock, IconKey, IconActivity } from "@tabler/icons-react"
 
 export default function AdminDashboard() {
   return (
-    <TechnologyLayout title="Dashboard - Administrador">
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-4 p-4 md:gap-6 md:p-6">
-          {/* Header */}
-          <div className="flex flex-col gap-2">
-            <h2 className="text-2xl font-bold tracking-tight">Bienvenido al Panel de Administración</h2>
-            <p className="text-muted-foreground">
-              Gestiona usuarios, roles y permisos del sistema de procesos tecnológicos.
-            </p>
-          </div>
+    <TechnologyLayout
+      breadcrumbs={[
+        { label: "Administración", href: "/tecnologico/admin/dashboard" },
+        { label: "Dashboard" },
+      ]}
+    >
+      {/* Header */}
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold tracking-tight">Bienvenido al Panel de Administración</h2>
+        <p className="text-muted-foreground">
+          Gestiona usuarios, roles y permisos del sistema de procesos tecnológicos.
+        </p>
+      </div>
 
           {/* Stats Cards */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -178,8 +181,6 @@ export default function AdminDashboard() {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
     </TechnologyLayout>
   )
 }

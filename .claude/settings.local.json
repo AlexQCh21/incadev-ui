@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm dlx:*)"
+      "Bash(pnpm dlx:*)",
+      "Bash(npx shadcn@latest add sidebar)",
+      "Bash(npx shadcn@latest add:*)"
     ],
     "deny": [],
     "ask": []
