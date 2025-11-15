@@ -60,6 +60,21 @@ const getNavigationByRole = (role: string) => {
         ],
       },
       {
+        title: "Soporte",
+        url: "#",
+        icon: LifeBuoy,
+        items: [
+          {
+            title: "Mis Tickets",
+            url: "/tecnologico/support/tickets",
+          },
+          {
+            title: "Crear Ticket",
+            url: "/tecnologico/support/tickets/crear",
+          },
+        ],
+      },
+      {
         title: "Configuración",
         url: "#",
         icon: Settings,
@@ -82,6 +97,10 @@ const getNavigationByRole = (role: string) => {
         icon: LifeBuoy,
         isActive: true,
         items: [
+          {
+            title: "Dashboard",
+            url: "/tecnologico/support/dashboard",
+          },
           {
             title: "Tickets",
             url: "/tecnologico/support/tickets",
@@ -114,6 +133,21 @@ const getNavigationByRole = (role: string) => {
         ],
       },
       {
+        title: "Soporte",
+        url: "#",
+        icon: LifeBuoy,
+        items: [
+          {
+            title: "Mis Tickets",
+            url: "/tecnologico/support/tickets",
+          },
+          {
+            title: "Crear Ticket",
+            url: "/tecnologico/support/tickets/crear",
+          },
+        ],
+      },
+      {
         title: "Configuración",
         url: "#",
         icon: Settings,
@@ -135,6 +169,21 @@ const getNavigationByRole = (role: string) => {
           {
             title: "Incidentes",
             url: "/tecnologico/security/incidentes",
+          },
+        ],
+      },
+      {
+        title: "Soporte",
+        url: "#",
+        icon: LifeBuoy,
+        items: [
+          {
+            title: "Mis Tickets",
+            url: "/tecnologico/support/tickets",
+          },
+          {
+            title: "Crear Ticket",
+            url: "/tecnologico/support/tickets/crear",
           },
         ],
       },
@@ -164,6 +213,21 @@ const getNavigationByRole = (role: string) => {
         ],
       },
       {
+        title: "Soporte",
+        url: "#",
+        icon: LifeBuoy,
+        items: [
+          {
+            title: "Mis Tickets",
+            url: "/tecnologico/support/tickets",
+          },
+          {
+            title: "Crear Ticket",
+            url: "/tecnologico/support/tickets/crear",
+          },
+        ],
+      },
+      {
         title: "Configuración",
         url: "#",
         icon: Settings,
@@ -185,6 +249,21 @@ const getNavigationByRole = (role: string) => {
           {
             title: "Proyectos",
             url: "/tecnologico/web/proyectos",
+          },
+        ],
+      },
+      {
+        title: "Soporte",
+        url: "#",
+        icon: LifeBuoy,
+        items: [
+          {
+            title: "Mis Tickets",
+            url: "/tecnologico/support/tickets",
+          },
+          {
+            title: "Crear Ticket",
+            url: "/tecnologico/support/tickets/crear",
           },
         ],
       },
