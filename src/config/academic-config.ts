@@ -11,13 +11,13 @@ export const config = {
   endpoints: {
 
     users: {
-      getById: "/api/users/:id",
-      update: "/api/users/:id"
+      me: "http://127.0.0.1:8001/api/auth/me",
+      update: "http://127.0.0.1:8001/api/auth/profile"
     },
 
     auth: {
-      login: "/api/auth/login",
-      logout: "/api/auth/logout",
+      login: "http://127.0.0.1:8001/api/auth/login",
+      logout: "http://127.0.0.1:8001/api/auth/logout",
       register: "/api/auth/register",
       redirect: "/auth/google/redirect",
       callback: "/auth/google/callback",
