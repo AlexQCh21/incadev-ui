@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { TechnologyLayout } from "../components/TechnologyLayout"
+import TechnologyLayout from "../TechnologyLayout"
 import { useTechnologyAuth } from "../hooks/useTechnologyAuth"
 import { technologyApi } from "@/services/tecnologico/api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -53,7 +53,7 @@ export default function AdminSecurityDashboard() {
 
   if (authLoading) {
     return (
-      <TechnologyLayout breadcrumbs={[{ label: "Dashboard de Seguridad" }]}>
+      <TechnologyLayout title="Dashboard de Seguridad">
         <div className="flex items-center justify-center h-96">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </div>
@@ -62,12 +62,7 @@ export default function AdminSecurityDashboard() {
   }
 
   return (
-    <TechnologyLayout
-      breadcrumbs={[
-        { label: "Administración", href: "/tecnologico/admin/dashboard" },
-        { label: "Seguridad" },
-      ]}
-    >
+    <TechnologyLayout title="Dashboard de Seguridad">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -118,7 +113,7 @@ export default function AdminSecurityDashboard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => window.location.href = "/tecnologico/admin/security/eventos"}
+                        onClick={() => window.location.href = "/tecnologico/admin/eventos"}
                       >
                         Ver Detalles
                       </Button>
@@ -136,7 +131,7 @@ export default function AdminSecurityDashboard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => window.location.href = "/tecnologico/admin/security/sesiones"}
+                        onClick={() => window.location.href = "/tecnologico/admin/sesiones"}
                       >
                         Ver Detalles
                       </Button>
@@ -281,7 +276,7 @@ export default function AdminSecurityDashboard() {
                     <Button
                       variant="outline"
                       className="w-full mt-4"
-                      onClick={() => window.location.href = "/tecnologico/admin/security/eventos"}
+                      onClick={() => window.location.href = "/tecnologico/admin/eventos"}
                     >
                       Ver Todos los Eventos Críticos ({dashboardData.events.recent_critical.length})
                     </Button>
@@ -297,14 +292,14 @@ export default function AdminSecurityDashboard() {
               </CardHeader>
               <CardContent className="flex flex-wrap gap-3">
                 <Button
-                  onClick={() => window.location.href = "/tecnologico/admin/security/sesiones"}
+                  onClick={() => window.location.href = "/tecnologico/admin/sesiones"}
                 >
                   <Monitor className="w-4 h-4 mr-2" />
                   Gestionar Sesiones
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => window.location.href = "/tecnologico/admin/security/eventos"}
+                  onClick={() => window.location.href = "/tecnologico/admin/eventos"}
                 >
                   <Activity className="w-4 h-4 mr-2" />
                   Ver Eventos de Seguridad

@@ -49,8 +49,12 @@ const getNavigationByRole = (role: string) => {
         isActive: true,
         items: [
           {
+            title: "Dashboard",
+            url: "/tecnologico/admin/dashboard",
+          },
+          {
             title: "Usuarios",
-            url: "/tecnologico/admin/users",
+            url: "/tecnologico/admin/usuarios",
           },
           {
             title: "Roles",
@@ -58,7 +62,7 @@ const getNavigationByRole = (role: string) => {
           },
           {
             title: "Permisos",
-            url: "/tecnologico/admin/permissions",
+            url: "/tecnologico/admin/permisos",
           },
         ],
       },
@@ -68,16 +72,16 @@ const getNavigationByRole = (role: string) => {
         icon: ShieldCheck,
         items: [
           {
-            title: "Dashboard",
-            url: "/tecnologico/admin/security/dashboard",
+            title: "Dashboard Seguridad",
+            url: "/tecnologico/admin/seguridad-dashboard",
           },
           {
             title: "Gestión de Sesiones",
-            url: "/tecnologico/admin/security/sesiones",
+            url: "/tecnologico/admin/sesiones",
           },
           {
             title: "Eventos de Seguridad",
-            url: "/tecnologico/admin/security/eventos",
+            url: "/tecnologico/admin/eventos",
           },
         ],
       },
@@ -88,11 +92,11 @@ const getNavigationByRole = (role: string) => {
         items: [
           {
             title: "Mis Tickets",
-            url: "/tecnologico/support/tickets",
+            url: "/tecnologico/admin/tickets",
           },
           {
             title: "Crear Ticket",
-            url: "/tecnologico/support/tickets/crear",
+            url: "/tecnologico/admin/crear-ticket",
           },
         ],
       },
@@ -101,10 +105,6 @@ const getNavigationByRole = (role: string) => {
         url: "#",
         icon: Settings,
         items: [
-          {
-            title: "General",
-            url: "/tecnologico/admin/settings",
-          },
           {
             title: "Perfil",
             url: "/tecnologico/admin/perfil",

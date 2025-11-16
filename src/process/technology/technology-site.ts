@@ -31,9 +31,13 @@ export const routes = {
     permissions: "/tecnologico/admin/permisos",
     profile: "/tecnologico/admin/perfil",
     security: {
-      dashboard: "/tecnologico/admin/security/dashboard",
-      sessions: "/tecnologico/admin/security/sesiones",
-      events: "/tecnologico/admin/security/eventos",
+      dashboard: "/tecnologico/admin/seguridad-dashboard",
+      sessions: "/tecnologico/admin/sesiones",
+      events: "/tecnologico/admin/eventos",
+    },
+    support: {
+      tickets: "/tecnologico/admin/tickets",
+      createTicket: "/tecnologico/admin/crear-ticket",
     },
   },
   support: {

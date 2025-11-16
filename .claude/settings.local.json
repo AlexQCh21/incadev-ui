@@ -5,7 +5,9 @@
       "Bash(npx shadcn@latest add sidebar)",
       "Bash(npx shadcn@latest add:*)",
       "Bash(test:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(dir:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

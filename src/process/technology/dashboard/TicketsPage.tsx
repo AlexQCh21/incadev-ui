@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { TechnologyLayout } from "../components/TechnologyLayout"
+import TechnologyLayout from "../TechnologyLayout"
 import { useTechnologyAuth } from "../hooks/useTechnologyAuth"
 import { technologyApi } from "@/services/tecnologico/api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -128,7 +128,7 @@ export default function TicketsPage() {
 
   if (authLoading) {
     return (
-      <TechnologyLayout breadcrumbs={[{ label: "Tickets de Soporte" }]}>
+      <TechnologyLayout title="Tickets de Soporte">
         <div className="flex items-center justify-center h-96">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </div>
@@ -137,12 +137,7 @@ export default function TicketsPage() {
   }
 
   return (
-    <TechnologyLayout
-      breadcrumbs={[
-        { label: "Dashboard", href: "/tecnologico/support/dashboard" },
-        { label: "Tickets de Soporte" },
-      ]}
-    >
+    <TechnologyLayout title="Tickets de Soporte">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

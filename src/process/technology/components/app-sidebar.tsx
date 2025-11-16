@@ -95,7 +95,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         return (
           <>
             <SidebarGroup>
-              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupLabel>Administración</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
@@ -106,14 +106,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            <SidebarGroup>
-              <SidebarGroupLabel>Gestión de Acceso</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.admin.users}>
@@ -135,6 +127,78 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.admin.permissions}>
                         <IconKey className="h-4 w-4" />
                         <span>Permisos</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Seguridad</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.dashboard}>
+                        <IconShield className="h-4 w-4" />
+                        <span>Dashboard Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.sessions}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Gestión de Sesiones</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.events}>
+                        <IconAlertTriangle className="h-4 w-4" />
+                        <span>Eventos de Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Soporte</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.support.tickets}>
+                        <IconTicket className="h-4 w-4" />
+                        <span>Mis Tickets</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.support.createTicket}>
+                        <IconFileText className="h-4 w-4" />
+                        <span>Crear Ticket</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Configuración</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.profile}>
+                        <IconSettings className="h-4 w-4" />
+                        <span>Perfil</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

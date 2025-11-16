@@ -32,13 +32,6 @@ export const TECH_ROLES: TechRole[] = [
     color: "from-purple-500 to-purple-600",
   },
   {
-    id: "security",
-    name: "Seguridad",
-    description: "Seguridad y protección de datos",
-    icon: "IconShield",
-    color: "from-red-500 to-red-600",
-  },
-  {
     id: "academic_analyst",
     name: "Analista Académico",
     description: "Análisis y reportes académicos",
