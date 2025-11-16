@@ -142,8 +142,8 @@ export default function TicketsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Tickets de Soporte</h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-foreground">Tickets de Soporte</h1>
+            <p className="text-sm text-muted-foreground mt-1">
               Gestiona tus solicitudes de soporte técnico
             </p>
           </div>
@@ -172,7 +172,7 @@ export default function TicketsPage() {
             {/* Search Bar */}
             <div className="flex gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
                   placeholder="Buscar por título..."
                   value={search}
@@ -257,13 +257,13 @@ export default function TicketsPage() {
           <CardContent>
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : tickets.length === 0 ? (
               <div className="text-center py-12">
-                <TicketIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 font-medium">No hay tickets disponibles</p>
-                <p className="text-sm text-gray-400 mt-1">
+                <TicketIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground font-medium">No hay tickets disponibles</p>
+                <p className="text-sm text-muted-foreground/70 mt-1">
                   Crea tu primer ticket para empezar
                 </p>
                 <Button onClick={handleCreateTicket} className="mt-4">
@@ -290,7 +290,7 @@ export default function TicketsPage() {
                     {tickets.map((ticket) => (
                       <TableRow
                         key={ticket.id}
-                        className="cursor-pointer hover:bg-gray-50"
+                        className="cursor-pointer hover:bg-muted/50 transition-colors"
                         onClick={() => handleViewTicket(ticket.id)}
                       >
                         <TableCell className="font-medium">#{ticket.id}</TableCell>
@@ -326,12 +326,12 @@ export default function TicketsPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
                             <MessageSquare className="w-4 h-4" />
                             {ticket.replies_count || 0}
                           </div>
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600">
+                        <TableCell className="text-sm text-muted-foreground">
                           {formatDate(ticket.updated_at)}
                         </TableCell>
                         <TableCell className="text-right">
