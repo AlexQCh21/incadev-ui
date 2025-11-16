@@ -92,5 +92,28 @@ export const config = {
       // Statistics
       statistics: "/support/statistics",
     },
+
+    // Security Module
+    security: {
+      // Dashboard
+      dashboard: "/security/dashboard",
+
+      // Sessions Management
+      sessions: {
+        list: "/security/sessions", // Mis sesiones o de un usuario (?user_id=X)
+        all: "/security/sessions/all", // Todas las sesiones (solo admin)
+        suspicious: "/security/sessions/suspicious", // Sesiones sospechosas
+        terminate: "/security/sessions/:sessionId", // Terminar sesión específica
+        terminateAll: "/security/sessions/terminate-all", // Terminar todas las sesiones
+      },
+
+      // Security Events
+      events: {
+        list: "/security/events", // Mis eventos (user normal) o de todos (admin)
+        recent: "/security/events/recent", // Eventos recientes
+        critical: "/security/events/critical", // Eventos críticos
+        statistics: "/security/events/statistics", // Estadísticas de eventos
+      },
+    },
   },
 };

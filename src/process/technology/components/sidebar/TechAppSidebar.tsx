@@ -10,6 +10,9 @@ import {
   BarChart,
   Code,
   Settings,
+  ShieldCheck,
+  Monitor,
+  Activity,
 } from "lucide-react"
 
 import { NavMain } from "./NavMain"
@@ -56,6 +59,25 @@ const getNavigationByRole = (role: string) => {
           {
             title: "Permisos",
             url: "/tecnologico/admin/permissions",
+          },
+        ],
+      },
+      {
+        title: "Seguridad",
+        url: "#",
+        icon: ShieldCheck,
+        items: [
+          {
+            title: "Dashboard",
+            url: "/tecnologico/admin/security/dashboard",
+          },
+          {
+            title: "Gestión de Sesiones",
+            url: "/tecnologico/admin/security/sesiones",
+          },
+          {
+            title: "Eventos de Seguridad",
+            url: "/tecnologico/admin/security/eventos",
           },
         ],
       },
@@ -310,12 +332,12 @@ export function TechAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar
     ? {
         name: userData.name || "Usuario",
         email: userData.email || "usuario@incadev.com",
-        avatar: "/avatars/default.jpg",
+        avatar: userData.avatar || (typeof window !== "undefined" ? `${window.location.origin}/tecnologico/9440461.webp` : "/tecnologico/9440461.webp"),
       }
     : {
         name: "Usuario",
         email: "usuario@incadev.com",
-        avatar: "/avatars/default.jpg",
+        avatar: typeof window !== "undefined" ? `${window.location.origin}/tecnologico/9440461.webp` : "/tecnologico/9440461.webp",
       }
 
   return (
