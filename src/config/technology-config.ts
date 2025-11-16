@@ -66,5 +66,31 @@ export const config = {
       update: "/permissions/:id",
       delete: "/permissions/:id",
     },
+
+    // Support Tickets Management
+    support: {
+      // Tickets
+      tickets: {
+        list: "/support/tickets",
+        create: "/support/tickets",
+        getById: "/support/tickets/:id",
+        update: "/support/tickets/:id",
+        close: "/support/tickets/:id/close",
+        reopen: "/support/tickets/:id/reopen",
+      },
+      // Replies
+      replies: {
+        create: "/support/tickets/:ticketId/replies",
+        update: "/support/tickets/:ticketId/replies/:replyId",
+        delete: "/support/tickets/:ticketId/replies/:replyId",
+      },
+      // Attachments
+      attachments: {
+        download: "/support/attachments/:id/download",
+        delete: "/support/attachments/:id",
+      },
+      // Statistics
+      statistics: "/support/statistics",
+    },
   },
 };

@@ -32,7 +32,10 @@ export const routes = {
     profile: "/tecnologico/admin/perfil",
   },
   support: {
+    dashboard: "/tecnologico/support/dashboard",
     tickets: "/tecnologico/support/tickets",
+    createTicket: "/tecnologico/support/tickets/crear",
+    ticketDetail: (id: number) => `/tecnologico/support/tickets/${id}`,
     profile: "/tecnologico/support/perfil",
   },
   infrastructure: {
