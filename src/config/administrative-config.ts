@@ -16,5 +16,6 @@ export const config = {
     pagosExportData: "/api/pagos/export-data",
     dashboard: "/api/dashboard/data",
     export_pdf: "/api/dashboard/export-data",
+    balance_general: "/api/finanzas/balance-general",
   },
 };

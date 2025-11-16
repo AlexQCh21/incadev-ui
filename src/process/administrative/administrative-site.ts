@@ -127,7 +127,7 @@ export const adminNavItems: NavItem[] = [
     url: "#",
     icon: IconChartBar,
     items: [
-      { title: "Balance General", url: "/administrativo/finance/balance" },
+      { title: "Balance General", url: "/administrativo/finanzas/balance" },
       { title: "Presupuestos", url: "/administrativo/finance/budget" },
       {
         title: "Pagos al Personal",

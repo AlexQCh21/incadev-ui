@@ -285,7 +285,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <AdministrativeLayout title="Dashboard Administrativo">
+    <AdministrativeLayout title="Panel Principal | Dashboard">
       <div className="w-full space-y-6 p-6 bg-background">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
