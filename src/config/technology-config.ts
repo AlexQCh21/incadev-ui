@@ -66,5 +66,54 @@ export const config = {
       update: "/permissions/:id",
       delete: "/permissions/:id",
     },
+
+    // Support Tickets Management
+    support: {
+      // Tickets
+      tickets: {
+        list: "/support/tickets",
+        create: "/support/tickets",
+        getById: "/support/tickets/:id",
+        update: "/support/tickets/:id",
+        close: "/support/tickets/:id/close",
+        reopen: "/support/tickets/:id/reopen",
+      },
+      // Replies
+      replies: {
+        create: "/support/tickets/:ticketId/replies",
+        update: "/support/tickets/:ticketId/replies/:replyId",
+        delete: "/support/tickets/:ticketId/replies/:replyId",
+      },
+      // Attachments
+      attachments: {
+        download: "/support/attachments/:id/download",
+        delete: "/support/attachments/:id",
+      },
+      // Statistics
+      statistics: "/support/statistics",
+    },
+
+    // Security Module
+    security: {
+      // Dashboard
+      dashboard: "/security/dashboard",
+
+      // Sessions Management
+      sessions: {
+        list: "/security/sessions", // Mis sesiones o de un usuario (?user_id=X)
+        all: "/security/sessions/all", // Todas las sesiones (solo admin)
+        suspicious: "/security/sessions/suspicious", // Sesiones sospechosas
+        terminate: "/security/sessions/:sessionId", // Terminar sesión específica
+        terminateAll: "/security/sessions/terminate-all", // Terminar todas las sesiones
+      },
+
+      // Security Events
+      events: {
+        list: "/security/events", // Mis eventos (user normal) o de todos (admin)
+        recent: "/security/events/recent", // Eventos recientes
+        critical: "/security/events/critical", // Eventos críticos
+        statistics: "/security/events/statistics", // Estadísticas de eventos
+      },
+    },
   },
 };

@@ -50,7 +50,15 @@ export function LoginFormFields({
       </Field>
 
       <Field>
-        <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+        <div className="flex items-center justify-between">
+          <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+          <a
+            href="/tecnologico/forgot-password"
+            className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+          >
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
         <div className="relative">
           <IconLock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input

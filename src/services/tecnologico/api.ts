@@ -592,6 +592,295 @@ export const technologyApi = {
       return apiClient.delete<ApiResponse<null>>(config.endpoints.permissions.delete, { id });
     },
   },
+
+  // ========== Support Tickets ==========
+  support: {
+    tickets: {
+      /**
+       * Lista tickets con filtros y paginación
+       */
+      list: async (params?: {
+        page?: number;
+        per_page?: number;
+        status?: string;
+        priority?: string;
+        type?: string;
+        search?: string;
+        sort_by?: string;
+        sort_order?: string;
+      }): Promise<any> => {
+        const queryParams: Record<string, string | number> = {};
+        if (params?.page) queryParams.page = params.page;
+        if (params?.per_page) queryParams.per_page = params.per_page;
+        if (params?.status) queryParams.status = params.status;
+        if (params?.priority) queryParams.priority = params.priority;
+        if (params?.type) queryParams.type = params.type;
+        if (params?.search) queryParams.search = params.search;
+        if (params?.sort_by) queryParams.sort_by = params.sort_by;
+        if (params?.sort_order) queryParams.sort_order = params.sort_order;
+
+        return apiClient.get<any>(config.endpoints.support.tickets.list, queryParams);
+      },
+
+      /**
+       * Crea un nuevo ticket
+       */
+      create: async (data: {
+        title: string;
+        type?: string;
+        priority: string;
+        content: string;
+      }): Promise<any> => {
+        return apiClient.post<any>(config.endpoints.support.tickets.create, data);
+      },
+
+      /**
+       * Obtiene un ticket por ID
+       */
+      getById: async (id: number): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.support.tickets.getById, undefined, { id });
+      },
+
+      /**
+       * Actualiza un ticket
+       */
+      update: async (id: number, data: {
+        title?: string;
+        status?: string;
+        priority?: string;
+        type?: string;
+      }): Promise<any> => {
+        return apiClient.put<any>(config.endpoints.support.tickets.update, data, { id });
+      },
+
+      /**
+       * Cierra un ticket
+       */
+      close: async (id: number): Promise<any> => {
+        return apiClient.post<any>(config.endpoints.support.tickets.close, {}, { id });
+      },
+
+      /**
+       * Reabre un ticket
+       */
+      reopen: async (id: number): Promise<any> => {
+        return apiClient.post<any>(config.endpoints.support.tickets.reopen, {}, { id });
+      },
+    },
+
+    replies: {
+      /**
+       * Crea una respuesta a un ticket (con soporte para archivos adjuntos)
+       */
+      create: async (ticketId: number, content: string, attachments?: File[]): Promise<any> => {
+        const formData = new FormData();
+        formData.append('content', content);
+
+        if (attachments && attachments.length > 0) {
+          attachments.forEach((file) => {
+            formData.append('attachments[]', file);
+          });
+        }
+
+        const endpoint = config.endpoints.support.replies.create.replace(':ticketId', ticketId.toString());
+
+        // Obtener token para headers
+        const token = getStoredToken();
+        const headers: HeadersInit = {
+          'Accept': 'application/json',
+        };
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`${config.apiUrl}${endpoint}`, {
+          method: 'POST',
+          headers,
+          body: formData,
+        });
+
+        return response.json();
+      },
+
+      /**
+       * Actualiza una respuesta
+       */
+      update: async (ticketId: number, replyId: number, content: string): Promise<any> => {
+        return apiClient.put<any>(
+          config.endpoints.support.replies.update,
+          { content },
+          { ticketId, replyId }
+        );
+      },
+
+      /**
+       * Elimina una respuesta
+       */
+      delete: async (ticketId: number, replyId: number): Promise<any> => {
+        return apiClient.delete<any>(
+          config.endpoints.support.replies.delete,
+          { ticketId, replyId }
+        );
+      },
+    },
+
+    attachments: {
+      /**
+       * Descarga un archivo adjunto
+       */
+      download: async (id: number): Promise<Blob> => {
+        const endpoint = config.endpoints.support.attachments.download.replace(':id', id.toString());
+        const token = getStoredToken();
+
+        const headers: HeadersInit = {
+          'Accept': 'application/octet-stream',
+        };
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`${config.apiUrl}${endpoint}`, {
+          method: 'GET',
+          headers,
+        });
+
+        if (!response.ok) {
+          throw new Error('Error descargando archivo');
+        }
+
+        return response.blob();
+      },
+
+      /**
+       * Elimina un archivo adjunto
+       */
+      delete: async (id: number): Promise<any> => {
+        return apiClient.delete<any>(config.endpoints.support.attachments.delete, { id });
+      },
+    },
+
+    /**
+     * Obtiene estadísticas de soporte
+     */
+    statistics: async (period?: string): Promise<any> => {
+      const params: Record<string, string> = {};
+      if (period) params.period = period;
+
+      return apiClient.get<any>(config.endpoints.support.statistics, params);
+    },
+  },
+
+  // ============================================
+  // Security Module
+  // ============================================
+
+  security: {
+    /**
+     * Dashboard de seguridad
+     */
+    dashboard: async (): Promise<any> => {
+      return apiClient.get<any>(config.endpoints.security.dashboard);
+    },
+
+    // Sessions Management
+    sessions: {
+      /**
+       * Obtiene mis sesiones activas o de un usuario específico (si es admin)
+       */
+      list: async (userId?: number): Promise<any> => {
+        const params: Record<string, string> = {};
+        if (userId) params.user_id = userId.toString();
+
+        return apiClient.get<any>(config.endpoints.security.sessions.list, params);
+      },
+
+      /**
+       * Obtiene TODAS las sesiones activas del sistema (solo admin)
+       */
+      all: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.sessions.all);
+      },
+
+      /**
+       * Obtiene sesiones sospechosas
+       */
+      suspicious: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.sessions.suspicious);
+      },
+
+      /**
+       * Termina una sesión específica (revocar token)
+       */
+      terminate: async (sessionId: number): Promise<any> => {
+        return apiClient.delete<any>(
+          config.endpoints.security.sessions.terminate,
+          { sessionId: sessionId.toString() }
+        );
+      },
+
+      /**
+       * Termina todas las sesiones excepto la actual
+       */
+      terminateAll: async (userId?: number): Promise<any> => {
+        let url = config.endpoints.security.sessions.terminateAll;
+        if (userId) {
+          url += `?user_id=${userId}`;
+        }
+
+        return apiClient.post<any>(url, {});
+      },
+    },
+
+    // Security Events
+    events: {
+      /**
+       * Obtiene eventos de seguridad con paginación
+       * - Usuario normal: solo sus eventos
+       * - Admin/Security: eventos de TODOS los usuarios
+       */
+      list: async (perPage: number = 15, page: number = 1): Promise<any> => {
+        const params: Record<string, string> = {
+          per_page: perPage.toString(),
+          page: page.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.list, params);
+      },
+
+      /**
+       * Obtiene eventos recientes
+       */
+      recent: async (days: number = 7): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.recent, params);
+      },
+
+      /**
+       * Obtiene eventos críticos
+       */
+      critical: async (days: number = 7): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.critical, params);
+      },
+
+      /**
+       * Obtiene estadísticas de eventos
+       */
+      statistics: async (days: number = 30): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.statistics, params);
+      },
+    },
+  },
 };
 
 // ============================================
