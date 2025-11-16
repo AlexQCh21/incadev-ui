@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { config } from '@/config/administrative-config';
 
 interface Payment {
-  payment_id: number;
-  student_name: string;
-  payment_method: string;
+  id: number;
+  enrollment_id: number;
+  operation_number: string;
+  agency_number: string;
+  operation_date: string;
   amount: number;
-  payment_date: string;
+  evidence_path: string;
   status: string;
+  student_name?: string | null;
 }
 
 interface PaymentsExportData {
@@ -201,20 +204,23 @@ export default function PaymentExportPDF() {
         <table className="w-full border-collapse shadow-sm">
           <thead>
             <tr className="bg-gradient-to-r from-slate-800 to-slate-700 text-white">
-              <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500" style={{ width: '80px' }}>
-                ID Pago
+              <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500" style={{ width: '60px' }}>
+                ID
               </th>
               <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500">
                 Estudiante
               </th>
               <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500">
-                Método de Pago
+                N° Operación
+              </th>
+              <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500">
+                Agencia
               </th>
               <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500" style={{ width: '90px' }}>
                 Monto
               </th>
               <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500" style={{ width: '90px' }}>
-                Fecha
+                Fecha Operación
               </th>
               <th className="text-[10px] uppercase tracking-wider font-semibold p-2.5 text-left border-b-2 border-sky-500" style={{ width: '90px' }}>
                 Estado
@@ -223,21 +229,24 @@ export default function PaymentExportPDF() {
           </thead>
           <tbody>
             {payments.map((payment, index) => (
-              <tr key={payment.payment_id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+              <tr key={payment.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
                 <td className="p-2 border-b border-slate-200 font-semibold text-sky-700">
-                  P-{String(payment.payment_id).padStart(3, '0')}
+                  #{payment.id}
                 </td>
                 <td className="p-2 border-b border-slate-200 font-medium">
                   {payment.student_name || 'Sin asignar'}
                 </td>
                 <td className="p-2 border-b border-slate-200 text-slate-600">
-                  {payment.payment_method || 'Sin método'}
+                  {payment.operation_number}
+                </td>
+                <td className="p-2 border-b border-slate-200 text-slate-600">
+                  {payment.agency_number}
                 </td>
                 <td className="p-2 border-b border-slate-200 font-semibold text-green-700">
                   {formatCurrency(payment.amount)}
                 </td>
                 <td className="p-2 border-b border-slate-200 text-slate-600">
-                  {payment.payment_date ? formatDate(payment.payment_date) : 'Sin fecha'}
+                  {payment.operation_date ? formatDate(payment.operation_date) : 'Sin fecha'}
                 </td>
                 <td className="p-2 border-b border-slate-200">
                   <span className={`inline-block px-2 py-0.5 rounded-xl text-[9px] font-semibold uppercase tracking-wide border ${

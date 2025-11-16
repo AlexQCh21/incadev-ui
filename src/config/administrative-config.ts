@@ -11,11 +11,17 @@ export const config = {
   apiUrl:"http://127.0.0.1:8000",
   environment:"development",
   endpoints: {
+
+    //dashboard
+    dashboard: "/api/dashboard/data",
+    export_pdf: "/api/dashboard/export-data",
+
+    //pagos
     pagos: "/api/pagos",
     pagosExportCsv: "/api/pagos/export-csv",
     pagosExportData: "/api/pagos/export-data",
-    dashboard: "/api/dashboard/data",
-    export_pdf: "/api/dashboard/export-data",
+
+    //finanzas
     balance_general: "/api/finanzas/balance-general",
   },
 };

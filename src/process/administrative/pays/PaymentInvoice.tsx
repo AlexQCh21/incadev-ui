@@ -2,16 +2,14 @@ import { useState, useEffect } from 'react';
 import { config } from '@/config/administrative-config';
 
 interface InvoiceData {
-  payment_id: number;
-  invoice_number: string;
-  issue_date: string;
-  invoice_status: string;
+  id: number;
+  operation_number: string;
+  operation_date: string;
+  status: string;
   student_name: string;
   document_number: string;
   email: string;
-  payment_method: string;
-  payment_date: string;
-  payment_status: string;
+  agency_number: string;
   amount: number;
 }
 
@@ -156,11 +154,11 @@ export default function PaymentInvoice({ paymentId: propPaymentId }: PaymentInvo
             Factura
           </div>
           <div className="text-slate-700 leading-relaxed">
-            <div><strong>Número:</strong> {invoiceData.invoice_number || 'N/D'}</div>
-            <div><strong>Emitida:</strong> {invoiceData.issue_date ? formatDate(invoiceData.issue_date) : 'N/D'}</div>
+            <div><strong>Número:</strong> {invoiceData.operation_number || 'N/D'}</div>
+            <div><strong>Emitida:</strong> {invoiceData.operation_date ? formatDate(invoiceData.operation_date) : 'N/D'}</div>
             <div><strong>Generada:</strong> {getCurrentDateTime()}</div>
             <div className="inline-block mt-2 px-2 py-1 rounded-xl text-[10px] uppercase tracking-wider bg-sky-100 text-sky-700">
-              {getStatusText(invoiceData.invoice_status)}
+              {getStatusText(invoiceData.status)}
             </div>
           </div>
         </div>
@@ -182,10 +180,10 @@ export default function PaymentInvoice({ paymentId: propPaymentId }: PaymentInvo
             Detalles del pago
           </div>
           <div className="leading-relaxed">
-            <div>ID Pago: P-{String(invoiceData.payment_id).padStart(3, '0')}</div>
-            <div>Método: {invoiceData.payment_method || 'Sin método'}</div>
-            {invoiceData.payment_date && <div>Fecha de pago: {formatDate(invoiceData.payment_date)}</div>}
-            <div>Estado del pago: {getStatusText(invoiceData.payment_status)}</div>
+            <div>ID Pago: #{invoiceData.id}</div>
+            <div>Agencia: {invoiceData.agency_number}</div>
+            {invoiceData.operation_date && <div>Fecha de operación: {formatDate(invoiceData.operation_date)}</div>}
+            <div>Estado del pago: {getStatusText(invoiceData.status)}</div>
           </div>
         </div>
       </div>

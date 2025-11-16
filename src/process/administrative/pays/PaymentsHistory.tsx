@@ -22,12 +22,15 @@ import { config } from '@/config/administrative-config';
 import { IconFileText, IconDownload, IconSearch, IconFileTypeCsv, IconFileTypePdf } from '@tabler/icons-react';
 
 interface Payment {
-  payment_id: number;
-  student_name: string;
-  payment_method: string;
+  id: number;
+  enrollment_id: number;
+  operation_number: string;
+  agency_number: string;
+  operation_date: string;
   amount: number;
-  payment_date: string;
+  evidence_path: string;
   status: string;
+  student_name?: string | null;
 }
 
 interface Stats {
@@ -110,8 +113,9 @@ export default function PaymentsHistory() {
     } else {
       const filtered = allPayments.filter((payment) => {
         const studentName = (payment.student_name || '').toLowerCase();
-        const paymentId = `p-${String(payment.payment_id).padStart(3, '0')}`.toLowerCase();
-        return studentName.includes(lowerQuery) || paymentId.includes(lowerQuery);
+        const paymentId = String(payment.id).toLowerCase();
+        const operationNumber = (payment.operation_number || '').toLowerCase();
+        return studentName.includes(lowerQuery) || paymentId.includes(lowerQuery) || operationNumber.includes(lowerQuery);
       });
       setFilteredPayments(filtered);
     }
@@ -324,30 +328,34 @@ export default function PaymentsHistory() {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>ID Pago</TableHead>
+                            <TableHead>ID</TableHead>
                             <TableHead>Estudiante</TableHead>
-                            <TableHead>Método</TableHead>
+                            <TableHead>N° Operación</TableHead>
+                            <TableHead>Agencia</TableHead>
                             <TableHead>Monto</TableHead>
-                            <TableHead>Fecha</TableHead>
+                            <TableHead>Fecha Operación</TableHead>
                             <TableHead>Estado</TableHead>
                             <TableHead className="text-center">Acciones</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {pagePayments.map((payment) => (
-                            <TableRow key={payment.payment_id}>
+                            <TableRow key={payment.id}>
                               <TableCell className="font-semibold">
-                                P-{String(payment.payment_id).padStart(3, '0')}
+                                #{payment.id}
                               </TableCell>
                               <TableCell>{payment.student_name || 'Sin asignar'}</TableCell>
                               <TableCell className="text-muted-foreground">
-                                {payment.payment_method || 'Sin método'}
+                                {payment.operation_number}
+                              </TableCell>
+                              <TableCell className="text-muted-foreground">
+                                {payment.agency_number}
                               </TableCell>
                               <TableCell className="font-semibold text-sky-600 dark:text-sky-400">
                                 {formatCurrency(payment.amount)}
                               </TableCell>
                               <TableCell className="text-muted-foreground">
-                                {payment.payment_date || 'Sin fecha'}
+                                {new Date(payment.operation_date).toLocaleDateString()}
                               </TableCell>
                               <TableCell>{getStatusBadge(payment.status)}</TableCell>
                               <TableCell>
@@ -356,7 +364,7 @@ export default function PaymentsHistory() {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => {
-                                      localStorage.setItem('invoicePaymentId', String(payment.payment_id));
+                                      localStorage.setItem('invoicePaymentId', String(payment.id));
                                       window.open('/administrativo/pagos/invoice', '_blank');
                                     }}
                                     title="Emitir comprobante"
@@ -367,7 +375,7 @@ export default function PaymentsHistory() {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => {
-                                      localStorage.setItem('invoicePaymentId', String(payment.payment_id));
+                                      localStorage.setItem('invoicePaymentId', String(payment.id));
                                       localStorage.setItem('invoiceAutoDownload', 'true');
                                       window.open('/administrativo/pagos/invoice', '_blank');
                                     }}
