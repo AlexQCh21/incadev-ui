@@ -769,6 +769,118 @@ export const technologyApi = {
       return apiClient.get<any>(config.endpoints.support.statistics, params);
     },
   },
+
+  // ============================================
+  // Security Module
+  // ============================================
+
+  security: {
+    /**
+     * Dashboard de seguridad
+     */
+    dashboard: async (): Promise<any> => {
+      return apiClient.get<any>(config.endpoints.security.dashboard);
+    },
+
+    // Sessions Management
+    sessions: {
+      /**
+       * Obtiene mis sesiones activas o de un usuario específico (si es admin)
+       */
+      list: async (userId?: number): Promise<any> => {
+        const params: Record<string, string> = {};
+        if (userId) params.user_id = userId.toString();
+
+        return apiClient.get<any>(config.endpoints.security.sessions.list, params);
+      },
+
+      /**
+       * Obtiene TODAS las sesiones activas del sistema (solo admin)
+       */
+      all: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.sessions.all);
+      },
+
+      /**
+       * Obtiene sesiones sospechosas
+       */
+      suspicious: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.sessions.suspicious);
+      },
+
+      /**
+       * Termina una sesión específica (revocar token)
+       */
+      terminate: async (sessionId: number): Promise<any> => {
+        return apiClient.delete<any>(
+          config.endpoints.security.sessions.terminate,
+          { sessionId: sessionId.toString() }
+        );
+      },
+
+      /**
+       * Termina todas las sesiones excepto la actual
+       */
+      terminateAll: async (userId?: number): Promise<any> => {
+        let url = config.endpoints.security.sessions.terminateAll;
+        if (userId) {
+          url += `?user_id=${userId}`;
+        }
+
+        return apiClient.post<any>(url, {});
+      },
+    },
+
+    // Security Events
+    events: {
+      /**
+       * Obtiene eventos de seguridad con paginación
+       * - Usuario normal: solo sus eventos
+       * - Admin/Security: eventos de TODOS los usuarios
+       */
+      list: async (perPage: number = 15, page: number = 1): Promise<any> => {
+        const params: Record<string, string> = {
+          per_page: perPage.toString(),
+          page: page.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.list, params);
+      },
+
+      /**
+       * Obtiene eventos recientes
+       */
+      recent: async (days: number = 7): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.recent, params);
+      },
+
+      /**
+       * Obtiene eventos críticos
+       */
+      critical: async (days: number = 7): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.critical, params);
+      },
+
+      /**
+       * Obtiene estadísticas de eventos
+       */
+      statistics: async (days: number = 30): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+
+        return apiClient.get<any>(config.endpoints.security.events.statistics, params);
+      },
+    },
+  },
 };
 
 // ============================================
