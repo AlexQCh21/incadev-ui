@@ -1,9 +1,9 @@
 import TechnologyLayout from "@/process/technology/TechnologyLayout"
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { ChevronUp, ChevronDown, Pencil, Trash } from "lucide-react";
 
 export default function LicensesPage(){
-    const initialSoftware = [
+    /*const initialSoftware = [
         { id: 1, name: 'Office Pro', version: '2021', type: 'suite' },
         { id: 2, name: 'Photoshop', version: '2023', type: 'design' }
     ];
@@ -12,10 +12,31 @@ export default function LicensesPage(){
         { id: 1, software_id: 1, key_code: 'OFF-ABC-001', provider: 'Microsoft', purchase_date: '2024-04-01', expiration_date: '2026-04-01', status: 'active' },
         { id: 2, software_id: 2, key_code: 'PS-XYZ-123', provider: 'Adobe', purchase_date: '2023-08-12', expiration_date: '2025-08-12', status: 'assigned' },
         { id: 3, software_id: 1, key_code: 'OFF-DEF-002', provider: 'Microsoft', purchase_date: '2024-06-01', expiration_date: '2026-06-01', status: 'active' }
-    ];
+    ];*/
 
-    const [softwareList] = useState(initialSoftware);
-    const [licenses, setLicenses] = useState(initialLicenses);
+    const [softwareList, setSoftwareList] = useState([]);
+    const [licenses, setLicenses] = useState([]);
+
+    async function fetchSoftware(){
+      const res = await fetch("http://localhost:8000/api/infrastructure/softwares");
+      const data = await res.json();
+      setSoftwareList(data);
+    }
+  
+    async function fetchLicenses(){
+      const res = await fetch("http://localhost:8000/api/infrastructure/licenses");
+      const data = await res.json();
+      setLicenses(data);
+    }
+
+    useEffect(() => {
+      fetchSoftware();
+      fetchLicenses();
+    }, []);
+    
+
+
+
     const [editModal, setEditModal] = useState({
       open: false,
       license: null
@@ -25,7 +46,13 @@ export default function LicensesPage(){
       setEditModal({ open: true, license });
     };
 
-    const handleUpdate = (updatedLic) => {
+    const handleUpdate = async (updatedLic) => {
+      await fetch(`http://localhost:8000/api/infrastructure/licenses/${updatedLic.id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(updatedLic)
+      });
+
       setLicenses(prev => prev.map(lic => 
         lic.id === updatedLic.id ? updatedLic : lic
       ));
@@ -73,7 +100,7 @@ function SoftwareCard({ soft, onEdit, onDelete }){
         style={styles.softwareHeader}
       >
         <div>
-        <h3 style={{ margin: 0 }}>{soft.name}</h3>
+        <h3 style={{ margin: 0 }}>{soft.software_name}</h3>
         <small>Versión: {soft.version}</small>
       </div>
       {open ? <ChevronUp/> : <ChevronDown/>}
