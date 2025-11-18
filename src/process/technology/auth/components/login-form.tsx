@@ -8,7 +8,7 @@ import { IconShieldCheck } from "@tabler/icons-react"
 
 // Components
 import { AuthHeader } from "./login/AuthHeader"
-import { RoleSelector, TECH_ROLES } from "./login/RoleSelector"
+import { RoleSelector } from "./login/RoleSelector"
 import { LoginCard } from "./login/LoginCard"
 import { LoginFormFields } from "./login/LoginFormFields"
 import { TwoFactorForm } from "./login/TwoFactorForm"
@@ -16,8 +16,9 @@ import { TwoFactorForm } from "./login/TwoFactorForm"
 // Hooks
 import { useLoginAuth } from "../hooks/useLoginAuth"
 
-// Routes
-import { routes } from "../../technology-site"
+// Config
+import { TECHNOLOGY_ROLES } from "@/config/roles/technology-roles"
+import { getDashboardRoute } from "@/config/dashboard-routes"
 
 // Form Schema
 const FormSchema = z.object({
@@ -80,11 +81,12 @@ export function LoginForm() {
       try {
         const user = JSON.parse(userStr)
         if (user.role) {
-          const dashboardRoute = routes.dashboard[user.role as keyof typeof routes.dashboard] || routes.dashboard.index
+          const dashboardRoute = getDashboardRoute(user.role)
           window.location.href = dashboardRoute
         }
       } catch (error) {
         // If there's an error parsing user data, clear the session
+        console.error("[LoginForm] Error parsing user data:", error)
         localStorage.removeItem("token")
         localStorage.removeItem("user")
       }
@@ -141,7 +143,7 @@ export function LoginForm() {
   }
 
   // Si se ha seleccionado un rol, mostrar el formulario de login
-  const selectedRoleData = TECH_ROLES.find(r => r.id === selectedRole)
+  const selectedRoleData = TECHNOLOGY_ROLES.find(r => r.id === selectedRole)
   const RoleIcon = selectedRoleData ? iconMap[selectedRoleData.icon] || IconShieldCheck : IconShieldCheck
 
   return (

@@ -1,51 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { IconShieldCheck, IconLifebuoy, IconServer, IconShield, IconChartBar, IconCode } from "@tabler/icons-react"
-
-export interface TechRole {
-  id: string
-  name: string
-  description: string
-  icon: string
-  color: string
-}
-
-export const TECH_ROLES: TechRole[] = [
-  {
-    id: "admin",
-    name: "Administrador",
-    description: "Acceso completo al sistema",
-    icon: "IconShieldCheck",
-    color: "from-blue-500 to-blue-600",
-  },
-  {
-    id: "support",
-    name: "Soporte",
-    description: "Asistencia técnica y atención",
-    icon: "IconLifebuoy",
-    color: "from-green-500 to-green-600",
-  },
-  {
-    id: "infrastructure",
-    name: "Infraestructura",
-    description: "Gestión de infraestructura TI",
-    icon: "IconServer",
-    color: "from-purple-500 to-purple-600",
-  },
-  {
-    id: "academic_analyst",
-    name: "Analista Académico",
-    description: "Análisis y reportes académicos",
-    icon: "IconChartBar",
-    color: "from-orange-500 to-orange-600",
-  },
-  {
-    id: "web",
-    name: "Desarrollo Web",
-    description: "Desarrollo y mantenimiento web",
-    icon: "IconCode",
-    color: "from-cyan-500 to-cyan-600",
-  },
-]
+import { TECHNOLOGY_ROLES, TECHNOLOGY_MODULE_META } from "@/config/roles/technology-roles"
 
 const iconMap: Record<string, any> = {
   IconShieldCheck,
@@ -71,14 +26,14 @@ export function RoleSelector({ onRoleSelect }: RoleSelectorProps) {
               <IconShieldCheck className="h-11 w-11 text-primary" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold mb-2">Procesos Tecnológicos</h1>
+          <h1 className="text-4xl font-bold mb-2">{TECHNOLOGY_MODULE_META.name}</h1>
           <p className="text-muted-foreground text-lg">
             Selecciona tu rol para iniciar sesión
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {TECH_ROLES.map((role, index) => {
+          {TECHNOLOGY_ROLES.map((role, index) => {
             const Icon = iconMap[role.icon] || IconShieldCheck
 
             return (
