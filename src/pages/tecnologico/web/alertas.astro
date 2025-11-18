@@ -1,13 +1,12 @@
 ---
-import WebDashboard from "@/process/technology/dashboard/WebDashboard";
+import AlertsPage from "@/process/technology/dashboard/AlertsPage";
 import "@/styles/global.css";
 
-const title = "Dashboard Web | INCADEV Tecnológico";
-const description = "Panel de gestión de contenido web del módulo tecnológico";
+const title = "Gestión de Alertas | INCADEV Tecnológico";
+const description = "Administración de alertas del módulo tecnológico";
 const robots = ["noindex", "nofollow"];
-const keywords = ["INCADEV", "tecnológico", "web", "dashboard", "contenido"];
-const url =
-  "https://instituto.cetivirgendelapuerta.com/tecnologico/web/dashboard";
+const keywords = ["INCADEV", "tecnológico", "alertas", "gestión"];
+const url = "https://instituto.cetivirgendelapuerta.com/tecnologico/web/alertas";
 const imageOG = "/ISOLOGOTIPO_VERTICAL.svg";
 const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
 ---
@@ -33,6 +32,6 @@ const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
-    <WebDashboard client:load />
+    <AlertsPage client:load />
   </body>
 </html>

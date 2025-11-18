@@ -8,6 +8,11 @@ import {
   IconUsers,
   IconShieldLock,
   IconKey,
+  IconNews,
+  IconBell,
+  IconAlertTriangle,
+  IconMessageCircle,
+  IconFileText,
   type Icon
 } from "@tabler/icons-react"
 
@@ -60,10 +65,16 @@ export const routes = {
     profile: "/tecnologico/academic_analyst/perfil",
   },
   web: {
+    dashboard: "/tecnologico/web/dashboard",
+    news: "/tecnologico/web/noticias",
+    announcements: "/tecnologico/web/anuncios", 
+    alerts: "/tecnologico/web/alertas",
+    faqs: "/tecnologico/web/faqs",
     projects: "/tecnologico/web/proyectos",
     profile: "/tecnologico/web/perfil",
   }
 };
+
 
 export interface NavItem {
   title: string;
@@ -128,5 +139,38 @@ export const navMainOptions: NavSimpleItem[] = [
     title: "Search",
     url: "#",
     icon: IconSearch,
+  },
+];
+
+export const navWebMain: NavSimpleItem[] = [
+  {
+    title: "Dashboard",
+    url: "/tecnologico/web/dashboard",
+    icon: IconDatabase,
+  },
+  {
+    title: "Noticias",
+    url: "/tecnologico/web/noticias",
+    icon: IconNews,
+  },
+  {
+    title: "Anuncios",
+    url: "/tecnologico/web/anuncios",
+    icon: IconBell,
+  },
+  {
+    title: "Alertas",
+    url: "/tecnologico/web/alertas",
+    icon: IconAlertTriangle,
+  },
+  {
+    title: "FAQs",
+    url: "/tecnologico/web/faqs",
+    icon: IconMessageCircle,
+  },
+  {
+    title: "Proyectos",
+    url: "/tecnologico/web/proyectos",
+    icon: IconFileText,
   },
 ];

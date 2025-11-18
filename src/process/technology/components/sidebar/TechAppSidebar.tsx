@@ -269,6 +269,26 @@ const getNavigationByRole = (role: string) => {
         isActive: true,
         items: [
           {
+            title: "Dashboard",
+            url: "/tecnologico/web/dashboard",
+          },
+          {
+            title: "Noticias",
+            url: "/tecnologico/web/noticias",
+          },
+          {
+            title: "Anuncios",
+            url: "/tecnologico/web/anuncios",
+          },
+          {
+            title: "Alertas",
+            url: "/tecnologico/web/alertas",
+          },
+          {
+            title: "FAQs",
+            url: "/tecnologico/web/faqs",
+          },
+          {
             title: "Proyectos",
             url: "/tecnologico/web/proyectos",
           },
@@ -339,7 +359,6 @@ export function TechAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar
         email: "usuario@incadev.com",
         avatar: typeof window !== "undefined" ? `${window.location.origin}/tecnologico/9440461.webp` : "/tecnologico/9440461.webp",
       }
-
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
