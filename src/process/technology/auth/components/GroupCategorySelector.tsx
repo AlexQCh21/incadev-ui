@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { MODULE_CATEGORIES, type ModuleCategory } from "@/types/module-categories";
 import { ModeToggle } from "@/components/core/ModeToggle";
-import { routes as techRoutes } from "@/process/technology/technology-site";
+import { getDashboardRoute, hasConfiguredRoute, DEFAULT_DASHBOARD_ROUTE } from "@/config/dashboard-routes";
 
 // Mapeo de iconos
 const iconMap: Record<string, any> = {
@@ -29,12 +29,19 @@ export function GroupCategorySelector() {
       try {
         const user = JSON.parse(userStr);
         if (user.role) {
-          // For technology module users, redirect to their dashboard
-          const dashboardRoute = techRoutes.dashboard[user.role as keyof typeof techRoutes.dashboard] || techRoutes.dashboard.index;
+          // Get dashboard route for any role from any module
+          const dashboardRoute = getDashboardRoute(user.role);
+
+          // Log warning if role is not configured
+          if (!hasConfiguredRoute(user.role)) {
+            console.warn(`[GroupCategorySelector] Rol "${user.role}" no tiene ruta configurada. Usando ruta por defecto.`);
+          }
+
           window.location.href = dashboardRoute;
         }
       } catch (error) {
         // If there's an error parsing user data, clear the session
+        console.error("[GroupCategorySelector] Error parsing user data:", error);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
       }
@@ -45,7 +52,7 @@ export function GroupCategorySelector() {
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     category.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  
   const handleCategoryClick = (category: ModuleCategory) => {
     window.location.href = category.loginPath;
   };
@@ -144,7 +151,7 @@ export function GroupCategorySelector() {
           );
         })}
       </div>
-
+      
       {/* No results */}
       {filteredCategories.length === 0 && (
         <div className="text-center py-16 animate-in fade-in duration-500">
