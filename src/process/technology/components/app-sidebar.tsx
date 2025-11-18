@@ -212,6 +212,22 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.infrastructure.assets}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Activos Tecnológicos</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.infrastructure.licenses}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Gestión de Licencias</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
