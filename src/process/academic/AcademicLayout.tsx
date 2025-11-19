@@ -13,7 +13,7 @@ interface AcademicLayoutProps {
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth";
 export default function AcademicLayout({ children, title = "Dashboard: Procesos Académicos" }: AcademicLayoutProps) {
   const { token, user, mounted } = useAcademicAuth();
-
+  
   if (!mounted) return null;
 
   return (
