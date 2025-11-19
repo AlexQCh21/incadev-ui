@@ -12,6 +12,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { href: '/marketing/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/marketing/propuestas', icon: FileText, label: 'Propuestas' },
+  { href: '/marketing/campañas', icon: TrendingUp, label: 'Campañas' },
   { href: '/marketing/cursos', icon: Calendar, label: 'Cursos' },
   { href: '/marketing/alumnos', icon: Users, label: 'Alumnos' },
   { href: '/marketing/metricas', icon: TrendingUp, label: 'Métricas' },

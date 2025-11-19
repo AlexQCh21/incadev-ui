@@ -1,7 +1,7 @@
 // src/components/marketing/PropuestasPreview.tsx
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { FileText, Plus, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { FileText, Plus, Clock, CheckCircle, AlertCircle, Flame, Droplet, Snowflake } from 'lucide-react';
 
 const propuestas = [
   { 
@@ -10,7 +10,10 @@ const propuestas = [
     departamento: 'Desarrollo', 
     fecha: '2025-11-04', 
     estado: 'pendiente',
-    prioridad: 'alta'
+    prioridad: 'alta',
+    interes: 'alto', // NUEVO
+    alcance: 12500, // NUEVO
+    engagement: 8.2 // NUEVO
   },
   { 
     id: 2, 
@@ -18,7 +21,10 @@ const propuestas = [
     departamento: 'Móvil', 
     fecha: '2025-11-03', 
     estado: 'aprobada',
-    prioridad: 'media'
+    prioridad: 'media',
+    interes: 'alto',
+    alcance: 15300,
+    engagement: 9.5
   },
   { 
     id: 3, 
@@ -26,15 +32,10 @@ const propuestas = [
     departamento: 'Estrategia', 
     fecha: '2025-11-02', 
     estado: 'en_revision',
-    prioridad: 'alta'
-  },
-  { 
-    id: 4, 
-    tema: 'Python Machine Learning', 
-    departamento: 'Data Science', 
-    fecha: '2025-11-01', 
-    estado: 'pendiente',
-    prioridad: 'baja'
+    prioridad: 'alta',
+    interes: 'medio',
+    alcance: 7200,
+    engagement: 4.1
   },
 ];
 
@@ -68,6 +69,27 @@ const prioridadColor = {
   baja: 'border-l-4 border-l-green-500',
 };
 
+const interesConfig = {
+  alto: {
+    icon: Flame,
+    color: 'text-red-500',
+    bg: 'bg-red-50 dark:bg-red-950/30',
+    label: 'Alto'
+  },
+  medio: {
+    icon: Droplet,
+    color: 'text-yellow-500',
+    bg: 'bg-yellow-50 dark:bg-yellow-950/30',
+    label: 'Medio'
+  },
+  bajo: {
+    icon: Snowflake,
+    color: 'text-blue-400',
+    bg: 'bg-blue-50 dark:bg-blue-950/30',
+    label: 'Bajo'
+  }
+};
+
 export default function PropuestasPreview() {
   return (
     <Card className="bg-white dark:bg-gray-950 border-gray-200 dark:border-gray-800 shadow-sm">
@@ -85,27 +107,40 @@ export default function PropuestasPreview() {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {propuestas.slice(0, 3).map(p => {
+          {propuestas.map(p => {
             const estadoInfo = estadoConfig[p.estado as keyof typeof estadoConfig];
             const StatusIcon = estadoInfo.icon;
             const prioridadClass = prioridadColor[p.prioridad as keyof typeof prioridadColor];
-            
+            const interesInfo = interesConfig[p.interes as keyof typeof interesConfig];
+            const InteresIcon = interesInfo.icon;
+
             return (
               <a
                 key={p.id}
                 href={'/marketing/propuestas/' + p.id}
-                className={'flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg smooth-transition border border-gray-200 dark:border-gray-800 group ' + prioridadClass}
+                className={
+                  'flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg smooth-transition border border-gray-200 dark:border-gray-800 group ' +
+                  prioridadClass
+                }
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 smooth-transition">
                       {p.tema}
                     </p>
+                    {/* NUEVO: Indicador de Interés */}
+                    <div className={'flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ' + interesInfo.bg}>
+                      <InteresIcon className={'w-3 h-3 ' + interesInfo.color} />
+                      <span className={interesInfo.color}>{interesInfo.label}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
                     <span className="font-medium">{p.departamento}</span>
                     <span>•</span>
                     <span>{new Date(p.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span>
+                    {/* NUEVO: Métricas rápidas */}
+                    <span>•</span>
+                    <span>📊 {(p.alcance / 1000).toFixed(1)}K alcance</span>
                   </div>
                 </div>
                 <div className={'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ' + estadoInfo.bg + ' ' + estadoInfo.text + ' ' + estadoInfo.border}>
@@ -115,10 +150,9 @@ export default function PropuestasPreview() {
               </a>
             );
           })}
-          
-          
-            <a
-              href="/marketing/propuestas"
+
+          <a
+            href="/marketing/propuestas"
             className="flex items-center justify-center w-full mt-4 py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-blue-500 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 smooth-transition group"
           >
             <Plus className="w-4 h-4 mr-2 group-hover:scale-110 smooth-transition" />
