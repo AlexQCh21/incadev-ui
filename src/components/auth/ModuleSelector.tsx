@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MODULE_CATEGORIES, type ModuleCategory } from "@/types/module-categories";
-import { getDashboardRoute, hasConfiguredRoute } from "@/config/dashboard-routes";
+import { getRoleRoute, hasConfiguredRoute } from "@/config/auth/role-routes";
 
 // Mapeo de iconos
 const iconMap: Record<string, any> = {
@@ -29,15 +29,15 @@ export function ModuleSelector() {
       try {
         const user = JSON.parse(userStr);
         if (user.role) {
-          // Get dashboard route for any role from any module
-          const dashboardRoute = getDashboardRoute(user.role);
+          // Get route for any role from any module
+          const route = getRoleRoute(user.role);
 
           // Log warning if role is not configured
           if (!hasConfiguredRoute(user.role)) {
             console.warn(`[ModuleSelector] Rol "${user.role}" no tiene ruta configurada. Usando ruta por defecto.`);
           }
 
-          window.location.href = dashboardRoute;
+          window.location.href = route;
         }
       } catch (error) {
         // If there's an error parsing user data, clear the session

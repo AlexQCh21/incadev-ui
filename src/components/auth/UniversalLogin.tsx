@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
 import { getRolesByModule, getModuleById } from "@/config/auth/module-mapping";
-import { getDashboardRoute } from "@/config/dashboard-routes";
+import { getRoleRoute } from "@/config/auth/role-routes";
 import { RoleSelector } from "./RoleSelector";
 import { LoginForm } from "./LoginForm";
 
@@ -31,8 +31,8 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
       try {
         const user = JSON.parse(userStr);
         if (user.role) {
-          const dashboardRoute = getDashboardRoute(user.role);
-          window.location.href = dashboardRoute;
+          const route = getRoleRoute(user.role);
+          window.location.href = route;
         }
       } catch (error) {
         console.error("[UniversalLogin] Error parsing user data:", error);
@@ -100,7 +100,7 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
           localStorage.setItem("user", JSON.stringify(result.data.user));
 
           toast.success("Inicio de sesión exitoso");
-          const dashboardRoute = getDashboardRoute(data.role);
+          const dashboardRoute = getRoleRoute(data.role);
           console.log("[UniversalLogin] Redirecting to:", dashboardRoute);
           window.location.href = dashboardRoute;
         } else {
@@ -145,7 +145,7 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
           localStorage.setItem("user", JSON.stringify(result.data.user));
 
           toast.success("Inicio de sesión exitoso");
-          const dashboardRoute = getDashboardRoute(data.role);
+          const dashboardRoute = getRoleRoute(data.role);
           console.log("[UniversalLogin] Redirecting to:", dashboardRoute);
           window.location.href = dashboardRoute;
         } else {

@@ -16,7 +16,7 @@ import {
   Home, BookOpen, Users, GraduationCap, MessageCircle,
   Info, Phone, Menu, User as UserIcon, LogOut
 } from "lucide-react";
-import { getDashboardRoute } from "@/config/dashboard-routes";
+import { getRoleRoute } from "@/config/auth/role-routes";
 
 interface NavLink {
   id: string;
@@ -103,7 +103,7 @@ export function Navbar() {
   // Navegar al perfil
   const handleProfileClick = () => {
     if (user?.role) {
-      const dashboardRoute = getDashboardRoute(user.role);
+      const dashboardRoute = getRoleRoute(user.role);
       window.location.href = `${dashboardRoute}/profile`;
     }
   };

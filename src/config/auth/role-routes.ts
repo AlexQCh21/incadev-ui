@@ -1,11 +1,11 @@
 /**
- * @module DashboardRoutes
- * @description Mapa centralizado de rutas de dashboard por rol para todos los módulos
- * @category Config
+ * @module RoleRoutes
+ * @description Mapa centralizado de rutas de redirección por rol para todos los módulos
+ * @category Config - Authentication
  *
  * @remarks
- * Este archivo contiene las rutas de dashboard para TODOS los roles del sistema.
- * Cada rol tiene su propia ruta de dashboard independientemente del módulo.
+ * Este archivo contiene las rutas de redirección post-login para TODOS los roles del sistema.
+ * Cada rol tiene su propia ruta de destino independientemente del módulo.
  *
  * ## Grupos de Roles
  * - **Tecnológico (Grupo 03)**: Soporte y Administración
@@ -18,14 +18,14 @@
  */
 
 /**
- * Mapa de rutas de dashboard por rol
+ * Mapa de rutas de redirección por rol
  *
  * @remarks
  * - La clave es el ID del rol (debe coincidir con el backend)
- * - El valor es la ruta absoluta del dashboard
+ * - El valor es la ruta absoluta de destino después del login
  * - Si agregas un nuevo rol, añádelo aquí con su ruta
  */
-export const DASHBOARD_ROUTES: Record<string, string> = {
+export const ROLE_ROUTES: Record<string, string> = {
   // ========================================
   // 🧩 GRUPO 03 - SOPORTE Y ADMINISTRACIÓN
   // ========================================
@@ -80,28 +80,28 @@ export const DASHBOARD_ROUTES: Record<string, string> = {
 }
 
 /**
- * Ruta de dashboard por defecto cuando el rol no se encuentra
+ * Ruta por defecto cuando el rol no se encuentra
  */
-export const DEFAULT_DASHBOARD_ROUTE = "/dashboard"
+export const DEFAULT_ROUTE = "/dashboard"
 
 /**
- * Obtiene la ruta del dashboard para un rol específico
+ * Obtiene la ruta de redirección para un rol específico
  *
  * @param role - El ID del rol
- * @returns La ruta del dashboard o la ruta por defecto si no se encuentra
+ * @returns La ruta de destino o la ruta por defecto si no se encuentra
  *
  * @example
  * ```typescript
- * const route = getDashboardRoute('admin')
+ * const route = getRoleRoute('admin')
  * console.log(route) // '/tecnologico/admin/dashboard'
  * ```
  */
-export function getDashboardRoute(role: string): string {
-  return DASHBOARD_ROUTES[role] || DEFAULT_DASHBOARD_ROUTE
+export function getRoleRoute(role: string): string {
+  return ROLE_ROUTES[role] || DEFAULT_ROUTE
 }
 
 /**
- * Verifica si un rol tiene una ruta de dashboard configurada
+ * Verifica si un rol tiene una ruta configurada
  *
  * @param role - El ID del rol
  * @returns true si el rol tiene una ruta configurada, false en caso contrario
@@ -113,7 +113,7 @@ export function getDashboardRoute(role: string): string {
  * ```
  */
 export function hasConfiguredRoute(role: string): boolean {
-  return role in DASHBOARD_ROUTES
+  return role in ROLE_ROUTES
 }
 
 /**
@@ -128,13 +128,13 @@ export function hasConfiguredRoute(role: string): boolean {
  * ```
  */
 export function getAllConfiguredRoles(): string[] {
-  return Object.keys(DASHBOARD_ROUTES)
+  return Object.keys(ROLE_ROUTES)
 }
 
 /**
- * Obtiene el módulo base de una ruta de dashboard
+ * Obtiene el módulo base de una ruta
  *
- * @param route - La ruta del dashboard
+ * @param route - La ruta
  * @returns El nombre del módulo base o null si no se puede determinar
  *
  * @example
@@ -166,7 +166,25 @@ export function getModuleFromRoute(route: string): string | null {
  * ```
  */
 export function getRolesByModule(module: string): Array<{ role: string; route: string }> {
-  return Object.entries(DASHBOARD_ROUTES)
+  return Object.entries(ROLE_ROUTES)
     .filter(([_, route]) => route.startsWith(`/${module}/`))
     .map(([role, route]) => ({ role, route }))
 }
+
+// ========================================
+// COMPATIBILIDAD CON NOMBRE ANTERIOR
+// ========================================
+/**
+ * @deprecated Use getRoleRoute instead
+ */
+export const getDashboardRoute = getRoleRoute
+
+/**
+ * @deprecated Use ROLE_ROUTES instead
+ */
+export const DASHBOARD_ROUTES = ROLE_ROUTES
+
+/**
+ * @deprecated Use DEFAULT_ROUTE instead
+ */
+export const DEFAULT_DASHBOARD_ROUTE = DEFAULT_ROUTE
