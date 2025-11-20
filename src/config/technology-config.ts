@@ -6,8 +6,8 @@
 
 export const config = {
   //apiUrl:"https://instituto.cetivirgendelapuerta.com/procesostecnologicos/backend/public/api",
-  apiUrl:"http://localhost:8000/api",
-  environment:"development",
+  apiUrl: "http://localhost:8000/api",
+  environment: "development",
   endpoints: {
     // Authentication
     auth: {
@@ -115,7 +115,7 @@ export const config = {
       },
     },
 
-    // Módulo Web - Developer Web
+    // Developer Web Module
     developerWeb: {
       // Estadísticas generales
       stats: {
@@ -158,8 +158,20 @@ export const config = {
         stats: "/developer-web/alerts/stats/summary",
       },
 
-      // Chatbot FAQs
+      // Chatbot
       chatbot: {
+        // Configuración del Chatbot
+        config: {
+          get: "/developer-web/chatbot/config",
+          update: "/developer-web/chatbot/config",
+          reset: "/developer-web/chatbot/config/reset",
+        },
+        // Analytics del Chatbot
+        analytics: {
+          summary: "/developer-web/chatbot/analytics/summary",
+          conversationsByDay: "/developer-web/chatbot/analytics/conversations-by-day",
+        },
+        // FAQs del Chatbot
         faqs: {
           public: {
             index: "/developer-web/chatbot/faqs/public",
@@ -173,7 +185,7 @@ export const config = {
           destroy: "/developer-web/chatbot/faqs/:id",
           stats: "/developer-web/chatbot/faqs/stats/summary",
         },
-      }
-    }
-  },
+      },
+    },
+  }
 };

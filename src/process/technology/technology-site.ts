@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react"
 import {
   IconDatabase,
-  IconReport,
   IconHelp,
   IconSearch,
   IconSettings,
@@ -12,7 +11,8 @@ import {
   IconBell,
   IconAlertTriangle,
   IconMessageCircle,
-  IconFileText,
+  IconRobot,
+  IconChartBar,
   type Icon
 } from "@tabler/icons-react"
 
@@ -71,9 +71,15 @@ export const routes = {
     news: "/tecnologico/web/noticias",
     announcements: "/tecnologico/web/anuncios", 
     alerts: "/tecnologico/web/alertas",
-    faqs: "/tecnologico/web/faqs",
     projects: "/tecnologico/web/proyectos",
     profile: "/tecnologico/web/perfil",
+    // Nuevo módulo Chatbot
+    chatbot: {
+      dashboard: "/tecnologico/web/chatbot/dashboard",
+      faqs: "/tecnologico/web/chatbot/faqs",
+      configuracion: "/tecnologico/web/chatbot/configuracion",
+      analytics: "/tecnologico/web/chatbot/analytics",
+    }
   }
 };
 
@@ -165,14 +171,27 @@ export const navWebMain: NavSimpleItem[] = [
     url: "/tecnologico/web/alertas",
     icon: IconAlertTriangle,
   },
+];
+
+export const navChatbotMain: NavSimpleItem[] = [
+  {
+    title: "Dashboard Chatbot",
+    url: "/tecnologico/web/chatbot/dashboard",
+    icon: IconRobot,
+  },
   {
     title: "FAQs",
-    url: "/tecnologico/web/faqs",
+    url: "/tecnologico/web/chatbot/faqs",
     icon: IconMessageCircle,
   },
   {
-    title: "Proyectos",
-    url: "/tecnologico/web/proyectos",
-    icon: IconFileText,
+    title: "Configuración",
+    url: "/tecnologico/web/chatbot/configuracion",
+    icon: IconSettings,
+  },
+  {
+    title: "Analytics",
+    url: "/tecnologico/web/chatbot/analytics",
+    icon: IconChartBar,
   },
 ];

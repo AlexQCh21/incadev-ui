@@ -11,8 +11,7 @@ import {
   Code,
   Settings,
   ShieldCheck,
-  Monitor,
-  Activity,
+  Bot,
 } from "lucide-react"
 
 import { NavMain } from "./NavMain"
@@ -285,12 +284,31 @@ const getNavigationByRole = (role: string) => {
             url: "/tecnologico/web/alertas",
           },
           {
-            title: "FAQs",
-            url: "/tecnologico/web/faqs",
-          },
-          {
             title: "Proyectos",
             url: "/tecnologico/web/proyectos",
+          },
+        ],
+      },
+      {
+        title: "Chatbot",
+        url: "#",
+        icon: Bot,
+        items: [
+          {
+            title: "Dashboard",
+            url: "/tecnologico/web/chatbot/dashboard",
+          },
+          {
+            title: "FAQs",
+            url: "/tecnologico/web/chatbot/faqs",
+          },
+          {
+            title: "Configuración",
+            url: "/tecnologico/web/chatbot/configuracion",
+          },
+          {
+            title: "Analytics",
+            url: "/tecnologico/web/chatbot/analytics",
           },
         ],
       },

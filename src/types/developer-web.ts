@@ -4,10 +4,13 @@
 // Enums y Types
 // ============================================
 
-export type ContentStatus = "published" | "draft" | "scheduled"
-export type AnnouncementImportance = "low" | "medium" | "high"
-export type AlertType = "info" | "warning" | "error" | "success"
-export type AlertSeverity = "low" | "medium" | "high" | "critical"
+export type NewsStatus = "draft" | "published" | "archived" | "scheduled"
+export type AnnouncementStatus = "active" | "inactive"
+export type AlertStatus = "active" | "inactive"
+export type NewsItemType = "article" | "press-release" | "update" | "feature"
+export type AnnouncementItemType = "popup" | "banner" | "modal" | "notification"
+export type AlertItemType = "information" | "warning" | "success" | "error" | "maintenance"
+export type FAQCategoryValue = "general" | "academico" | "tecnico" | "pagos" | "soporte"
 
 // ============================================
 // Interfaces - Base
@@ -17,11 +20,9 @@ export interface BaseContent {
   id: number
   title: string
   content: string
-  is_published: boolean
   views_count: number
   created_at: string
   updated_at: string
-  published_at?: string
   author_id?: number
   author?: {
     id: number
@@ -30,43 +31,48 @@ export interface BaseContent {
   }
 }
 
-export interface ContentStats {
-  total: number
-  published: number
-  draft: number
-  total_views: number
-  average_views: number
-}
-
 // ============================================
 // Interfaces - News
 // ============================================
 
 export interface News extends BaseContent {
-  excerpt?: string
-  featured_image?: string
-  categories: NewsCategory[]
-  meta_title?: string
-  meta_description?: string
-  slug: string
+  summary: string
+  image_url?: string
+  slug?: string
+  item_type: NewsItemType
+  status: NewsStatus // Usar NewsStatus específico
+  category: string
+  seo_title?: string
+  seo_description?: string
+  tags?: string[]
+  published_date?: string
 }
 
 export interface NewsCategory {
   id: number
+  key: string  // ← Agregar este campo
   name: string
   slug: string
   description?: string
   news_count?: number
 }
 
-export interface NewsStats extends ContentStats {
-  by_category: Array<{
-    category_id: number
-    category_name: string
-    count: number
+export interface NewsStats {
+  total: number
+  published: number
+  total_views: number
+  status_counts: { // ← Agregar este campo
+    draft: number
+    published: number
+    archived: number
+    scheduled: number
+  }
+  categories_count: number
+  recent_published: number
+  most_viewed: {
+    title: string
     views: number
-  }>
-  recent_published: News[]
+  }
 }
 
 // ============================================
@@ -74,21 +80,25 @@ export interface NewsStats extends ContentStats {
 // ============================================
 
 export interface Announcement extends BaseContent {
-  excerpt?: string
-  importance: AnnouncementImportance
-  expiration_date?: string
-  is_sticky: boolean
+  image_url?: string
+  item_type: AnnouncementItemType
+  status: AnnouncementStatus // Usar AnnouncementStatus específico
+  start_date: string
+  end_date: string
+  target_page?: string
+  link_url?: string
+  button_text?: string
+  priority: number
 }
 
-export interface AnnouncementStats extends ContentStats {
-  by_importance: {
-    low: number
-    medium: number
-    high: number
-  }
-  expired: number
-  sticky: number
-  active_sticky: number
+export interface AnnouncementStats {
+  total: number
+  published: number
+  total_views: number
+  status_counts: Record<string, number>
+  active_now: number
+  high_priority: number
+  by_type: Record<AnnouncementItemType, number>
 }
 
 // ============================================
@@ -96,30 +106,87 @@ export interface AnnouncementStats extends ContentStats {
 // ============================================
 
 export interface Alert extends BaseContent {
-  type: AlertType
-  severity: AlertSeverity
-  action_url?: string
-  action_text?: string
-  dismissible: boolean
-  expiration_date?: string
-  is_active: boolean
+  item_type: AlertItemType
+  status: AlertStatus // Usar AlertStatus específico
+  start_date: string
+  end_date: string
+  link_url?: string
+  link_text?: string
+  priority: number
 }
 
-export interface AlertStats extends ContentStats {
-  by_type: {
-    info: number
-    warning: number
-    error: number
-    success: number
-  }
-  by_severity: {
-    low: number
-    medium: number
-    high: number
-    critical: number
-  }
+export interface AlertStats {
+  total: number
+  published: number
+  status_counts: Record<string, number>
+  active_now: number
+  high_priority: number
+  by_type: Record<AlertItemType, number>
+  expiring_soon: number
+}
+
+// ============================================
+// Interfaces - Chatbot
+// ============================================
+
+export interface ChatbotConfig {
+  enabled: boolean
+  greeting_message: string
+  fallback_message: string
+  response_delay: number
+  max_conversations_per_day: number
+  contact_threshold: number
+  updated_at: string
+}
+
+export interface ChatbotAnalytics {
+  total: number
   active: number
-  expired: number
+  resolved: number
+  resolved_rate: number
+  avg_satisfaction: number
+  handed_to_human: number
+  // Nuevos campos
+  faqs_by_category?: Array<{
+    category: string
+    count: number
+  }>
+  most_used_faqs?: Array<{
+    id: number
+    question: string
+    usage_count: number
+  }>
+  conversations_by_day?: Array<{
+    date: string
+    count: number
+  }>
+}
+
+export interface ConversationStats {
+  date: string
+  count: number
+}
+
+export interface ChatbotConversation {
+  id: number
+  user_id?: number
+  status: 'active' | 'ended' | 'resolved'
+  messages: ChatbotMessage[]
+  started_at: string
+  ended_at?: string
+  feedback_rating?: number
+  feedback_comment?: string
+  feedback_resolved?: boolean
+}
+
+export interface ChatbotMessage {
+  id: number
+  conversation_id: number
+  type: 'user' | 'bot'
+  content: string
+  source?: 'faq' | 'gemini' | 'fallback'
+  faq_id?: number
+  timestamp: string
 }
 
 // ============================================
@@ -130,11 +197,10 @@ export interface FAQ {
   id: number
   question: string
   answer: string
-  category_id: number
-  category?: FAQCategory
-  order: number
-  is_published: boolean
-  views_count: number
+  category: FAQCategoryValue  // Cambiado de category_id a category
+  keywords?: string[]
+  active: boolean  // Cambiado de is_published a active
+  usage_count?: number  // Nuevo campo
   helpful_count: number
   not_helpful_count: number
   created_at: string
@@ -142,17 +208,18 @@ export interface FAQ {
 }
 
 export interface FAQCategory {
-  id: number
+  value: FAQCategoryValue
   name: string
-  description?: string
-  order: number
-  faqs_count?: number
+  color: string
 }
 
-export interface FAQStats extends ContentStats {
+export interface FAQStats {
+  total: number
+  active: number  // Cambiado de published
+  total_views: number
+  average_views: number
   by_category: Array<{
-    category_id: number
-    category_name: string
+    category: FAQCategoryValue
     count: number
     views: number
   }>
@@ -166,83 +233,159 @@ export interface FAQStats extends ContentStats {
 // ============================================
 
 export interface WebDashboardData {
-  stats: {
-    news: NewsStats
-    announcements: AnnouncementStats
-    alerts: AlertStats
-    faqs: FAQStats
+  news: {
+    total: number
+    published: number
+    total_views: number
   }
-  recent_activity: {
-    news: News[]
-    announcements: Announcement[]
-    alerts: Alert[]
-    faqs: FAQ[]
+  announcements: {
+    total: number
+    published: number
+    total_views: number
   }
   alerts: {
-    expiring_announcements: Announcement[]
-    expiring_alerts: Alert[]
-    low_views_content: Array<News | Announcement>
+    total: number
+    published: number
   }
+  total_content: number
+  total_published: number
+  total_views: number
 }
 
 // ============================================
 // Labels para UI
 // ============================================
 
-export const AnnouncementImportanceLabels: Record<AnnouncementImportance, string> = {
-  low: "Baja",
-  medium: "Media",
-  high: "Alta",
-}
-
-export const AlertTypeLabels: Record<AlertType, string> = {
-  info: "Información",
-  warning: "Advertencia",
-  error: "Error",
-  success: "Éxito",
-}
-
-export const AlertSeverityLabels: Record<AlertSeverity, string> = {
-  low: "Baja",
-  medium: "Media",
-  high: "Alta",
-  critical: "Crítica",
-}
-
-export const ContentStatusLabels: Record<ContentStatus, string> = {
-  published: "Publicado",
+export const NewsStatusLabels: Record<NewsStatus, string> = {
   draft: "Borrador",
+  published: "Publicado",
+  archived: "Archivado",
   scheduled: "Programado",
+}
+
+export const AnnouncementStatusLabels: Record<AnnouncementStatus, string> = {
+  active: "Activo",
+  inactive: "Inactivo",
+}
+
+export const AlertStatusLabels: Record<AlertStatus, string> = {
+  active: "Activo",
+  inactive: "Inactivo",
+}
+
+export const NewsItemTypeLabels: Record<NewsItemType, string> = {
+  article: "Artículo",
+  "press-release": "Comunicado",
+  update: "Actualización",
+  feature: "Característica",
+}
+
+export const AnnouncementItemTypeLabels: Record<AnnouncementItemType, string> = {
+  popup: "Popup",
+  banner: "Banner",
+  modal: "Modal",
+  notification: "Notificación",
+}
+
+export const AlertItemTypeLabels: Record<AlertItemType, string> = {
+  information: "Información",
+  warning: "Advertencia",
+  success: "Éxito",
+  error: "Error",
+  maintenance: "Mantenimiento",
+}
+
+export const FAQCategoryLabels: Record<FAQCategoryValue, string> = {
+  general: "General",
+  academico: "Académico",
+  tecnico: "Técnico",
+  pagos: "Pagos y Facturación",
+  soporte: "Soporte Técnico",
+}
+
+export const FAQStatusLabels: Record<'active' | 'inactive', string> = {
+  active: "Activa",
+  inactive: "Inactiva",
+}
+
+export const ChatbotSourceLabels: Record<'faq' | 'gemini' | 'fallback', string> = {
+  faq: "FAQ",
+  gemini: "IA",
+  fallback: "Reserva",
+}
+
+export const ConversationStatusLabels: Record<'active' | 'ended' | 'resolved', string> = {
+  active: "Activa",
+  ended: "Finalizada",
+  resolved: "Resuelta",
 }
 
 // ============================================
 // Colores para badges (usando shadcn/ui colors)
 // ============================================
 
-export const AnnouncementImportanceColors: Record<AnnouncementImportance, string> = {
-  low: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
-  medium: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20",
-  high: "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20",
-}
-
-export const AlertTypeColors: Record<AlertType, string> = {
-  info: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
-  warning: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20",
-  error: "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20",
-  success: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
-}
-
-export const AlertSeverityColors: Record<AlertSeverity, string> = {
-  low: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
-  medium: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20",
-  high: "bg-orange-500/10 text-orange-600 dark:text-orange-500 border-orange-500/20",
-  critical: "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20",
-}
-
-export const ContentStatusColors: Record<ContentStatus, string> = {
-  published: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+export const NewsStatusColors: Record<NewsStatus, string> = {
   draft: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20",
+  published: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  archived: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
   scheduled: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
+}
+
+export const AnnouncementStatusColors: Record<AnnouncementStatus, string> = {
+  active: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  inactive: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
+}
+
+export const AlertStatusColors: Record<AlertStatus, string> = {
+  active: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  inactive: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
+}
+
+export const NewsItemTypeColors: Record<NewsItemType, string> = {
+  article: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
+  "press-release": "bg-purple-500/10 text-purple-600 dark:text-purple-500 border-purple-500/20",
+  update: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  feature: "bg-orange-500/10 text-orange-600 dark:text-orange-500 border-orange-500/20",
+}
+
+export const AnnouncementItemTypeColors: Record<AnnouncementItemType, string> = {
+  popup: "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20",
+  banner: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
+  modal: "bg-purple-500/10 text-purple-600 dark:text-purple-500 border-purple-500/20",
+  notification: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+}
+
+export const AlertItemTypeColors: Record<AlertItemType, string> = {
+  information: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
+  warning: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20",
+  success: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  error: "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20",
+  maintenance: "bg-purple-500/10 text-purple-600 dark:text-purple-500 border-purple-500/20",
+}
+
+export const FAQCategoryColors: Record<FAQCategoryValue, string> = {
+  general: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
+  academico: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  tecnico: "bg-orange-500/10 text-orange-600 dark:text-orange-500 border-orange-500/20",
+  pagos: "bg-purple-500/10 text-purple-600 dark:text-purple-500 border-purple-500/20",
+  soporte: "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20",
+}
+
+export const FAQStatusColors: Record<'active' | 'inactive', string> = {
+  active: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  inactive: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
+}
+
+export const ChatbotSourceColors: Record<'faq' | 'gemini' | 'fallback', string> = {
+  faq: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
+  gemini: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20",
+  fallback: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
+}
+
+export const ConversationStatusColors: Record<'active' | 'ended' | 'resolved', string> = {
+  active: "bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20",
+  ended: "bg-gray-500/10 text-gray-600 dark:text-gray-500 border-gray-500/20",
+  resolved: "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-blue-500/20",
 }
 
 // ============================================
