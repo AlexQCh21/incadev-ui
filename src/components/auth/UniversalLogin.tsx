@@ -67,6 +67,10 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
   };
 
   const onSubmit = async (data: any) => {
+    console.log("[UniversalLogin] onSubmit called with data:", data);
+    console.log("[UniversalLogin] requires2FA:", requires2FA);
+    console.log("[UniversalLogin] loginCredentials:", loginCredentials);
+
     try {
       if (requires2FA && loginCredentials) {
         // Verificar 2FA
@@ -76,7 +80,8 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
           return;
         }
 
-        const response = await fetch(`${config.apiUrl}${config.endpoints.auth.verify2FA}`, {
+        console.log("[UniversalLogin] Sending 2FA verification request");
+        const response = await fetch(`${config.apiUrl}${config.endpoints.twoFactor.verifyLogin}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -88,6 +93,7 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
         });
 
         const result = await response.json();
+        console.log("[UniversalLogin] 2FA response:", result);
 
         if (response.ok && result.success) {
           localStorage.setItem("token", result.data.token);
@@ -95,12 +101,16 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
 
           toast.success("Inicio de sesión exitoso");
           const dashboardRoute = getDashboardRoute(data.role);
+          console.log("[UniversalLogin] Redirecting to:", dashboardRoute);
           window.location.href = dashboardRoute;
         } else {
           toast.error(result.message || "Código 2FA inválido");
         }
       } else {
         // Login normal
+        console.log("[UniversalLogin] Sending login request to:", `${config.apiUrl}${config.endpoints.auth.login}`);
+        console.log("[UniversalLogin] Login payload:", { email: data.email, password: "***", role: data.role });
+
         const response = await fetch(`${config.apiUrl}${config.endpoints.auth.login}`, {
           method: "POST",
           headers: {
@@ -114,30 +124,37 @@ export function UniversalLogin({ moduleId }: UniversalLoginProps) {
         });
 
         const result = await response.json();
+        console.log("[UniversalLogin] Login response:", result);
+        console.log("[UniversalLogin] Response status:", response.status);
+        console.log("[UniversalLogin] Response ok:", response.ok);
 
-        if (response.ok && result.success) {
-          if (result.data.requires_2fa) {
-            setRequires2FA(true);
-            setLoginCredentials({
-              email: data.email,
-              password: data.password,
-              role: data.role,
-            });
-            toast.info("Por favor ingresa tu código de autenticación de dos factores");
-          } else {
-            localStorage.setItem("token", result.data.token);
-            localStorage.setItem("user", JSON.stringify(result.data.user));
+        // Verificar si requiere 2FA (puede venir con success: false o success: true)
+        if (response.ok && (result.requires_2fa || result.data?.requires_2fa)) {
+          console.log("[UniversalLogin] 2FA required, showing 2FA form");
+          setRequires2FA(true);
+          setLoginCredentials({
+            email: data.email,
+            password: data.password,
+            role: data.role,
+          });
+          toast.info("Por favor ingresa tu código de autenticación de dos factores");
+        } else if (response.ok && result.success) {
+          // Login exitoso sin 2FA
+          console.log("[UniversalLogin] Login successful, saving token and user data");
+          localStorage.setItem("token", result.data.token);
+          localStorage.setItem("user", JSON.stringify(result.data.user));
 
-            toast.success("Inicio de sesión exitoso");
-            const dashboardRoute = getDashboardRoute(data.role);
-            window.location.href = dashboardRoute;
-          }
+          toast.success("Inicio de sesión exitoso");
+          const dashboardRoute = getDashboardRoute(data.role);
+          console.log("[UniversalLogin] Redirecting to:", dashboardRoute);
+          window.location.href = dashboardRoute;
         } else {
+          console.log("[UniversalLogin] Login failed:", result.message);
           toast.error(result.message || "Error al iniciar sesión");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("[UniversalLogin] Error:", error);
       toast.error("Error de conexión. Por favor intenta nuevamente.");
     }
   };
