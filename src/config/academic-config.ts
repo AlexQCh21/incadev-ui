@@ -62,5 +62,8 @@ export const config = {
       update: "/api/teaching-groups/attendances/:attendance",
       statistics: "/api/teaching-groups/:group/attendance-statistics"
     },
+    marketing: {
+      students: "/api/marketing/students"
+    }
   },
 };
