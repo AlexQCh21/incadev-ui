@@ -5,6 +5,7 @@
  */
 
 import { config } from "@/config/technology-config";
+import type { WebDashboardData, FAQCategory } from "@/types/developer-web";
 
 // ============================================
 // Types & Interfaces
@@ -348,7 +349,7 @@ export const technologyApi = {
     updateProfile: async (data: UpdateProfileData): Promise<ProfileResponse> => {
       return apiClient.put<ProfileResponse>(config.endpoints.auth.profile, data);
     },
-    
+
     /**
      * Solicita un email de recuperación de contraseña
      */
@@ -878,6 +879,319 @@ export const technologyApi = {
         };
 
         return apiClient.get<any>(config.endpoints.security.events.statistics, params);
+      },
+    },
+  },
+
+  // ============================================
+  // Developer Web Module
+  // ============================================
+
+  developerWeb: {
+    /**
+     * Dashboard del módulo web
+     */
+    dashboard: async (): Promise<ApiResponse<WebDashboardData>> => {
+      return apiClient.get<ApiResponse<WebDashboardData>>(config.endpoints.developerWeb.stats.overall);
+    },
+
+    // News Management
+    news: {
+      /**
+       * Lista todas las noticias
+       */
+      list: async (params?: {
+        page?: number;
+        per_page?: number;
+        category?: number;
+        status?: string;
+        search?: string;
+      }): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.news.index, params);
+      },
+
+      /**
+       * Obtiene una noticia por ID
+       */
+      getById: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(
+          config.endpoints.developerWeb.news.show,
+          undefined,
+          { id }
+        );
+      },
+
+      /**
+       * Crea una nueva noticia
+       */
+      create: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(config.endpoints.developerWeb.news.store, data);
+      },
+
+      /**
+       * Actualiza una noticia
+       */
+      update: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put<ApiResponse<any>>(
+          config.endpoints.developerWeb.news.update,
+          data,
+          { id }
+        );
+      },
+
+      /**
+       * Elimina una noticia
+       */
+      delete: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete<ApiResponse<any>>(
+          config.endpoints.developerWeb.news.destroy,
+          { id }
+        );
+      },
+
+      /**
+       * Obtiene noticias publicadas
+       */
+      published: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.news.published);
+      },
+
+      /**
+       * Reinicia contador de vistas de una noticia
+       */
+      resetViews: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(
+          config.endpoints.developerWeb.news.resetViews,
+          {},
+          { id }
+        );
+      },
+
+      /**
+       * Obtiene categorías de noticias
+       */
+      categories: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.news.categories);
+      },
+
+      /**
+       * Obtiene estadísticas de noticias
+       */
+      stats: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.news.stats);
+      },
+    },
+
+    // Announcements Management
+    announcements: {
+      list: async (params?: {
+        page?: number;
+        per_page?: number;
+        status?: string;
+        target_page?: string;
+        search?: string;
+      }): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.announcements.index, params);
+      },
+
+      getById: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(
+          config.endpoints.developerWeb.announcements.show,
+          undefined,
+          { id }
+        );
+      },
+
+      create: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(config.endpoints.developerWeb.announcements.store, data);
+      },
+
+      update: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put<ApiResponse<any>>(
+          config.endpoints.developerWeb.announcements.update,
+          data,
+          { id }
+        );
+      },
+
+      delete: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete<ApiResponse<any>>(
+          config.endpoints.developerWeb.announcements.destroy,
+          { id }
+        );
+      },
+
+      published: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.announcements.published);
+      },
+
+      resetViews: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(
+          config.endpoints.developerWeb.announcements.resetViews,
+          {},
+          { id }
+        );
+      },
+
+      stats: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.announcements.stats);
+      },
+    },
+
+    // Alerts Management
+    alerts: {
+      list: async (params?: {
+        page?: number;
+        per_page?: number;
+        status?: string;
+        item_type?: string;
+        search?: string;
+      }): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.alerts.index, params);
+      },
+
+      getById: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(
+          config.endpoints.developerWeb.alerts.show,
+          undefined,
+          { id }
+        );
+      },
+
+      create: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(config.endpoints.developerWeb.alerts.store, data);
+      },
+
+      update: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put<ApiResponse<any>>(
+          config.endpoints.developerWeb.alerts.update,
+          data,
+          { id }
+        );
+      },
+
+      delete: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete<ApiResponse<any>>(
+          config.endpoints.developerWeb.alerts.destroy,
+          { id }
+        );
+      },
+
+      published: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.alerts.published);
+      },
+
+      stats: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.alerts.stats);
+      },
+    },
+
+    // Chatbot Analytics
+    chatbotAnalytics: {
+      summary: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.analytics.summary);
+      },
+    },
+
+    // Chatbot Config
+    chatbotConfig: {
+      get: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.config.get);
+      },
+      update: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.config.update, data);
+      },
+      reset: async (): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.config.reset);
+      }
+    },
+
+    // FAQs Management
+    faqs: {
+      list: async (params?: {
+        page?: number;
+        per_page?: number;
+        category?: string;  // Cambiado a string
+        active?: boolean;   // Cambiado de status a active
+        search?: string;
+      }): Promise<ApiResponse<any>> => {
+        const queryParams: Record<string, string | number> | undefined = params
+          ? Object.fromEntries(
+              Object.entries(params)
+                .filter(([, value]) => value !== undefined && value !== null)
+                .map(([key, value]) => {
+                  if (key === "active" && typeof value === "boolean") {
+                    return [key, value ? 1 : 0];
+                  }
+                  return [key, value as string | number];
+                })
+            )
+          : undefined;
+
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.faqs.index, queryParams);
+      },
+
+      getById: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(
+          config.endpoints.developerWeb.chatbot.faqs.show,
+          undefined,
+          { id }
+        );
+      },
+
+      create: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.faqs.store, data);
+      },
+
+      update: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put<ApiResponse<any>>(
+          config.endpoints.developerWeb.chatbot.faqs.update,
+          data,
+          { id }
+        );
+      },
+
+      delete: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete<ApiResponse<any>>(
+          config.endpoints.developerWeb.chatbot.faqs.destroy,
+          { id }
+        );
+      },
+
+      categories: async (): Promise<ApiResponse<FAQCategory[]>> => {
+        // Usar las categorías estáticas según la documentación
+        const staticCategories: FAQCategory[] = [
+          { value: "general", name: "General", color: "blue" },
+          { value: "academico", name: "Académico", color: "green" },
+          { value: "tecnico", name: "Técnico", color: "orange" },
+          { value: "pagos", name: "Pagos y Facturación", color: "purple" },
+          { value: "soporte", name: "Soporte Técnico", color: "red" },
+        ];
+
+        return Promise.resolve({
+          success: true,
+          data: staticCategories,
+          message: "Categorías cargadas correctamente"
+        });
+      },
+
+      stats: async (): Promise<ApiResponse<any>> => {
+        return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.faqs.stats);
+      },
+
+      // Public endpoints
+      public: {
+        list: async (): Promise<ApiResponse<any>> => {
+          return apiClient.get<ApiResponse<any>>(config.endpoints.developerWeb.chatbot.faqs.public.index);
+        },
+
+        getById: async (id: number): Promise<ApiResponse<any>> => {
+          return apiClient.get<ApiResponse<any>>(
+            config.endpoints.developerWeb.chatbot.faqs.public.show,
+            undefined,
+            { id }
+          );
+        },
       },
     },
   },

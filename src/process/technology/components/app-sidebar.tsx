@@ -12,15 +12,17 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
-import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode } from "@tabler/icons-react";
+import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode, IconUser } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface User {
   id: number
   name: string
   email: string
-  avatar?: string
+  avatar?: string | null
+  avatar_url?: string | null
   role?: string
 }
 
@@ -95,7 +97,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         return (
           <>
             <SidebarGroup>
-              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupLabel>Administración</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
@@ -106,14 +108,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            <SidebarGroup>
-              <SidebarGroupLabel>Gestión de Acceso</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.admin.users}>
@@ -135,6 +129,78 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.admin.permissions}>
                         <IconKey className="h-4 w-4" />
                         <span>Permisos</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Seguridad</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.dashboard}>
+                        <IconShield className="h-4 w-4" />
+                        <span>Dashboard Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.sessions}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Gestión de Sesiones</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.events}>
+                        <IconAlertTriangle className="h-4 w-4" />
+                        <span>Eventos de Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Soporte</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.support.tickets}>
+                        <IconTicket className="h-4 w-4" />
+                        <span>Mis Tickets</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.support.createTicket}>
+                        <IconFileText className="h-4 w-4" />
+                        <span>Crear Ticket</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Configuración</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.profile}>
+                        <IconSettings className="h-4 w-4" />
+                        <span>Perfil</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -209,6 +275,22 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.infrastructure.servers}>
                         <IconServer className="h-4 w-4" />
                         <span>Servidores</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.infrastructure.assets}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Activos Tecnológicos</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.infrastructure.licenses}>
+                        <IconServer className="h-4 w-4" />
+                        <span>Gestión de Licencias</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -372,9 +454,18 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
       <SidebarFooter>
         <div className="p-4 border-t space-y-3">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-              <span className="text-sm font-medium">{shownUser.name.charAt(0).toUpperCase()}</span>
-            </div>
+            <Avatar className="h-10 w-10 rounded-lg">
+              {user?.avatar_url || user?.avatar ? (
+                <AvatarImage
+                  src={user.avatar_url || user.avatar}
+                  alt={user.name}
+                  className="object-cover"
+                />
+              ) : null}
+              <AvatarFallback className="bg-primary/10 text-primary rounded-lg">
+                {shownUser.name ? shownUser.name.charAt(0).toUpperCase() : <IconUser className="h-5 w-5" />}
+              </AvatarFallback>
+            </Avatar>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{shownUser.name}</p>
               <p className="text-xs text-muted-foreground truncate">{shownUser.email}</p>
