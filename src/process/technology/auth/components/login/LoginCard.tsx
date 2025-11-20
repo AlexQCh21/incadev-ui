@@ -30,22 +30,22 @@ export function LoginCard({
   onSubmit
 }: LoginCardProps) {
   return (
-    <div className="bg-muted flex min-h-screen flex-col items-center justify-center p-6 md:p-10 pt-32">
+    <div className="bg-muted flex min-h-screen flex-col items-center justify-center p-3 sm:p-4 md:p-6 lg:p-10 pt-20 sm:pt-24 md:pt-32">
       <div className="w-full max-w-sm md:max-w-4xl">
         <Card className="overflow-hidden p-0">
           <CardContent className="grid p-0 md:grid-cols-2">
             {/* Formulario - Columna izquierda */}
-            <form className="p-6 md:p-8" onSubmit={onSubmit}>
+            <form className="p-4 sm:p-6 md:p-8" onSubmit={onSubmit}>
               <FieldGroup>
                 {/* Header del formulario */}
-                <div className="flex flex-col items-center gap-2 text-center mb-6">
-                  <div className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${selectedRole?.color || "from-primary to-primary"} mb-2`}>
-                    <RoleIcon className="h-9 w-9 text-white" />
+                <div className="flex flex-col items-center gap-2 text-center mb-4 sm:mb-6">
+                  <div className={`flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-gradient-to-br ${selectedRole?.color || "from-primary to-primary"} mb-2`}>
+                    <RoleIcon className="h-8 w-8 sm:h-9 sm:w-9 text-white" />
                   </div>
-                  <h1 className="text-2xl font-bold">
+                  <h1 className="text-xl sm:text-2xl font-bold">
                     {requires2FA ? "Verificación 2FA" : "Bienvenido"}
                   </h1>
-                  <p className="text-muted-foreground text-balance">
+                  <p className="text-muted-foreground text-balance text-sm sm:text-base">
                     {requires2FA
                       ? "Ingresa tu código de verificación"
                       : `Inicia sesión como ${selectedRole?.name || "usuario"}`}
@@ -82,13 +82,13 @@ export function LoginCard({
               <img
                 src="/ISOLOGOTIPO_VERTICAL.svg"
                 alt="INCADEV Tecnológico"
-                className="absolute inset-0 h-full w-full object-contain p-16 dark:brightness-[0.9]"
+                className="absolute inset-0 h-full w-full object-contain p-12 lg:p-16 dark:brightness-[0.9]"
               />
-              <div className="absolute bottom-8 left-8 right-8 text-center">
-                <h2 className="text-2xl font-bold text-foreground mb-2">
+              <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8 text-center">
+                <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
                   INCADEV Tecnológico
                 </h2>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm md:text-base">
                   Sistema de gestión de procesos tecnológicos
                 </p>
               </div>
@@ -97,7 +97,7 @@ export function LoginCard({
         </Card>
 
         {/* Footer con términos */}
-        <p className="px-6 text-center text-sm text-muted-foreground mt-6">
+        <p className="px-3 sm:px-6 text-center text-xs sm:text-sm text-muted-foreground mt-4 sm:mt-6">
           Al continuar, aceptas nuestros{" "}
           <a href="#" className="underline underline-offset-4 hover:text-foreground">
             Términos de Servicio

@@ -80,22 +80,22 @@ export function TwoFactorForm({
 
   return (
     <>
-      <div className="flex items-center justify-center gap-2 p-4 bg-blue-50 dark:bg-blue-950/50 rounded-lg border border-blue-200 dark:border-blue-800/50">
-        <IconShieldCheck className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-        <p className="text-sm text-foreground">
+      <div className="flex items-center justify-center gap-2 p-3 sm:p-4 bg-blue-50 dark:bg-blue-950/50 rounded-lg border border-blue-200 dark:border-blue-800/50">
+        <IconShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+        <p className="text-xs sm:text-sm text-foreground">
           Autenticación de dos factores activada
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         <div className="text-center">
-          <h3 className="text-lg font-semibold mb-2">Ingresa el código de verificación</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2">Ingresa el código de verificación</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground px-2">
             Ingresa el código de 6 dígitos de tu aplicación de autenticación
           </p>
         </div>
 
-        <div className="flex justify-center gap-3" onPaste={handlePaste}>
+        <div className="flex justify-center gap-1.5 sm:gap-2 md:gap-3" onPaste={handlePaste}>
           {code.map((digit, index) => (
             <input
               key={index}
@@ -107,17 +107,17 @@ export function TwoFactorForm({
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               disabled={isSubmitting}
-              className="w-12 h-14 text-center text-2xl font-semibold border-2 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-semibold border-2 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               aria-label={`Dígito ${index + 1}`}
             />
           ))}
         </div>
 
         {errors.code && (
-          <p className="text-sm text-red-500 text-center">{errors.code.message}</p>
+          <p className="text-xs sm:text-sm text-red-500 text-center">{errors.code.message}</p>
         )}
 
-        <p className="text-xs text-muted-foreground text-center">
+        <p className="text-[10px] sm:text-xs text-muted-foreground text-center px-2">
           Serás redirigido automáticamente después de ingresar el código
         </p>
       </div>
@@ -127,7 +127,7 @@ export function TwoFactorForm({
         variant="ghost"
         size="sm"
         onClick={handleBack}
-        className="text-sm"
+        className="text-xs sm:text-sm"
       >
         ← Volver al inicio de sesión
       </Button>

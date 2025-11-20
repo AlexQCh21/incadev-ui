@@ -7,7 +7,6 @@ import { z } from "zod"
 import { IconShieldCheck } from "@tabler/icons-react"
 
 // Components
-import { AuthHeader } from "./login/AuthHeader"
 import { RoleSelector } from "./login/RoleSelector"
 import { LoginCard } from "./login/LoginCard"
 import { LoginFormFields } from "./login/LoginFormFields"
@@ -136,7 +135,6 @@ export function LoginForm() {
   if (!showLoginForm) {
     return (
       <>
-        <AuthHeader />
         <RoleSelector onRoleSelect={handleRoleSelect} />
       </>
     )
@@ -148,7 +146,6 @@ export function LoginForm() {
 
   return (
     <>
-      <AuthHeader />
       <LoginCard
         selectedRole={selectedRoleData}
         roleIcon={RoleIcon}
