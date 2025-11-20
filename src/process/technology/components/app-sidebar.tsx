@@ -12,15 +12,17 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
-import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode } from "@tabler/icons-react";
+import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode, IconUser } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface User {
   id: number
   name: string
   email: string
-  avatar?: string
+  avatar?: string | null
+  avatar_url?: string | null
   role?: string
 }
 
@@ -452,9 +454,18 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
       <SidebarFooter>
         <div className="p-4 border-t space-y-3">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-              <span className="text-sm font-medium">{shownUser.name.charAt(0).toUpperCase()}</span>
-            </div>
+            <Avatar className="h-10 w-10 rounded-lg">
+              {user?.avatar_url || user?.avatar ? (
+                <AvatarImage
+                  src={user.avatar_url || user.avatar}
+                  alt={user.name}
+                  className="object-cover"
+                />
+              ) : null}
+              <AvatarFallback className="bg-primary/10 text-primary rounded-lg">
+                {shownUser.name ? shownUser.name.charAt(0).toUpperCase() : <IconUser className="h-5 w-5" />}
+              </AvatarFallback>
+            </Avatar>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{shownUser.name}</p>
               <p className="text-xs text-muted-foreground truncate">{shownUser.email}</p>
