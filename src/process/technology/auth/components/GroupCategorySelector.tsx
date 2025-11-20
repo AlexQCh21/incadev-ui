@@ -20,7 +20,7 @@ const iconMap: Record<string, any> = {
 
 export function GroupCategorySelector() {
   const [searchTerm, setSearchTerm] = useState("");
-
+  
   // Auto-redirect if user is already authenticated
   useEffect(() => {
     const token = localStorage.getItem("token");
