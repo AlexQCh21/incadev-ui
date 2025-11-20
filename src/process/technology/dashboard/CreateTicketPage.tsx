@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { TechnologyLayout } from "../components/TechnologyLayout"
+import TechnologyLayout from "../TechnologyLayout"
 import { useTechnologyAuth } from "../hooks/useTechnologyAuth"
 import { technologyApi } from "@/services/tecnologico/api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -100,7 +100,7 @@ export default function CreateTicketPage() {
 
   if (authLoading) {
     return (
-      <TechnologyLayout breadcrumbs={[{ label: "Crear Ticket" }]}>
+      <TechnologyLayout title="Crear Ticket">
         <div className="flex items-center justify-center h-96">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </div>
@@ -109,13 +109,7 @@ export default function CreateTicketPage() {
   }
 
   return (
-    <TechnologyLayout
-      breadcrumbs={[
-        { label: "Dashboard", href: "/tecnologico/support/dashboard" },
-        { label: "Tickets", href: "/tecnologico/support/tickets" },
-        { label: "Crear Ticket" },
-      ]}
-    >
+    <TechnologyLayout title="Crear Ticket">
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

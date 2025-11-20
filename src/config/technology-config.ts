@@ -6,8 +6,8 @@
 
 export const config = {
   //apiUrl:"https://instituto.cetivirgendelapuerta.com/procesostecnologicos/backend/public/api",
-  apiUrl:"http://localhost:8000/api",
-  environment:"development",
+  apiUrl: "http://localhost:8000/api",
+  environment: "development",
   endpoints: {
     // Authentication
     auth: {
@@ -92,7 +92,6 @@ export const config = {
       // Statistics
       statistics: "/support/statistics",
     },
-
     // Security Module
     security: {
       // Dashboard
@@ -115,5 +114,78 @@ export const config = {
         statistics: "/security/events/statistics", // Estadísticas de eventos
       },
     },
-  },
+
+    // Developer Web Module
+    developerWeb: {
+      // Estadísticas generales
+      stats: {
+        overall: "/developer-web/stats/overall",
+      },
+
+      // News
+      news: {
+        index: "/developer-web/news",
+        show: "/developer-web/news/:id",
+        store: "/developer-web/news",
+        update: "/developer-web/news/:id",
+        destroy: "/developer-web/news/:id",
+        published: "/developer-web/news/list/published",
+        resetViews: "/developer-web/news/:id/reset-views",
+        categories: "/developer-web/news/list/categories",
+        stats: "/developer-web/news/stats/summary",
+      },
+
+      // Announcements
+      announcements: {
+        index: "/developer-web/announcements",
+        show: "/developer-web/announcements/:id",
+        store: "/developer-web/announcements",
+        update: "/developer-web/announcements/:id",
+        destroy: "/developer-web/announcements/:id",
+        published: "/developer-web/announcements/list/published",
+        resetViews: "/developer-web/announcements/:id/reset-views",
+        stats: "/developer-web/announcements/stats/summary",
+      },
+
+      // Alerts
+      alerts: {
+        index: "/developer-web/alerts",
+        show: "/developer-web/alerts/:id",
+        store: "/developer-web/alerts",
+        update: "/developer-web/alerts/:id",
+        destroy: "/developer-web/alerts/:id",
+        published: "/developer-web/alerts/list/published",
+        stats: "/developer-web/alerts/stats/summary",
+      },
+
+      // Chatbot
+      chatbot: {
+        // Configuración del Chatbot
+        config: {
+          get: "/developer-web/chatbot/config",
+          update: "/developer-web/chatbot/config",
+          reset: "/developer-web/chatbot/config/reset",
+        },
+        // Analytics del Chatbot
+        analytics: {
+          summary: "/developer-web/chatbot/analytics/summary",
+          conversationsByDay: "/developer-web/chatbot/analytics/conversations-by-day",
+        },
+        // FAQs del Chatbot
+        faqs: {
+          public: {
+            index: "/developer-web/chatbot/faqs/public",
+            show: "/developer-web/chatbot/faqs/public/:id",
+          },
+          categories: "/developer-web/chatbot/faqs/categories",
+          index: "/developer-web/chatbot/faqs",
+          show: "/developer-web/chatbot/faqs/:id",
+          store: "/developer-web/chatbot/faqs",
+          update: "/developer-web/chatbot/faqs/:id",
+          destroy: "/developer-web/chatbot/faqs/:id",
+          stats: "/developer-web/chatbot/faqs/stats/summary",
+        },
+      },
+    },
+  }
 };

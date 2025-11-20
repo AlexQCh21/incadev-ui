@@ -15,8 +15,11 @@ import {
   IconMailCheck,
   IconTrash,
   IconRefresh,
-  IconQrcode
+  IconQrcode,
+  IconCamera,
+  IconUpload
 } from "@tabler/icons-react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
 import { config } from "@/config/technology-config"
 
@@ -27,6 +30,8 @@ interface User {
   email: string
   dni?: string
   phone?: string
+  avatar?: string | null
+  avatar_url?: string | null
   roles?: string[]
   two_factor_enabled?: boolean
   recovery_email?: string
@@ -61,6 +66,10 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [editMode, setEditMode] = useState(false)
+
+  // Avatar states
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
 
   // 2FA States
   const [show2FASetup, setShow2FASetup] = useState(false)
@@ -139,30 +148,63 @@ export default function ProfilePage() {
     }
   }
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validar tipo de archivo
+    if (!file.type.startsWith('image/')) {
+      toast.error('Solo se permiten archivos de imagen')
+      return
+    }
+
+    // Validar tamaño (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('La imagen debe ser menor a 5MB')
+      return
+    }
+
+    setAvatarFile(file)
+
+    // Crear preview
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result as string)
+    }
+    reader.readAsDataURL(file)
+  }
+
   const onSubmit = async (data: ProfileFormData) => {
     try {
       setSaving(true)
       const token = localStorage.getItem("token")
 
-      const updateData: any = {
-        name: data.name,
-        email: data.email,
-      }
-      if (data.fullname) updateData.fullname = data.fullname
-      if (data.dni) updateData.dni = data.dni
-      if (data.phone) updateData.phone = data.phone
+      // Usar FormData para soportar archivo de avatar
+      const formData = new FormData()
+      formData.append('_method', 'PUT')
+      formData.append('name', data.name)
+      formData.append('email', data.email)
+
+      if (data.fullname) formData.append('fullname', data.fullname)
+      if (data.dni) formData.append('dni', data.dni)
+      if (data.phone) formData.append('phone', data.phone)
       if (data.password) {
-        updateData.password = data.password
-        updateData.password_confirmation = data.password_confirmation
+        formData.append('password', data.password)
+        formData.append('password_confirmation', data.password_confirmation || '')
+      }
+
+      // Agregar avatar si se seleccionó uno
+      if (avatarFile) {
+        formData.append('avatar', avatarFile)
       }
 
       const response = await fetch(`${config.apiUrl}${config.endpoints.auth.profile}`, {
-        method: "PUT",
+        method: "POST", // POST porque usamos _method=PUT
         headers: {
           "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
+          // No establecer Content-Type, el navegador lo hará automáticamente con boundary
         },
-        body: JSON.stringify(updateData),
+        body: formData,
       })
 
       if (response.ok) {
@@ -177,6 +219,8 @@ export default function ProfilePage() {
 
           toast.success("Perfil actualizado exitosamente")
           setEditMode(false)
+          setAvatarFile(null)
+          setAvatarPreview(null)
           reset({
             ...data,
             password: "",
@@ -506,9 +550,18 @@ export default function ProfilePage() {
                   {!editMode ? (
                     <div className="space-y-6">
                       <div className="flex items-center gap-4 pb-4 border-b">
-                        <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
-                          <IconUser className="h-10 w-10 text-primary" />
-                        </div>
+                        <Avatar className="h-20 w-20 rounded-lg">
+                          {user?.avatar_url || user?.avatar ? (
+                            <AvatarImage
+                              src={user.avatar_url || user.avatar}
+                              alt={user.name}
+                              className="object-cover"
+                            />
+                          ) : null}
+                          <AvatarFallback className="bg-primary/10 text-primary text-2xl rounded-lg">
+                            {user?.name ? user.name.charAt(0).toUpperCase() : <IconUser className="h-10 w-10" />}
+                          </AvatarFallback>
+                        </Avatar>
                         <div>
                           <p className="text-xl font-semibold">{user?.fullname || user?.name}</p>
                           <p className="text-sm text-muted-foreground">{user?.email}</p>
@@ -552,6 +605,52 @@ export default function ProfilePage() {
                     </div>
                   ) : (
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                      {/* Avatar Upload Section */}
+                      <div className="flex flex-col items-center gap-4 pb-4 border-b">
+                        <div className="relative group">
+                          <Avatar className="h-32 w-32 rounded-lg">
+                            {avatarPreview ? (
+                              <AvatarImage src={avatarPreview} alt="Preview" className="object-cover" />
+                            ) : user?.avatar_url || user?.avatar ? (
+                              <AvatarImage
+                                src={user.avatar_url || user.avatar}
+                                alt={user.name}
+                                className="object-cover"
+                              />
+                            ) : null}
+                            <AvatarFallback className="bg-primary/10 text-primary text-4xl rounded-lg">
+                              {user?.name ? user.name.charAt(0).toUpperCase() : <IconUser className="h-16 w-16" />}
+                            </AvatarFallback>
+                          </Avatar>
+                          <label
+                            htmlFor="avatar-upload"
+                            className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                          >
+                            <IconCamera className="h-8 w-8 text-white" />
+                          </label>
+                          <input
+                            id="avatar-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarChange}
+                            className="hidden"
+                            disabled={isSubmitting || saving}
+                          />
+                        </div>
+                        <div className="text-center">
+                          <label
+                            htmlFor="avatar-upload"
+                            className="inline-flex items-center gap-2 text-sm text-primary hover:underline cursor-pointer"
+                          >
+                            <IconUpload className="h-4 w-4" />
+                            {avatarFile || user?.avatar_url || user?.avatar ? 'Cambiar foto' : 'Subir foto de perfil'}
+                          </label>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            JPG, PNG o GIF. Máximo 5MB
+                          </p>
+                        </div>
+                      </div>
+
                       <FieldGroup>
                         <div className="grid gap-4 md:grid-cols-2">
                           <Field>
@@ -624,6 +723,8 @@ export default function ProfilePage() {
                           variant="outline"
                           onClick={() => {
                             setEditMode(false)
+                            setAvatarFile(null)
+                            setAvatarPreview(null)
                             reset()
                           }}
                         >

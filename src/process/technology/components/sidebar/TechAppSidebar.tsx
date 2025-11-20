@@ -11,8 +11,7 @@ import {
   Code,
   Settings,
   ShieldCheck,
-  Monitor,
-  Activity,
+  Bot,
 } from "lucide-react"
 
 import { NavMain } from "./NavMain"
@@ -49,8 +48,12 @@ const getNavigationByRole = (role: string) => {
         isActive: true,
         items: [
           {
+            title: "Dashboard",
+            url: "/tecnologico/admin/dashboard",
+          },
+          {
             title: "Usuarios",
-            url: "/tecnologico/admin/users",
+            url: "/tecnologico/admin/usuarios",
           },
           {
             title: "Roles",
@@ -58,7 +61,7 @@ const getNavigationByRole = (role: string) => {
           },
           {
             title: "Permisos",
-            url: "/tecnologico/admin/permissions",
+            url: "/tecnologico/admin/permisos",
           },
         ],
       },
@@ -68,16 +71,16 @@ const getNavigationByRole = (role: string) => {
         icon: ShieldCheck,
         items: [
           {
-            title: "Dashboard",
-            url: "/tecnologico/admin/security/dashboard",
+            title: "Dashboard Seguridad",
+            url: "/tecnologico/admin/seguridad-dashboard",
           },
           {
             title: "Gestión de Sesiones",
-            url: "/tecnologico/admin/security/sesiones",
+            url: "/tecnologico/admin/sesiones",
           },
           {
             title: "Eventos de Seguridad",
-            url: "/tecnologico/admin/security/eventos",
+            url: "/tecnologico/admin/eventos",
           },
         ],
       },
@@ -88,11 +91,11 @@ const getNavigationByRole = (role: string) => {
         items: [
           {
             title: "Mis Tickets",
-            url: "/tecnologico/support/tickets",
+            url: "/tecnologico/admin/tickets",
           },
           {
             title: "Crear Ticket",
-            url: "/tecnologico/support/tickets/crear",
+            url: "/tecnologico/admin/crear-ticket",
           },
         ],
       },
@@ -101,10 +104,6 @@ const getNavigationByRole = (role: string) => {
         url: "#",
         icon: Settings,
         items: [
-          {
-            title: "General",
-            url: "/tecnologico/admin/settings",
-          },
           {
             title: "Perfil",
             url: "/tecnologico/admin/perfil",
@@ -269,8 +268,47 @@ const getNavigationByRole = (role: string) => {
         isActive: true,
         items: [
           {
+            title: "Dashboard",
+            url: "/tecnologico/web/dashboard",
+          },
+          {
+            title: "Noticias",
+            url: "/tecnologico/web/noticias",
+          },
+          {
+            title: "Anuncios",
+            url: "/tecnologico/web/anuncios",
+          },
+          {
+            title: "Alertas",
+            url: "/tecnologico/web/alertas",
+          },
+          {
             title: "Proyectos",
             url: "/tecnologico/web/proyectos",
+          },
+        ],
+      },
+      {
+        title: "Chatbot",
+        url: "#",
+        icon: Bot,
+        items: [
+          {
+            title: "Dashboard",
+            url: "/tecnologico/web/chatbot/dashboard",
+          },
+          {
+            title: "FAQs",
+            url: "/tecnologico/web/chatbot/faqs",
+          },
+          {
+            title: "Configuración",
+            url: "/tecnologico/web/chatbot/configuracion",
+          },
+          {
+            title: "Analytics",
+            url: "/tecnologico/web/chatbot/analytics",
           },
         ],
       },
@@ -339,7 +377,6 @@ export function TechAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar
         email: "usuario@incadev.com",
         avatar: typeof window !== "undefined" ? `${window.location.origin}/tecnologico/9440461.webp` : "/tecnologico/9440461.webp",
       }
-
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

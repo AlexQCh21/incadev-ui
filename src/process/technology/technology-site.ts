@@ -1,13 +1,18 @@
 import type { LucideIcon } from "lucide-react"
 import {
   IconDatabase,
-  IconReport,
   IconHelp,
   IconSearch,
   IconSettings,
   IconUsers,
   IconShieldLock,
   IconKey,
+  IconNews,
+  IconBell,
+  IconAlertTriangle,
+  IconMessageCircle,
+  IconRobot,
+  IconChartBar,
   type Icon
 } from "@tabler/icons-react"
 
@@ -31,9 +36,13 @@ export const routes = {
     permissions: "/tecnologico/admin/permisos",
     profile: "/tecnologico/admin/perfil",
     security: {
-      dashboard: "/tecnologico/admin/security/dashboard",
-      sessions: "/tecnologico/admin/security/sesiones",
-      events: "/tecnologico/admin/security/eventos",
+      dashboard: "/tecnologico/admin/seguridad-dashboard",
+      sessions: "/tecnologico/admin/sesiones",
+      events: "/tecnologico/admin/eventos",
+    },
+    support: {
+      tickets: "/tecnologico/admin/tickets",
+      createTicket: "/tecnologico/admin/crear-ticket",
     },
   },
   support: {
@@ -45,6 +54,8 @@ export const routes = {
   },
   infrastructure: {
     servers: "/tecnologico/infrastructure/servidores",
+    licenses: "/tecnologico/infrastructure/licenses",
+
     profile: "/tecnologico/infrastructure/perfil",
   },
   security: {
@@ -56,10 +67,22 @@ export const routes = {
     profile: "/tecnologico/academic_analyst/perfil",
   },
   web: {
+    dashboard: "/tecnologico/web/dashboard",
+    news: "/tecnologico/web/noticias",
+    announcements: "/tecnologico/web/anuncios", 
+    alerts: "/tecnologico/web/alertas",
     projects: "/tecnologico/web/proyectos",
     profile: "/tecnologico/web/perfil",
+    // Nuevo módulo Chatbot
+    chatbot: {
+      dashboard: "/tecnologico/web/chatbot/dashboard",
+      faqs: "/tecnologico/web/chatbot/faqs",
+      configuracion: "/tecnologico/web/chatbot/configuracion",
+      analytics: "/tecnologico/web/chatbot/analytics",
+    }
   }
 };
+
 
 export interface NavItem {
   title: string;
@@ -124,5 +147,51 @@ export const navMainOptions: NavSimpleItem[] = [
     title: "Search",
     url: "#",
     icon: IconSearch,
+  },
+];
+
+export const navWebMain: NavSimpleItem[] = [
+  {
+    title: "Dashboard",
+    url: "/tecnologico/web/dashboard",
+    icon: IconDatabase,
+  },
+  {
+    title: "Noticias",
+    url: "/tecnologico/web/noticias",
+    icon: IconNews,
+  },
+  {
+    title: "Anuncios",
+    url: "/tecnologico/web/anuncios",
+    icon: IconBell,
+  },
+  {
+    title: "Alertas",
+    url: "/tecnologico/web/alertas",
+    icon: IconAlertTriangle,
+  },
+];
+
+export const navChatbotMain: NavSimpleItem[] = [
+  {
+    title: "Dashboard Chatbot",
+    url: "/tecnologico/web/chatbot/dashboard",
+    icon: IconRobot,
+  },
+  {
+    title: "FAQs",
+    url: "/tecnologico/web/chatbot/faqs",
+    icon: IconMessageCircle,
+  },
+  {
+    title: "Configuración",
+    url: "/tecnologico/web/chatbot/configuracion",
+    icon: IconSettings,
+  },
+  {
+    title: "Analytics",
+    url: "/tecnologico/web/chatbot/analytics",
+    icon: IconChartBar,
   },
 ];
