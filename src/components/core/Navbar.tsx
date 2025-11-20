@@ -97,7 +97,7 @@ export function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/login-modules";
+    window.location.href = "/auth";
   };
 
   // Navegar al perfil
@@ -193,7 +193,7 @@ export function Navbar() {
               // Usuario no logeado - mostrar botones de ingresar/registrarse
               <div className="hidden sm:flex gap-2">
                 <Button variant="ghost" size="sm" asChild>
-                  <a href="/login-modules">Ingresar</a>
+                  <a href="/auth">Ingresar</a>
                 </Button>
                 <Button size="sm" asChild>
                   <a href="/academico/register">Registrarse</a>
@@ -269,7 +269,7 @@ export function Navbar() {
                       // Usuario no logeado en mobile
                       <div className="flex flex-col gap-2">
                         <Button variant="outline" className="w-full" asChild>
-                          <a href="/login-modules">Ingresar</a>
+                          <a href="/auth">Ingresar</a>
                         </Button>
                         <Button className="w-full" asChild>
                           <a href="/academico/register">Registrarse</a>

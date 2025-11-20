@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   Server, ClipboardList, Users, Megaphone, GraduationCap,
-  Heart, Calendar, Search, ArrowRight
+  Heart, Calendar, Search, ArrowRight, Home
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { MODULE_CATEGORIES, type ModuleCategory } from "@/types/module-categories";
 import { ModeToggle } from "@/components/core/ModeToggle";
 import { getDashboardRoute, hasConfiguredRoute, DEFAULT_DASHBOARD_ROUTE } from "@/config/dashboard-routes";
@@ -70,6 +71,19 @@ export function GroupCategorySelector() {
         <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
           Elige el módulo correspondiente a tu área de trabajo para acceder al sistema
         </p>
+
+        {/* Botón volver a inicio */}
+        <div className="mt-6">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.location.href = '/'}
+            className="gap-2"
+          >
+            <Home className="h-4 w-4" />
+            Volver a Inicio
+          </Button>
+        </div>
       </div>
 
       {/* Search Bar */}
@@ -86,8 +100,8 @@ export function GroupCategorySelector() {
         </div>
       </div>
 
-      {/* Categories Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+      {/* Categories Grid - Diseño rectangular compacto */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 max-w-5xl mx-auto">
         {filteredCategories.map((category, index) => {
           const Icon = iconMap[category.icon] || Server;
 
@@ -95,36 +109,36 @@ export function GroupCategorySelector() {
             <Card
               key={category.id}
               onClick={() => handleCategoryClick(category)}
-              className="group cursor-pointer border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2 bg-background/50 backdrop-blur-sm overflow-hidden animate-in fade-in slide-in-from-bottom duration-500"
+              className="group cursor-pointer border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5 bg-background/50 backdrop-blur-sm overflow-hidden animate-in fade-in slide-in-from-bottom duration-500 relative"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Gradiente de fondo */}
               <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`} />
 
-              <CardHeader className="pb-3 sm:pb-4 p-4 sm:p-6">
-                <div className="flex items-start justify-between mb-3 sm:mb-4">
-                  <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center ${category.color} shadow-lg ring-2 sm:ring-4 ring-background group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                    <Icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8" />
+              <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 md:p-5">
+                {/* Icono */}
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${category.gradient} flex items-center justify-center ${category.color} shadow-md ring-2 ring-background group-hover:scale-105 transition-all duration-300 flex-shrink-0`}>
+                  <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                </div>
+
+                {/* Contenido */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <CardTitle className="text-base sm:text-lg md:text-xl group-hover:text-primary transition-colors">
+                      {category.name}
+                    </CardTitle>
+                    <Badge variant="secondary" className="font-mono px-2 py-0.5 text-[10px] sm:text-xs flex-shrink-0">
+                      {category.roleCount} {category.roleCount === 1 ? 'rol' : 'roles'}
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="font-mono px-2 py-0.5 sm:px-3 sm:py-1 text-xs">
-                    {category.roleCount} {category.roleCount === 1 ? 'rol' : 'roles'}
-                  </Badge>
+                  <CardDescription className="text-xs sm:text-sm leading-relaxed line-clamp-1">
+                    {category.description}
+                  </CardDescription>
                 </div>
 
-                <CardTitle className="text-lg sm:text-xl md:text-2xl group-hover:text-primary transition-colors">
-                  {category.name}
-                </CardTitle>
-                <CardDescription className="text-sm sm:text-base leading-relaxed mt-1.5 sm:mt-2">
-                  {category.description}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="pt-0 p-4 sm:p-6">
-                <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                  <span className="font-medium">Acceder al módulo</span>
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </CardContent>
+                {/* Flecha */}
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
+              </div>
             </Card>
           );
         })}
