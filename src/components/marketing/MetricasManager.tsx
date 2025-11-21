@@ -12,10 +12,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 // Tabs removed - using custom button navigation
-import PropuestaMetricasTable from './metricas/PropuestaMetricasTable';
-import PublicacionesTable from './metricas/PublicacionesTable';
-import GraficoComparativa from './metricas/GraficoComparativa';
-import GraficoTendencia from './metricas/GraficoTendencia';
+import PropuestaMetricasTable from '../../components/marketing/metricas/PropuestaMetricasTable';
+import PublicacionesTable from '../../components/marketing/metricas/PublicacionesTable';
+import GraficoComparativa from '../../components/marketing/metricas/GraficoComparativa';
+import GraficoTendencia from '../../components/marketing/metricas/GraficoTendencia';
 
 interface KPI {
   label: string;
