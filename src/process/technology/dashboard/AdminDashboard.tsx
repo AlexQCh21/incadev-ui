@@ -1,15 +1,10 @@
-import { TechnologyLayout } from "@/process/technology/components/TechnologyLayout"
+import TechnologyLayout from "@/process/technology/TechnologyLayout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { IconUsers, IconShieldLock, IconKey, IconActivity } from "@tabler/icons-react"
 
 export default function AdminDashboard() {
   return (
-    <TechnologyLayout
-      breadcrumbs={[
-        { label: "Administración", href: "/tecnologico/admin/dashboard" },
-        { label: "Dashboard" },
-      ]}
-    >
+    <TechnologyLayout title="Dashboard - Administración">
       {/* Header */}
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold tracking-tight">Bienvenido al Panel de Administración</h2>

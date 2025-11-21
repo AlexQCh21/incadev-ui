@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { TechnologyLayout } from "../components/TechnologyLayout"
+import TechnologyLayout from "../TechnologyLayout"
 import { useTechnologyAuth } from "../hooks/useTechnologyAuth"
 import { technologyApi, getStoredUser } from "@/services/tecnologico/api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -222,9 +222,9 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
 
   if (authLoading || loading) {
     return (
-      <TechnologyLayout breadcrumbs={[{ label: "Cargando..." }]}>
+      <TechnologyLayout title="Cargando...">
         <div className="flex items-center justify-center h-96">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       </TechnologyLayout>
     )
@@ -232,10 +232,10 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
 
   if (!ticket) {
     return (
-      <TechnologyLayout breadcrumbs={[{ label: "Ticket no encontrado" }]}>
+      <TechnologyLayout title="Ticket no encontrado">
         <div className="text-center py-12">
-          <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500 font-medium">Ticket no encontrado</p>
+          <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-muted-foreground font-medium">Ticket no encontrado</p>
           <Button className="mt-4" onClick={() => window.location.href = "/tecnologico/support/tickets"}>
             Volver a Tickets
           </Button>
@@ -247,13 +247,7 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
   const canRespond = ticket.status !== "closed"
 
   return (
-    <TechnologyLayout
-      breadcrumbs={[
-        { label: "Dashboard", href: "/tecnologico/support/dashboard" },
-        { label: "Tickets", href: "/tecnologico/support/tickets" },
-        { label: `Ticket #${ticket.id}` },
-      ]}
-    >
+    <TechnologyLayout title={`Ticket #${ticket.id}`}>
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -267,9 +261,9 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
                 <ArrowLeft className="w-4 h-4 mr-1" />
                 Volver
               </Button>
-              <span className="text-sm text-gray-500">Ticket #{ticket.id}</span>
+              <span className="text-sm text-muted-foreground">Ticket #{ticket.id}</span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{ticket.title}</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">{ticket.title}</h1>
             <div className="flex items-center gap-3 flex-wrap">
               <Badge
                 variant="outline"
@@ -352,16 +346,16 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar>
-                  <AvatarFallback className="bg-blue-100 text-blue-700">
+                  <AvatarFallback className="bg-blue-100 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400">
                     {getInitials(ticket.user.name)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium">{ticket.user.name}</p>
-                  <p className="text-sm text-gray-500">{ticket.user.email}</p>
+                  <p className="font-medium text-foreground">{ticket.user.name}</p>
+                  <p className="text-sm text-muted-foreground">{ticket.user.email}</p>
                 </div>
               </div>
-              <div className="text-right text-sm text-gray-500">
+              <div className="text-right text-sm text-muted-foreground">
                 <p>Creado: {formatDate(ticket.created_at)}</p>
                 <p>Actualizado: {formatDate(ticket.updated_at)}</p>
               </div>
@@ -378,18 +372,18 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
           <CardContent className="space-y-6">
             {ticket.replies && ticket.replies.length > 0 ? (
               ticket.replies.map((reply: TicketReply, index: number) => (
-                <div key={reply.id} className="border-l-2 border-gray-200 pl-4 pb-4">
+                <div key={reply.id} className="border-l-2 border-border pl-4 pb-4">
                   <div className="flex items-start gap-3">
                     <Avatar className="mt-1">
-                      <AvatarFallback className="bg-purple-100 text-purple-700 text-xs">
+                      <AvatarFallback className="bg-purple-100 dark:bg-purple-950/30 text-purple-700 dark:text-purple-400 text-xs">
                         {getInitials(reply.user.name)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <div>
-                          <p className="font-medium">{reply.user.name}</p>
-                          <p className="text-xs text-gray-500">{formatDate(reply.created_at)}</p>
+                          <p className="font-medium text-foreground">{reply.user.name}</p>
+                          <p className="text-xs text-muted-foreground">{formatDate(reply.created_at)}</p>
                         </div>
                         {index === 0 && (
                           <Badge variant="outline" className="text-xs">
@@ -397,14 +391,14 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
                           </Badge>
                         )}
                       </div>
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <p className="text-gray-700 whitespace-pre-wrap">{reply.content}</p>
+                      <div className="bg-muted/50 rounded-lg p-4">
+                        <p className="text-foreground whitespace-pre-wrap">{reply.content}</p>
                       </div>
 
                       {/* Attachments */}
                       {reply.attachments && reply.attachments.length > 0 && (
                         <div className="mt-3 space-y-2">
-                          <p className="text-sm font-medium text-gray-600">
+                          <p className="text-sm font-medium text-muted-foreground">
                             Archivos adjuntos ({reply.attachments.length}):
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -434,7 +428,7 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-4">No hay respuestas aún</p>
+              <p className="text-muted-foreground text-center py-4">No hay respuestas aún</p>
             )}
           </CardContent>
         </Card>
@@ -459,7 +453,7 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
                   rows={6}
                   disabled={submittingReply}
                 />
-                <p className="text-xs text-gray-500">Mínimo 5 caracteres</p>
+                <p className="text-xs text-muted-foreground">Mínimo 5 caracteres</p>
               </div>
 
               {/* Attachments */}
@@ -476,7 +470,7 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
                     <Paperclip className="w-4 h-4 mr-2" />
                     Adjuntar Archivos
                   </Button>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-muted-foreground">
                     {attachments.length}/5 archivos (máx 10MB cada uno)
                   </span>
                 </div>
@@ -495,14 +489,14 @@ export default function TicketDetailPage({ ticketId }: TicketDetailPageProps) {
                     {attachments.map((file, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 bg-gray-100 rounded-md px-3 py-2 text-sm"
+                        className="flex items-center gap-2 bg-muted rounded-md px-3 py-2 text-sm"
                       >
                         {getFileIcon(file.name)}
-                        <span className="max-w-[150px] truncate">{file.name}</span>
+                        <span className="max-w-[150px] truncate text-foreground">{file.name}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveAttachment(index)}
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
                         >
                           <X className="w-4 h-4" />
                         </button>
