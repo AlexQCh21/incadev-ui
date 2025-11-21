@@ -1,4 +1,4 @@
-// src/process/marketing/Sidebar.tsx
+// src/components/marketing/Sidebar.tsx
 import React from 'react';
 import { LayoutDashboard, FileText, Calendar, Users, TrendingUp, MessageSquare, Bot, Inbox, Plug, BarChart3, ChevronDown, ChevronRight } from 'lucide-react';
 import { ModeToggle } from '@/components/core/ModeToggle';
@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { href: '/marketing/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/marketing/propuestas', icon: FileText, label: 'Propuestas' },
   { href: '/marketing/cursos', icon: Calendar, label: 'Cursos' },
+  { href: '/marketing/campañas', icon: TrendingUp, label: 'Campañas' },
   { href: '/marketing/alumnos', icon: Users, label: 'Alumnos' },
   {
     href: '/marketing/chatbot',

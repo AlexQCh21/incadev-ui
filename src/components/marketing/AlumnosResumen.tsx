@@ -62,11 +62,11 @@ export default function AlumnosResumen() {
             return (
               <div 
                 key={s.label} 
-                className={'p-4 rounded-lg border hover:shadow-md transition-all duration-200 ease-in-out cursor-pointer group ' + s.bg + ' ' + s.border}
+                className={'p-4 rounded-lg border hover:shadow-md smooth-transition cursor-pointer group ' + s.bg + ' ' + s.border}
               >
                 <div className="flex flex-col items-center text-center space-y-2">
                   <div className={'p-3 rounded-full ' + s.bg}>
-                    <Icon className={'w-6 h-6 group-hover:scale-110 transition-all duration-200 ease-in-out ' + s.color} />
+                    <Icon className={'w-6 h-6 group-hover:scale-110 smooth-transition ' + s.color} />
                   </div>
                   <div>
                     <p className={'text-2xl font-bold ' + s.color}>{s.value}</p>
@@ -87,12 +87,12 @@ export default function AlumnosResumen() {
           <div className="mt-6 grid grid-cols-2 gap-3">
             <a
               href="/marketing/alumnos"
-              className="py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm text-center transition-all duration-200 ease-in-out"
+              className="py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm text-center smooth-transition"
             >
               Ver reporte completo
             </a>
             <button
-              className="py-2.5 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg font-medium text-sm transition-all duration-200 ease-in-out"
+              className="py-2.5 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg font-medium text-sm smooth-transition"
             >
               Exportar datos
             </button>

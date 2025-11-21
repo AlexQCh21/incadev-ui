@@ -56,11 +56,11 @@ export default function CursosProximos() {
           return (
             <div 
               key={c.id} 
-              className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-md transition-all duration-200 ease-in-out group cursor-pointer"
+              className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-md smooth-transition group cursor-pointer"
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-200 ease-in-out">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 smooth-transition">
                     {c.nombre}
                   </h4>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
@@ -77,7 +77,7 @@ export default function CursosProximos() {
                     </span>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all duration-200 ease-in-out" />
+                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 smooth-transition" />
               </div>
 
               <div className="space-y-2">
@@ -97,7 +97,7 @@ export default function CursosProximos() {
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
                   <div
-                    className={'h-2 rounded-full transition-all duration-200 ease-in-out ' + progressClass}
+                    className={'h-2 rounded-full smooth-transition ' + progressClass}
                     style={{ width: porcentaje + '%' }}
                   ></div>
                 </div>
@@ -108,7 +108,7 @@ export default function CursosProximos() {
         
         <a
           href="/marketing/cursos"
-          className="flex items-center justify-center w-full mt-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-all duration-200 ease-in-out"
+          className="flex items-center justify-center w-full mt-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg font-medium text-sm smooth-transition"
         >
           Ver todos los cursos →
         </a>

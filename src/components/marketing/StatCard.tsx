@@ -2,7 +2,6 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { FileText, Calendar, Users, Megaphone, TrendingUp, TrendingDown } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface StatCardProps {
   title: string;
@@ -58,10 +57,10 @@ export default function StatCard({ title, value, icon, color, trend }: StatCardP
   const colors = colorClasses[color];
 
   return (
-    <Card className={'transition-all duration-200 ease-in-out hover:shadow-lg relative overflow-hidden group ' + colors.bg + ' ' + colors.border}>
-      <div className={'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-all duration-200 ease-in-out ' + colors.gradient}></div>
-
-      <CardContent className="relative p-6">
+    <div className={'rounded-xl p-6 smooth-transition hover:shadow-lg relative overflow-hidden group border ' + colors.bg + ' ' + colors.border}>
+      <div className={'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 smooth-transition ' + colors.gradient}></div>
+      
+      <div className="relative">
         <div className="flex items-start justify-between mb-4">
           <div>
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
@@ -91,7 +90,7 @@ export default function StatCard({ title, value, icon, color, trend }: StatCardP
             </span>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
