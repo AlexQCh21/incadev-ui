@@ -7,12 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import AddLicenseForm from "./AddLicenseForm";
 
 export default function LicensesPage(){
 
     const [softwareList, setSoftwareList] = useState([]);
     const [licenses, setLicenses] = useState([]);
-
+    const [createModal, setCreateModal] = useState(false);
     async function fetchSoftware(){
       const res = await fetch("http://localhost:8000/api/infrastructure/softwares");
       const data = await res.json();
@@ -30,7 +31,11 @@ export default function LicensesPage(){
       fetchLicenses();
     }, []);
     
-
+    <AddLicenseForm
+      open={createModal}
+      onClose={() => setCreateModal(false)}
+      softwareList={softwareList}
+      onCreate={(newLic) => setLicenses([...licenses, newLic])}/>
 
 
     const [editModal, setEditModal] = useState({
@@ -63,11 +68,17 @@ export default function LicensesPage(){
       
     return (
         <TechnologyLayout title="Licencias: Infraestructura">
-            <a href="/"> Volver</a>
             <h1>Gestión de Licencias</h1>
 
             <section style={ {maxWidth: 900}}>
-                <h2>Agregar licencia</h2>
+
+              <div className="flex-justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Licencias</h2>
+                <Button onClick={() => setCreateModal(true)}>
+                  Agregar licencia
+                </Button>
+              </div>
+                <AddLicenseForm open={createModal} onClose={() => setCreateModal(false)} softwareList={softwareList} onCreate={(lic) => setLicenses([...licenses, lic])} />
                 {licensesBySoftware.map(soft => (
                 <SoftwareCard 
                   key = {soft.id} 
@@ -369,6 +380,4 @@ function statusColor(status) {
     default:
       return { background: "#999" };
   }
-}
-
-
+};
