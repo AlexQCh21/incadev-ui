@@ -52,7 +52,7 @@ export const adminNavItems: NavItem[] = [
     url: "#",
     icon: IconSchool,
     items: [
-      { title: "Estudiantes", url: "/administrativo/estudiantes" },
+      { title: "Estudiantes", url: "/administrativo/gestion-academica/estudiantes" },
       { title: "Matrículas", url: "/administrativo/matriculas" },
       { title: "Historial Académico", url: "/administrativo/historial" },
     ],
