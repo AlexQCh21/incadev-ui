@@ -61,8 +61,8 @@ export const ROLE_ROUTES: Record<string, string> = {
   // ========================================
   // 🎓 GRUPO VÁSQUEZ - ACADÉMICO
   // ========================================
-  teacher: "/academico/teacher/dashboard",
-  student: "/academico/student/dashboard",
+  teacher: "/academico/dashboard",
+  student: "/academico/dashboard",
 
   // ========================================
   // 🧠 GRUPO DE LEYTON - TUTORÍAS Y ADMINISTRACIÓN
