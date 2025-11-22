@@ -60,7 +60,7 @@ export function ForgotPasswordForm() {
             Recuperar Contraseña
           </CardTitle>
           <CardDescription className="text-base">
-            Ingresa tu correo de recuperación y te enviaremos un enlace para restablecer tu contraseña
+            Ingresa tu correo secundario y te enviaremos un enlace para restablecer tu contraseña
           </CardDescription>
         </CardHeader>
 
@@ -90,11 +90,11 @@ export function ForgotPasswordForm() {
 
             {/* Email Field */}
             <div className="space-y-2">
-              <Label htmlFor="email">Correo de Recuperación</Label>
+              <Label htmlFor="email">Correo Secundario</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="tu-recovery@email.com"
+                placeholder="tu-email-secundario@gmail.com"
                 {...register("email")}
                 disabled={loading}
                 aria-invalid={errors.email ? "true" : "false"}

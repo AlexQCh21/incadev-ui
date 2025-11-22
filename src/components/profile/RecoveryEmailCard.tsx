@@ -50,22 +50,40 @@ export function RecoveryEmailCard({
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-xl">
           <IconMail className="h-5 w-5" />
-          Email de Recuperación
+          Email Secundario
         </CardTitle>
         <CardDescription className="text-sm mt-1.5">
-          Email alternativo para recuperar tu cuenta
+          Correo alternativo para recuperar tu contraseña y recibir notificaciones importantes de seguridad
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 p-8">
-        {recoveryEmail && recoveryEmailVerified ? (
+        {recoveryEmail ? (
           <>
-            <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
-              <IconMailCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <div className={`flex items-center gap-2 p-3 rounded-lg border ${
+              recoveryEmailVerified
+                ? 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800'
+                : 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800'
+            }`}>
+              <IconMailCheck className={`h-5 w-5 ${
+                recoveryEmailVerified
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-yellow-600 dark:text-yellow-400'
+              }`} />
               <div className="flex-1">
-                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                <p className={`text-sm font-medium ${
+                  recoveryEmailVerified
+                    ? 'text-blue-900 dark:text-blue-100'
+                    : 'text-yellow-900 dark:text-yellow-100'
+                }`}>
                   {recoveryEmail}
                 </p>
-                <p className="text-xs text-blue-700 dark:text-blue-300">Verificado</p>
+                <p className={`text-xs ${
+                  recoveryEmailVerified
+                    ? 'text-blue-700 dark:text-blue-300'
+                    : 'text-yellow-700 dark:text-yellow-300'
+                }`}>
+                  {recoveryEmailVerified ? 'Verificado' : 'Pendiente de verificación'}
+                </p>
               </div>
             </div>
 
@@ -76,7 +94,7 @@ export function RecoveryEmailCard({
               className="w-full"
             >
               <IconTrash className="mr-2 h-4 w-4" />
-              Eliminar Email de Recuperación
+              Eliminar Email Secundario
             </Button>
           </>
         ) : !showRecoveryEmailSetup ? (
@@ -85,7 +103,7 @@ export function RecoveryEmailCard({
             className="w-full"
           >
             <IconMail className="mr-2 h-4 w-4" />
-            Agregar Email de Recuperación
+            Agregar Email Secundario
           </Button>
         ) : recoveryEmailStep === 'add' ? (
           <div className="space-y-4">
@@ -98,10 +116,10 @@ export function RecoveryEmailCard({
               </div>
 
               <div className="space-y-2">
-                <FieldLabel>Email de Recuperación</FieldLabel>
+                <FieldLabel>Email Secundario</FieldLabel>
                 <Input
                   type="email"
-                  placeholder="recovery@example.com"
+                  placeholder="tu-email-secundario@gmail.com"
                   value={recoveryEmailInput}
                   onChange={(e) => onRecoveryEmailInputChange(e.target.value)}
                 />

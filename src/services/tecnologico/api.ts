@@ -72,11 +72,12 @@ export interface User {
   dni?: string;
   phone?: string;
   avatar?: string;
+  avatar_url?: string | null;
   roles?: string[];
   permissions?: string[];
   two_factor_enabled?: boolean;
-  recovery_email?: string;
-  recovery_email_verified?: boolean;
+  secondary_email?: string;
+  secondary_email_verified?: boolean;
 }
 
 export interface UpdateProfileData {
@@ -423,34 +424,39 @@ export const technologyApi = {
     },
   },
 
-  // ========== Recovery Email ==========
-  recoveryEmail: {
+  // ========== Secondary Email ==========
+  secondaryEmail: {
     /**
-     * Agrega un email de recuperación
+     * Agrega un email secundario
+     * POST /api/auth/secondary-email/add
+     * Body: { "secondary_email": "mi_email_secundario@gmail.com" }
      */
-    add: async (recoveryEmail: string): Promise<ApiResponse<null>> => {
-      return apiClient.post(config.endpoints.recoveryEmail.add, { recovery_email: recoveryEmail });
+    add: async (secondaryEmail: string): Promise<ApiResponse<null>> => {
+      return apiClient.post(config.endpoints.secondaryEmail.add, { secondary_email: secondaryEmail });
     },
 
     /**
-     * Verifica el email de recuperación con código
+     * Verifica el email secundario con código
+     * POST /api/auth/secondary-email/verify
+     * Body: { "code": "123456" }
      */
     verify: async (code: string): Promise<ApiResponse<null>> => {
-      return apiClient.post(config.endpoints.recoveryEmail.verify, { code });
+      return apiClient.post(config.endpoints.secondaryEmail.verify, { code });
     },
 
     /**
      * Reenvía el código de verificación
+     * POST /auth/secondary-email/resend-code
      */
     resendCode: async (): Promise<ApiResponse<null>> => {
-      return apiClient.post(config.endpoints.recoveryEmail.resendCode);
+      return apiClient.post(config.endpoints.secondaryEmail.resendCode);
     },
 
     /**
-     * Elimina el email de recuperación
+     * Elimina el email secundario
      */
     remove: async (): Promise<ApiResponse<null>> => {
-      return apiClient.delete(config.endpoints.recoveryEmail.remove);
+      return apiClient.delete(config.endpoints.secondaryEmail.remove);
     },
   },
 

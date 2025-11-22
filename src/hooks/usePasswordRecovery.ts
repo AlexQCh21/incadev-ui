@@ -19,6 +19,11 @@ export function usePasswordRecovery() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  /**
+   * Enviar email de recuperación de contraseña usando el email secundario
+   * POST /api/auth/forgot-password
+   * Body: { "email": "mi_email_secundario@gmail.com" }
+   */
   const sendRecoveryEmail = async (data: { email: string }): Promise<PasswordRecoveryResponse | null> => {
     setLoading(true);
     setError(null);
@@ -31,7 +36,7 @@ export function usePasswordRecovery() {
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ email: data.email }),
       });
 
       const result = await response.json();
@@ -39,7 +44,7 @@ export function usePasswordRecovery() {
       if (response.ok && result.success) {
         setSuccess(true);
         toast.success("Correo enviado", {
-          description: "Se ha enviado un enlace de recuperación a tu correo",
+          description: "Se ha enviado un enlace de recuperación a tu correo secundario",
         });
         return { success: true, message: result.message };
       } else {

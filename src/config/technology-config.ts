@@ -20,12 +20,12 @@ export const config = {
       resetPassword: "/auth/reset-password",
     },
 
-    // Recovery Email
-    recoveryEmail: {
-      add: "/auth/recovery-email/add",
-      verify: "/auth/recovery-email/verify",
-      resendCode: "/auth/recovery-email/resend-code",
-      remove: "/auth/recovery-email/remove",
+    // Secondary Email
+    secondaryEmail: {
+      add: "/auth/secondary-email/add",
+      verify: "/auth/secondary-email/verify",
+      resendCode: "/auth/secondary-email/resend-code",
+      remove: "/auth/secondary-email/remove",
     },
 
     // Two-Factor Authentication (2FA)

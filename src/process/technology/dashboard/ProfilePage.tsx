@@ -20,8 +20,8 @@ interface User {
   avatar_url?: string | null
   roles?: string[]
   two_factor_enabled?: boolean
-  recovery_email?: string
-  recovery_email_verified?: boolean
+  secondary_email?: string
+  secondary_email_verified?: boolean
 }
 
 const ProfileFormSchema = z.object({
@@ -352,11 +352,11 @@ export default function ProfilePage() {
     }
   }
 
-  // ============== Recovery Email Functions ==============
+  // ============== Secondary Email Functions ==============
 
   const handleAddRecoveryEmail = async () => {
     if (!recoveryEmail) {
-      toast.error("Ingresa un email de recuperación")
+      toast.error("Ingresa un email secundario")
       return
     }
 
@@ -364,21 +364,21 @@ export default function ProfilePage() {
       setProcessingRecovery(true)
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${config.apiUrl}${config.endpoints.recoveryEmail.add}`, {
+      const response = await fetch(`${config.apiUrl}${config.endpoints.secondaryEmail.add}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ recovery_email: recoveryEmail }),
+        body: JSON.stringify({ secondary_email: recoveryEmail }),
       })
 
       if (response.ok) {
-        toast.success("Código enviado a tu email de recuperación")
+        toast.success("Código enviado a tu email secundario")
         setRecoveryEmailStep('verify')
       } else {
         const errorData = await response.json()
-        toast.error(errorData.message || "Error al agregar email")
+        toast.error(errorData.message || "Error al agregar email secundario")
       }
     } catch (error: any) {
       toast.error(error.message || "Error al agregar email")
@@ -397,7 +397,7 @@ export default function ProfilePage() {
       setProcessingRecovery(true)
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${config.apiUrl}${config.endpoints.recoveryEmail.verify}`, {
+      const response = await fetch(`${config.apiUrl}${config.endpoints.secondaryEmail.verify}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -407,7 +407,7 @@ export default function ProfilePage() {
       })
 
       if (response.ok) {
-        toast.success("Email de recuperación verificado")
+        toast.success("Email secundario verificado exitosamente")
         setShowRecoveryEmailSetup(false)
         setRecoveryEmail("")
         setRecoveryCode("")
@@ -428,7 +428,7 @@ export default function ProfilePage() {
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${config.apiUrl}${config.endpoints.recoveryEmail.resendCode}`, {
+      const response = await fetch(`${config.apiUrl}${config.endpoints.secondaryEmail.resendCode}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -448,14 +448,14 @@ export default function ProfilePage() {
   }
 
   const handleRemoveRecoveryEmail = async () => {
-    if (!confirm("¿Estás seguro de eliminar el email de recuperación?")) {
+    if (!confirm("¿Estás seguro de eliminar el email secundario?")) {
       return
     }
 
     try {
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`${config.apiUrl}${config.endpoints.recoveryEmail.remove}`, {
+      const response = await fetch(`${config.apiUrl}${config.endpoints.secondaryEmail.remove}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -464,11 +464,11 @@ export default function ProfilePage() {
       })
 
       if (response.ok) {
-        toast.success("Email de recuperación eliminado")
+        toast.success("Email secundario eliminado")
         loadProfile()
       } else {
         const errorData = await response.json()
-        toast.error(errorData.message || "Error al eliminar email")
+        toast.error(errorData.message || "Error al eliminar email secundario")
       }
     } catch (error: any) {
       toast.error(error.message || "Error al eliminar email")
@@ -547,8 +547,8 @@ export default function ProfilePage() {
               />
 
               <RecoveryEmailCard
-                recoveryEmail={user?.recovery_email}
-                recoveryEmailVerified={user?.recovery_email_verified || false}
+                recoveryEmail={user?.secondary_email}
+                recoveryEmailVerified={user?.secondary_email_verified || false}
                 showRecoveryEmailSetup={showRecoveryEmailSetup}
                 recoveryEmailStep={recoveryEmailStep}
                 recoveryEmailInput={recoveryEmail}
