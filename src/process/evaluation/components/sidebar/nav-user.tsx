@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/sidebar"
 import { toast } from "react-toastify"
 import { config } from "@/config/technology-config"
-import { routes } from "@/process/academic/academic-site";
+import { routes } from "@/process/evaluation/evaluation-site";
 export function NavUser({
   user
 }: {
@@ -119,14 +119,6 @@ export function NavUser({
                 <a href={routes.dashboard.account} className="flex items-center gap-2">
                   <IconUserCircle /> Account
                 </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconNotification />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

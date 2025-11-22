@@ -39,7 +39,7 @@ export const ROLE_ROUTES: Record<string, string> = {
   // ========================================
   // 📋 GRUPO 06 - AUDITORÍA Y ENCUESTAS
   // ========================================
-  survey_admin: "/evaluacion/survey_admin/dashboard",
+  survey_admin: "/evaluacion/encuestas",
   audit_manager: "/evaluacion/audit_manager/dashboard",
   auditor: "/evaluacion/auditor/dashboard",
 
