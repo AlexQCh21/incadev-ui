@@ -23,5 +23,10 @@ export const config = {
 
     //finanzas
     balance_general: "/api/finanzas/balance-general",
+
+    //estudiantes
+    students:"/api/gestion-academica/estudiantes",
+    studentsExportCsv: '/api/gestion-academica/estudiantes/export/csv',
+    studentsExportData: '/api/gestion-academica/estudiantes/export-data'
   },
 };
