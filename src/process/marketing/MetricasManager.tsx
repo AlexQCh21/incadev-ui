@@ -12,10 +12,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 // Tabs removed - using custom button navigation
-import PropuestaMetricasTable from '../../components/marketing/metricas/PropuestaMetricasTable';
-import PublicacionesTable from '../../components/marketing/metricas/PublicacionesTable';
-import GraficoComparativa from '../../components/marketing/metricas/GraficoComparativa';
-import GraficoTendencia from '../../components/marketing/metricas/GraficoTendencia';
+import PropuestaMetricasTable from './metricas/PropuestaMetricasTable';
+import PublicacionesTable from './metricas/PublicacionesTable';
+import GraficoComparativa from './metricas/GraficoComparativa';
+import GraficoTendencia from './metricas/GraficoTendencia';
 
 interface KPI {
   label: string;
@@ -161,9 +161,8 @@ export default function MetricasManager() {
                   <Icon className={`w-5 h-5 text-${kpi.color}-600 dark:text-${kpi.color}-400`} />
                 </div>
                 {kpi.trend !== undefined && (
-                  <div className={`flex items-center gap-1 text-xs ${
-                    kpi.trend > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                  }`}>
+                  <div className={`flex items-center gap-1 text-xs ${kpi.trend > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                    }`}>
                     {kpi.trend > 0 ? (
                       <TrendingUp className="w-3 h-3" />
                     ) : (
