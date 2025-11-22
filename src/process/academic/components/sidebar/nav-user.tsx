@@ -29,7 +29,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { toast } from "react-toastify"
-import { config } from "@/config/academic-config"
+import { config } from "@/config/technology-config"
 import { routes } from "@/process/academic/academic-site";
 export function NavUser({
   user
