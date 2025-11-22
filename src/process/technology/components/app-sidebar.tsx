@@ -12,7 +12,7 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
-import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode, IconUser } from "@tabler/icons-react";
+import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconSettings, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode, IconUser, IconLock, IconDeviceDesktop, IconActivity, IconAdjustments } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -150,8 +150,16 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.blocks}>
+                        <IconLock className="h-4 w-4" />
+                        <span>Usuarios Bloqueados</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
                       <a href={routes.admin.security.sessions}>
-                        <IconServer className="h-4 w-4" />
+                        <IconDeviceDesktop className="h-4 w-4" />
                         <span>Gestión de Sesiones</span>
                       </a>
                     </SidebarMenuButton>
@@ -159,8 +167,16 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.admin.security.events}>
-                        <IconAlertTriangle className="h-4 w-4" />
+                        <IconActivity className="h-4 w-4" />
                         <span>Eventos de Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.admin.security.settings}>
+                        <IconAdjustments className="h-4 w-4" />
+                        <span>Configuración Seguridad</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -320,14 +336,62 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
             </SidebarGroup>
 
             <SidebarGroup>
-              <SidebarGroupLabel>Seguridad</SidebarGroupLabel>
+              <SidebarGroupLabel>Gestión de Seguridad</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.security.blocks}>
+                        <IconLock className="h-4 w-4" />
+                        <span>Usuarios Bloqueados</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.security.sessions}>
+                        <IconDeviceDesktop className="h-4 w-4" />
+                        <span>Gestión de Sesiones</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.security.events}>
+                        <IconActivity className="h-4 w-4" />
+                        <span>Eventos de Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.security.incidents}>
                         <IconAlertTriangle className="h-4 w-4" />
                         <span>Incidentes</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Configuración</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.security.settings}>
+                        <IconAdjustments className="h-4 w-4" />
+                        <span>Configuración Seguridad</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.security.profile}>
+                        <IconSettings className="h-4 w-4" />
+                        <span>Perfil</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

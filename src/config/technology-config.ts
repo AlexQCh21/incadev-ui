@@ -97,6 +97,28 @@ export const config = {
       // Dashboard
       dashboard: "/security/dashboard",
 
+      // User Blocks Management
+      blocks: {
+        list: "/security/blocks", // Listar usuarios bloqueados
+        create: "/security/blocks", // Bloquear usuario manualmente
+        history: "/security/blocks/history", // Historial de bloqueos
+        statistics: "/security/blocks/statistics", // Estadísticas de bloqueos
+        userHistory: "/security/blocks/user/:userId", // Historial de bloqueos de un usuario
+        check: "/security/blocks/check/:userId", // Verificar si usuario está bloqueado
+        unblockByUser: "/security/blocks/user/:userId", // Desbloquear por user ID
+        unblockById: "/security/blocks/:blockId", // Desbloquear por ID de bloqueo
+      },
+
+      // Security Settings
+      settings: {
+        list: "/security/settings", // Obtener todas las configuraciones
+        grouped: "/security/settings/grouped", // Configuraciones agrupadas
+        login: "/security/settings/login", // Configuraciones de login
+        update: "/security/settings/:key", // Actualizar una configuración
+        updateBulk: "/security/settings", // Actualizar múltiples configuraciones
+        clearCache: "/security/settings/clear-cache", // Limpiar cache
+      },
+
       // Sessions Management
       sessions: {
         list: "/security/sessions", // Mis sesiones o de un usuario (?user_id=X)

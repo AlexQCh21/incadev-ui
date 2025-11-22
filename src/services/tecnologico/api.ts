@@ -789,6 +789,143 @@ export const technologyApi = {
       return apiClient.get<any>(config.endpoints.security.dashboard);
     },
 
+    // User Blocks Management
+    blocks: {
+      /**
+       * Lista usuarios bloqueados actualmente
+       */
+      list: async (perPage: number = 15, page: number = 1): Promise<any> => {
+        const params: Record<string, string> = {
+          per_page: perPage.toString(),
+          page: page.toString(),
+        };
+        return apiClient.get<any>(config.endpoints.security.blocks.list, params);
+      },
+
+      /**
+       * Historial de todos los bloqueos
+       */
+      history: async (perPage: number = 20, page: number = 1): Promise<any> => {
+        const params: Record<string, string> = {
+          per_page: perPage.toString(),
+          page: page.toString(),
+        };
+        return apiClient.get<any>(config.endpoints.security.blocks.history, params);
+      },
+
+      /**
+       * Estadísticas de bloqueos
+       */
+      statistics: async (days: number = 30): Promise<any> => {
+        const params: Record<string, string> = {
+          days: days.toString(),
+        };
+        return apiClient.get<any>(config.endpoints.security.blocks.statistics, params);
+      },
+
+      /**
+       * Historial de bloqueos de un usuario específico
+       */
+      userHistory: async (userId: number): Promise<any> => {
+        return apiClient.get<any>(
+          config.endpoints.security.blocks.userHistory,
+          undefined,
+          { userId: userId.toString() }
+        );
+      },
+
+      /**
+       * Verificar si un usuario está bloqueado
+       */
+      check: async (userId: number): Promise<any> => {
+        return apiClient.get<any>(
+          config.endpoints.security.blocks.check,
+          undefined,
+          { userId: userId.toString() }
+        );
+      },
+
+      /**
+       * Bloquear usuario manualmente
+       */
+      create: async (data: {
+        user_id: number;
+        reason: string;
+        duration_minutes?: number;
+      }): Promise<any> => {
+        return apiClient.post<any>(config.endpoints.security.blocks.create, data);
+      },
+
+      /**
+       * Desbloquear usuario por User ID
+       */
+      unblockByUser: async (userId: number): Promise<any> => {
+        return apiClient.delete<any>(
+          config.endpoints.security.blocks.unblockByUser,
+          { userId: userId.toString() }
+        );
+      },
+
+      /**
+       * Desbloquear por ID de bloqueo
+       */
+      unblockById: async (blockId: number): Promise<any> => {
+        return apiClient.delete<any>(
+          config.endpoints.security.blocks.unblockById,
+          { blockId: blockId.toString() }
+        );
+      },
+    },
+
+    // Security Settings
+    settings: {
+      /**
+       * Obtiene todas las configuraciones de seguridad
+       */
+      list: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.settings.list);
+      },
+
+      /**
+       * Obtiene configuraciones agrupadas
+       */
+      grouped: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.settings.grouped);
+      },
+
+      /**
+       * Obtiene configuraciones de login
+       */
+      login: async (): Promise<any> => {
+        return apiClient.get<any>(config.endpoints.security.settings.login);
+      },
+
+      /**
+       * Actualiza una configuración específica
+       */
+      update: async (key: string, value: any): Promise<any> => {
+        return apiClient.put<any>(
+          config.endpoints.security.settings.update,
+          { value },
+          { key }
+        );
+      },
+
+      /**
+       * Actualiza múltiples configuraciones
+       */
+      updateBulk: async (settings: Record<string, any>): Promise<any> => {
+        return apiClient.put<any>(config.endpoints.security.settings.updateBulk, { settings });
+      },
+
+      /**
+       * Limpia el cache de configuraciones
+       */
+      clearCache: async (): Promise<any> => {
+        return apiClient.post<any>(config.endpoints.security.settings.clearCache);
+      },
+    },
+
     // Sessions Management
     sessions: {
       /**
