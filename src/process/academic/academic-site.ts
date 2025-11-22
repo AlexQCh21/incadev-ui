@@ -19,7 +19,7 @@ import {
 export const routes = {
   base: "/academico/",
   general: {
-    login: "/academico/login",
+    login: "/auth/academico",
     register: "/academico/register",
   },
   dashboard:{
