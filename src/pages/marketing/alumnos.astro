@@ -1,5 +1,4 @@
 ---
-// src/pages/marketing/alumnos.astro
 import Layout from "../../layouts/MarketingLayout.astro";
 ---
 
@@ -59,12 +58,13 @@ import Layout from "../../layouts/MarketingLayout.astro";
             ></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-          1,247
+        <p
+          id="stat-total"
+          class="text-3xl font-bold text-gray-900 dark:text-white mb-1"
+        >
+          0
         </p>
-        <p class="text-xs text-gray-600 dark:text-gray-400">
-          +18% vs. mes anterior
-        </p>
+        <p class="text-xs text-gray-600 dark:text-gray-400">Total en sistema</p>
       </div>
 
       <div
@@ -88,8 +88,11 @@ import Layout from "../../layouts/MarketingLayout.astro";
             ></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-          $1,340
+        <p
+          id="stat-ltv"
+          class="text-3xl font-bold text-gray-900 dark:text-white mb-1"
+        >
+          $0
         </p>
         <p class="text-xs text-gray-600 dark:text-gray-400">Por alumno</p>
       </div>
@@ -114,8 +117,11 @@ import Layout from "../../layouts/MarketingLayout.astro";
               d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-          23.5%
+        <p
+          id="stat-conversion"
+          class="text-3xl font-bold text-gray-900 dark:text-white mb-1"
+        >
+          0%
         </p>
         <p class="text-xs text-gray-600 dark:text-gray-400">Lead → Inscrito</p>
       </div>
@@ -141,10 +147,18 @@ import Layout from "../../layouts/MarketingLayout.astro";
             ></path>
           </svg>
         </div>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-          8.2%
+        <p
+          id="stat-desercion"
+          class="text-3xl font-bold text-gray-900 dark:text-white mb-1"
+        >
+          0%
         </p>
-        <p class="text-xs text-gray-600 dark:text-gray-400">Tasa baja ✓</p>
+        <p
+          id="stat-desercion-label"
+          class="text-xs text-gray-600 dark:text-gray-400"
+        >
+          Cargando...
+        </p>
       </div>
     </div>
 
@@ -155,7 +169,12 @@ import Layout from "../../layouts/MarketingLayout.astro";
         data-filter="todos"
       >
         <div class="text-center">
-          <p class="text-2xl font-bold text-gray-900 dark:text-white">1,247</p>
+          <p
+            id="filter-todos"
+            class="text-2xl font-bold text-gray-900 dark:text-white"
+          >
+            0
+          </p>
           <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">
             Todos
           </p>
@@ -167,8 +186,11 @@ import Layout from "../../layouts/MarketingLayout.astro";
         data-filter="lead"
       >
         <div class="text-center">
-          <p class="text-2xl font-bold text-green-600 dark:text-green-400">
-            342
+          <p
+            id="filter-lead"
+            class="text-2xl font-bold text-green-600 dark:text-green-400"
+          >
+            0
           </p>
           <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">
             Leads
@@ -181,8 +203,11 @@ import Layout from "../../layouts/MarketingLayout.astro";
         data-filter="preinscrito"
       >
         <div class="text-center">
-          <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
-            89
+          <p
+            id="filter-preinscrito"
+            class="text-2xl font-bold text-yellow-600 dark:text-yellow-400"
+          >
+            0
           </p>
           <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">
             Pre-inscritos
@@ -195,7 +220,12 @@ import Layout from "../../layouts/MarketingLayout.astro";
         data-filter="inscrito"
       >
         <div class="text-center">
-          <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">456</p>
+          <p
+            id="filter-inscrito"
+            class="text-2xl font-bold text-blue-600 dark:text-blue-400"
+          >
+            0
+          </p>
           <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">
             Inscritos
           </p>
@@ -207,8 +237,11 @@ import Layout from "../../layouts/MarketingLayout.astro";
         data-filter="cursando"
       >
         <div class="text-center">
-          <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">
-            238
+          <p
+            id="filter-cursando"
+            class="text-2xl font-bold text-purple-600 dark:text-purple-400"
+          >
+            0
           </p>
           <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">
             Cursando
@@ -221,8 +254,11 @@ import Layout from "../../layouts/MarketingLayout.astro";
         data-filter="graduado"
       >
         <div class="text-center">
-          <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-            122
+          <p
+            id="filter-graduado"
+            class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
+          >
+            0
           </p>
           <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">
             Graduados
@@ -257,14 +293,15 @@ import Layout from "../../layouts/MarketingLayout.astro";
       </div>
 
       <select
-        id="filterCurso"
+        id="filterInteres"
         class="px-4 py-3 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       >
-        <option value="">Todos los cursos</option>
-        <option value="Kotlin Avanzado para Android">Kotlin Avanzado</option>
-        <option value="React Native PRO 2025">React Native PRO</option>
-        <option value="Python Machine Learning">Python ML</option>
-        <option value="Docker y Kubernetes">Docker & K8s</option>
+        <option value="">Todos los intereses</option>
+        <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+        <option value="Cloud Computing">Cloud Computing</option>
+        <option value="Ciberseguridad">Ciberseguridad</option>
+        <option value="Marketing Digital">Marketing Digital</option>
+        <option value="Gestión de Proyectos">Gestión de Proyectos</option>
       </select>
 
       <select
@@ -318,180 +355,12 @@ import Layout from "../../layouts/MarketingLayout.astro";
       </p>
     </div>
   </div>
+
   <script>
-    // ============================================
-    // MOCK DATA DE ALUMNOS
-    // ============================================
-    const alumnos = [
-      {
-        id: 1,
-        nombre: "Juan Pérez",
-        email: "juan.perez@email.com",
-        telefono: "+51 987 654 321",
-        estado: "inscrito",
-        curso: "Kotlin Avanzado para Android",
-        fechaRegistro: "2025-11-10",
-        origen: "Facebook",
-        ltv: 500,
-        cursosCompletados: 0,
-        engagementScore: 85,
-        ultimaInteraccion: "2025-11-18",
-      },
-      {
-        id: 2,
-        nombre: "María González",
-        email: "maria.g@email.com",
-        telefono: "+51 912 345 678",
-        estado: "cursando",
-        curso: "Docker y Kubernetes",
-        fechaRegistro: "2025-10-15",
-        origen: "Instagram",
-        ltv: 480,
-        cursosCompletados: 1,
-        engagementScore: 92,
-        ultimaInteraccion: "2025-11-19",
-      },
-      {
-        id: 3,
-        nombre: "Carlos Rodríguez",
-        email: "carlos.r@email.com",
-        telefono: "+51 998 765 432",
-        estado: "lead",
-        curso: "React Native PRO 2025",
-        fechaRegistro: "2025-11-15",
-        origen: "Referido",
-        ltv: 0,
-        cursosCompletados: 0,
-        engagementScore: 45,
-        ultimaInteraccion: "2025-11-17",
-      },
-      {
-        id: 4,
-        nombre: "Ana Martínez",
-        email: "ana.martinez@email.com",
-        telefono: "+51 945 678 901",
-        estado: "graduado",
-        curso: "Python Machine Learning",
-        fechaRegistro: "2025-08-20",
-        origen: "Orgánico",
-        ltv: 550,
-        cursosCompletados: 2,
-        engagementScore: 98,
-        ultimaInteraccion: "2025-11-05",
-      },
-      {
-        id: 5,
-        nombre: "Luis Fernández",
-        email: "luis.f@email.com",
-        telefono: "+51 923 456 789",
-        estado: "preinscrito",
-        curso: "Flutter Desarrollo Móvil",
-        fechaRegistro: "2025-11-12",
-        origen: "Facebook",
-        ltv: 0,
-        cursosCompletados: 0,
-        engagementScore: 68,
-        ultimaInteraccion: "2025-11-16",
-      },
-      {
-        id: 6,
-        nombre: "Sofia Torres",
-        email: "sofia.torres@email.com",
-        telefono: "+51 956 789 012",
-        estado: "cursando",
-        curso: "Kotlin Avanzado para Android",
-        fechaRegistro: "2025-10-20",
-        origen: "Instagram",
-        ltv: 500,
-        cursosCompletados: 1,
-        engagementScore: 88,
-        ultimaInteraccion: "2025-11-19",
-      },
-      {
-        id: 7,
-        nombre: "Diego Ramírez",
-        email: "diego.r@email.com",
-        telefono: "+51 934 567 890",
-        estado: "lead",
-        curso: "Docker y Kubernetes",
-        fechaRegistro: "2025-11-18",
-        origen: "Facebook",
-        ltv: 0,
-        cursosCompletados: 0,
-        engagementScore: 52,
-        ultimaInteraccion: "2025-11-18",
-      },
-      {
-        id: 8,
-        nombre: "Valentina Cruz",
-        email: "valentina.c@email.com",
-        telefono: "+51 967 890 123",
-        estado: "inscrito",
-        curso: "React Native PRO 2025",
-        fechaRegistro: "2025-11-08",
-        origen: "Referido",
-        ltv: 450,
-        cursosCompletados: 0,
-        engagementScore: 75,
-        ultimaInteraccion: "2025-11-17",
-      },
-      {
-        id: 9,
-        nombre: "Roberto Silva",
-        email: "roberto.silva@email.com",
-        telefono: "+51 978 901 234",
-        estado: "graduado",
-        curso: "Docker y Kubernetes",
-        fechaRegistro: "2025-09-10",
-        origen: "Orgánico",
-        ltv: 1440,
-        cursosCompletados: 3,
-        engagementScore: 95,
-        ultimaInteraccion: "2025-11-10",
-      },
-      {
-        id: 10,
-        nombre: "Camila Vargas",
-        email: "camila.v@email.com",
-        telefono: "+51 989 012 345",
-        estado: "preinscrito",
-        curso: "Python Machine Learning",
-        fechaRegistro: "2025-11-14",
-        origen: "Instagram",
-        ltv: 0,
-        cursosCompletados: 0,
-        engagementScore: 62,
-        ultimaInteraccion: "2025-11-18",
-      },
-      {
-        id: 11,
-        nombre: "Andrés López",
-        email: "andres.lopez@email.com",
-        telefono: "+51 990 123 456",
-        estado: "cursando",
-        curso: "React Native PRO 2025",
-        fechaRegistro: "2025-10-25",
-        origen: "Facebook",
-        ltv: 450,
-        cursosCompletados: 0,
-        engagementScore: 81,
-        ultimaInteraccion: "2025-11-19",
-      },
-      {
-        id: 12,
-        nombre: "Isabella Morales",
-        email: "isabella.m@email.com",
-        telefono: "+51 901 234 567",
-        estado: "lead",
-        curso: "Flutter Desarrollo Móvil",
-        fechaRegistro: "2025-11-16",
-        origen: "Orgánico",
-        ltv: 0,
-        cursosCompletados: 0,
-        engagementScore: 48,
-        ultimaInteraccion: "2025-11-16",
-      },
-    ];
+    import {
+      fetchStudents,
+      type StudentForUI,
+    } from "../../services/marketing/marketingService";
 
     // ============================================
     // CONFIGURACIÓN DE ESTADOS
@@ -548,37 +417,133 @@ import Layout from "../../layouts/MarketingLayout.astro";
       Orgánico: "🔍",
     };
 
+    // Variable global para almacenar los alumnos
+    let alumnos: StudentForUI[] = [];
+
     // ============================================
     // FUNCIONES AUXILIARES
     // ============================================
-    function getEngagementColor(score:number) {
+    function getEngagementColor(score: number) {
       if (score >= 80) return "text-green-600 dark:text-green-400";
       if (score >= 60) return "text-yellow-600 dark:text-yellow-400";
       return "text-red-600 dark:text-red-400";
     }
 
-    function getEngagementLabel(score:number) {
+    function getEngagementLabel(score: number) {
       if (score >= 80) return "Alto";
       if (score >= 60) return "Medio";
       return "Bajo";
     }
 
-    function getDiasDesdeRegistro(fecha:string) {
+    function getDiasDesdeRegistro(fecha: string) {
       const hoy = new Date();
       const registro = new Date(fecha);
-      return Math.floor((hoy.getTime() - registro.getTime()) / (1000 * 60 * 60 * 24));
+      return Math.floor(
+        (hoy.getTime() - registro.getTime()) / (1000 * 60 * 60 * 24),
+      );
     }
 
-    function getDiasUltimaInteraccion(fecha:string) {
+    function getDiasUltimaInteraccion(fecha: string) {
       const hoy = new Date();
       const ultima = new Date(fecha);
-      return Math.floor((hoy.getTime() - ultima.getTime()) / (1000 * 60 * 60 * 24));
+      return Math.floor(
+        (hoy.getTime() - ultima.getTime()) / (1000 * 60 * 60 * 24),
+      );
+    }
+
+    function getInitials(nombre: string) {
+      return nombre
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .substring(0, 2)
+        .toUpperCase();
+    }
+
+    // ============================================
+    // ACTUALIZAR ESTADÍSTICAS
+    // ============================================
+    function updateStats() {
+      const totalAlumnos = alumnos.length;
+      const ltvPromedio =
+        totalAlumnos > 0
+          ? Math.round(
+              alumnos.reduce((sum, a) => sum + a.ltv, 0) / totalAlumnos,
+            )
+          : 0;
+
+      // Contar por estado
+      const contadores = alumnos.reduce(
+        (acc: Record<string, number>, alumno) => {
+          acc[alumno.estado] = (acc[alumno.estado] || 0) + 1;
+          return acc;
+        },
+        {},
+      );
+
+      const leads = contadores.lead || 0;
+      const preinscritos = contadores.preinscrito || 0;
+      const inscritos = contadores.inscrito || 0;
+      const cursando = contadores.cursando || 0;
+      const graduados = contadores.graduado || 0;
+      const desertores = contadores.desertor || 0;
+
+      // Calcular tasas
+      const totalConvertidos = inscritos + cursando + graduados;
+      const tasaConversion =
+        leads > 0
+          ? ((totalConvertidos / (leads + totalConvertidos)) * 100).toFixed(1)
+          : "0.0";
+      const tasaDesercion =
+        totalAlumnos > 0
+          ? ((desertores / totalAlumnos) * 100).toFixed(1)
+          : "0.0";
+
+      // Actualizar DOM
+      const statTotal = document.getElementById("stat-total");
+      const statLtv = document.getElementById("stat-ltv");
+      const statConversion = document.getElementById("stat-conversion");
+      const statDesercion = document.getElementById("stat-desercion");
+      const statDesercionLabel = document.getElementById(
+        "stat-desercion-label",
+      );
+
+      if (statTotal) statTotal.textContent = String(totalAlumnos);
+      if (statLtv) statLtv.textContent = `$${ltvPromedio}`;
+      if (statConversion) statConversion.textContent = `${tasaConversion}%`;
+      if (statDesercion) statDesercion.textContent = `${tasaDesercion}%`;
+      if (statDesercionLabel)
+        statDesercionLabel.textContent =
+          parseFloat(tasaDesercion) < 10 ? "Tasa baja ✓" : "Revisar";
+
+      // Actualizar filtros
+      const filterTodos = document.getElementById("filter-todos");
+      const filterLead = document.getElementById("filter-lead");
+      const filterPreinscrito = document.getElementById("filter-preinscrito");
+      const filterInscrito = document.getElementById("filter-inscrito");
+      const filterCursando = document.getElementById("filter-cursando");
+      const filterGraduado = document.getElementById("filter-graduado");
+
+      if (filterTodos) filterTodos.textContent = String(totalAlumnos);
+      if (filterLead) filterLead.textContent = String(leads);
+      if (filterPreinscrito)
+        filterPreinscrito.textContent = String(preinscritos);
+      if (filterInscrito) filterInscrito.textContent = String(inscritos);
+      if (filterCursando) filterCursando.textContent = String(cursando);
+      if (filterGraduado) filterGraduado.textContent = String(graduados);
     }
 
     // ============================================
     // RENDERIZAR ALUMNOS
     // ============================================
-    function renderAlumnos(filtros:any = {}) {
+    interface Filtros {
+      estado?: string;
+      busqueda?: string;
+      interes?: string;
+      origen?: string;
+    }
+
+    function renderAlumnos(filtros: Filtros = {}) {
       const container = document.getElementById("alumnosList");
       const emptyState = document.getElementById("emptyState");
       if (!container) return;
@@ -592,21 +557,26 @@ import Layout from "../../layouts/MarketingLayout.astro";
 
       // Filtro por búsqueda
       if (filtros.busqueda) {
+        const busqueda = (filtros.busqueda ?? "").toLowerCase();
         filtered = filtered.filter(
           (a) =>
-            a.nombre.toLowerCase().includes(filtros.busqueda.toLowerCase()) ||
-            a.email.toLowerCase().includes(filtros.busqueda.toLowerCase())
+            a.nombre.toLowerCase().includes(busqueda) ||
+            a.email.toLowerCase().includes(busqueda),
         );
       }
 
-      // Filtro por curso
-      if (filtros.curso) {
-        filtered = filtered.filter((a) => a.curso === filtros.curso);
+      // Filtro por interés
+      if (filtros.interes) {
+        const interes = filtros.interes;
+        filtered = filtered.filter((a) =>
+          a.interests.some((i) => i.includes(interes)),
+        );
       }
 
       // Filtro por origen
       if (filtros.origen) {
-        filtered = filtered.filter((a) => a.origen === filtros.origen);
+        const origen = filtros.origen;
+        filtered = filtered.filter((a) => a.origen === origen);
       }
 
       if (filtered.length === 0) {
@@ -620,27 +590,28 @@ import Layout from "../../layouts/MarketingLayout.astro";
 
       container.innerHTML = filtered
         .map((a) => {
-          const estado = estadoConfig[a.estado as keyof typeof estadoConfig];
+          const estado = estadoConfig[a.estado];
           const engagementColor = getEngagementColor(a.engagementScore);
           const engagementLabel = getEngagementLabel(a.engagementScore);
           const diasRegistro = getDiasDesdeRegistro(a.fechaRegistro);
           const diasInteraccion = getDiasUltimaInteraccion(a.ultimaInteraccion);
+          const initials = getInitials(a.nombre);
 
           return `
           <div class="p-6 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl hover:shadow-lg smooth-transition group">
-            
-            <!-- Header -->
             <div class="flex items-start justify-between mb-4">
               <div class="flex items-center gap-4">
-                <!-- Avatar -->
-                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  ${a.nombre
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                    .substring(0, 2)}
-                </div>
-                <!-- Info -->
+                ${
+                  a.avatar
+                    ? `
+                  <img src="${a.avatar}" alt="${a.nombre}" class="w-14 h-14 rounded-full object-cover" />
+                `
+                    : `
+                  <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    ${initials}
+                  </div>
+                `
+                }
                 <div>
                   <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 smooth-transition">
                     ${a.nombre}
@@ -658,9 +629,8 @@ import Layout from "../../layouts/MarketingLayout.astro";
               </span>
             </div>
 
-            <!-- Curso Info -->
             <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg mb-4">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center gap-2">
                   <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -671,9 +641,35 @@ import Layout from "../../layouts/MarketingLayout.astro";
                   ${origenIcons[a.origen as keyof typeof origenIcons]} ${a.origen}
                 </span>
               </div>
+              ${
+                a.learningGoal
+                  ? `
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                  🎯 <span class="italic">${a.learningGoal}</span>
+                </p>
+              `
+                  : ""
+              }
             </div>
 
-            <!-- Métricas Grid -->
+            ${
+              a.interests.length > 0
+                ? `
+              <div class="flex flex-wrap gap-2 mb-4">
+                ${a.interests
+                  .map(
+                    (i) => `
+                  <span class="px-2 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-xs rounded-full">
+                    ${i}
+                  </span>
+                `,
+                  )
+                  .join("")}
+              </div>
+            `
+                : ""
+            }
+
             <div class="grid grid-cols-3 gap-3 mb-4">
               <div class="text-center p-3 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-900/50">
                 <p class="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">LTV</p>
@@ -689,7 +685,6 @@ import Layout from "../../layouts/MarketingLayout.astro";
               </div>
             </div>
 
-            <!-- Engagement Bar -->
             <div class="mb-4">
               <div class="flex items-center justify-between text-xs mb-1">
                 <span class="text-gray-600 dark:text-gray-400">Nivel de compromiso</span>
@@ -709,7 +704,6 @@ import Layout from "../../layouts/MarketingLayout.astro";
               </div>
             </div>
 
-            <!-- Footer Info -->
             <div class="pt-3 border-t border-gray-200 dark:border-gray-800">
               <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                 <div class="flex items-center gap-4">
@@ -746,22 +740,60 @@ import Layout from "../../layouts/MarketingLayout.astro";
     }
 
     // ============================================
-    // EVENT LISTENERS
+    // CARGAR DATOS Y EVENT LISTENERS
     // ============================================
-    document.addEventListener("DOMContentLoaded", () => {
-      renderAlumnos();
+    document.addEventListener("DOMContentLoaded", async () => {
+      console.log("[Alumnos] Loading students from API...");
 
-      let filtrosActuales: {
-        estado?: string;
-        busqueda?: string;
-        departamento?: string;
-        prioridad?: string;
-        viabilidad?: string;
-        curso?: string;
-        origen?: string;
-      } = { estado: "todas" };
+      const container = document.getElementById("alumnosList");
+      if (container) {
+        container.innerHTML = `
+          <div class="col-span-2 flex items-center justify-center py-12">
+            <div class="text-center">
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p class="text-gray-600 dark:text-gray-400">Cargando alumnos...</p>
+            </div>
+          </div>
+        `;
+      }
 
-      // Filtros de estado
+      try {
+        alumnos = await fetchStudents();
+        console.log("[Alumnos] Students loaded:", alumnos.length);
+
+        if (alumnos.length === 0) {
+          console.warn("[Alumnos] No students returned from API");
+        }
+
+        updateStats();
+        renderAlumnos();
+      } catch (error) {
+        console.error("[Alumnos] Error loading students:", error);
+        if (container) {
+          container.innerHTML = `
+            <div class="col-span-2 text-center py-12">
+              <div class="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Error al cargar alumnos
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-4">
+                ${error instanceof Error ? error.message : "No se pudieron cargar los datos"}
+              </p>
+              <button onclick="window.location.reload()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Reintentar
+              </button>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      let filtrosActuales: Filtros = { estado: "todos" };
+
       document.querySelectorAll(".filter-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           document.querySelectorAll(".filter-btn").forEach((b) => {
@@ -775,25 +807,28 @@ import Layout from "../../layouts/MarketingLayout.astro";
               "border-purple-500",
               "dark:border-purple-500",
               "border-emerald-500",
-              "dark:border-emerald-500"
+              "dark:border-emerald-500",
+              "border-red-500",
+              "dark:border-red-500",
             );
             b.classList.add("border-gray-200", "dark:border-gray-800");
           });
 
           const filter = btn.getAttribute("data-filter");
-          if (filter === "todos") {
+          if (filter === "todos")
             btn.classList.add("border-blue-500", "dark:border-blue-500");
-          } else if (filter === "lead") {
+          else if (filter === "lead")
             btn.classList.add("border-green-500", "dark:border-green-500");
-          } else if (filter === "preinscrito") {
+          else if (filter === "preinscrito")
             btn.classList.add("border-yellow-500", "dark:border-yellow-500");
-          } else if (filter === "inscrito") {
+          else if (filter === "inscrito")
             btn.classList.add("border-blue-500", "dark:border-blue-500");
-          } else if (filter === "cursando") {
+          else if (filter === "cursando")
             btn.classList.add("border-purple-500", "dark:border-purple-500");
-          } else if (filter === "graduado") {
+          else if (filter === "graduado")
             btn.classList.add("border-emerald-500", "dark:border-emerald-500");
-          }
+          else if (filter === "desertor")
+            btn.classList.add("border-red-500", "dark:border-red-500");
           btn.classList.remove("border-gray-200", "dark:border-gray-800");
 
           filtrosActuales.estado = filter || "todos";
@@ -801,36 +836,29 @@ import Layout from "../../layouts/MarketingLayout.astro";
         });
       });
 
-      // Búsqueda
       const searchInput = document.getElementById("searchInput");
       searchInput?.addEventListener("input", (e) => {
-        const target = e.target as HTMLSelectElement;
-        filtrosActuales.busqueda = target.value;
+        filtrosActuales.busqueda = (e.target as HTMLInputElement).value;
         renderAlumnos(filtrosActuales);
       });
 
-      // Filtro curso
-      const filterCurso = document.getElementById("filterCurso");
-      filterCurso?.addEventListener("change", (e) => {
-        const target = e.target as HTMLSelectElement;
-        filtrosActuales.curso = target.value;
+      const filterInteres = document.getElementById("filterInteres");
+      filterInteres?.addEventListener("change", (e) => {
+        filtrosActuales.interes = (e.target as HTMLSelectElement).value;
         renderAlumnos(filtrosActuales);
       });
 
-      // Filtro origen
       const filterOrigen = document.getElementById("filterOrigen");
       filterOrigen?.addEventListener("change", (e) => {
-        const target = e.target as HTMLSelectElement;
-        filtrosActuales.origen = target.value;
+        filtrosActuales.origen = (e.target as HTMLSelectElement).value;
         renderAlumnos(filtrosActuales);
       });
 
-      // Limpiar filtros
       const btnLimpiarFiltros = document.getElementById("btnLimpiarFiltros");
       btnLimpiarFiltros?.addEventListener("click", () => {
         filtrosActuales = { estado: "todos" };
         if (searchInput) (searchInput as HTMLInputElement).value = "";
-        if (filterCurso) (filterCurso as HTMLSelectElement).value = "";
+        if (filterInteres) (filterInteres as HTMLSelectElement).value = "";
         if (filterOrigen) (filterOrigen as HTMLSelectElement).value = "";
 
         document.querySelectorAll(".filter-btn").forEach((b) => {
@@ -844,7 +872,9 @@ import Layout from "../../layouts/MarketingLayout.astro";
             "border-purple-500",
             "dark:border-purple-500",
             "border-emerald-500",
-            "dark:border-emerald-500"
+            "dark:border-emerald-500",
+            "border-red-500",
+            "dark:border-red-500",
           );
           b.classList.add("border-gray-200", "dark:border-gray-800");
         });
@@ -858,12 +888,41 @@ import Layout from "../../layouts/MarketingLayout.astro";
         renderAlumnos(filtrosActuales);
       });
 
-      // Exportar datos
       const btnExportar = document.getElementById("btnExportarDatos");
       btnExportar?.addEventListener("click", () => {
-        alert(
-          "📊 Exportando datos de alumnos...\n\nFormato: CSV\nIncluye: Nombre, Email, Estado, Curso, LTV, Engagement"
-        );
+        const csv = [
+          [
+            "ID",
+            "Nombre",
+            "Email",
+            "DNI",
+            "Estado",
+            "Curso/Interés",
+            "LTV",
+            "Engagement",
+            "Origen",
+          ],
+          ...alumnos.map((a) => [
+            a.id,
+            a.nombre,
+            a.email,
+            a.dni,
+            a.estado,
+            a.curso,
+            a.ltv,
+            a.engagementScore,
+            a.origen,
+          ]),
+        ]
+          .map((row) => row.join(","))
+          .join("\n");
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `alumnos_${new Date().toISOString().split("T")[0]}.csv`;
+        link.click();
       });
     });
   </script>
