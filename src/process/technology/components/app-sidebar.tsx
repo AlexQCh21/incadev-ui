@@ -457,7 +457,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
             <Avatar className="h-10 w-10 rounded-lg">
               {user?.avatar_url || user?.avatar ? (
                 <AvatarImage
-                  src={user.avatar_url || user.avatar}
+                  src={(user.avatar_url || user.avatar) ?? undefined}
                   alt={user.name}
                   className="object-cover"
                 />
