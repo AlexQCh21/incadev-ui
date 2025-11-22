@@ -17,6 +17,7 @@ export const config = {
     export_pdf: "/api/dashboard/export-data",
 
     //procesos academicos
+    teacherGroups: "/api/academic-processes/teacher-groups",
     assignTeacher: "/api/academic-processes/teacher-groups/assign",
     removeTeacher: "/api/academic-processes/teacher-groups/remove",
 
