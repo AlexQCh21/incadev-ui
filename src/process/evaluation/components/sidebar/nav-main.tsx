@@ -18,7 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import type { NavItem } from "@/process/academic/academic-site"
+import type { NavItem } from "@/process/evaluation/evaluation-site"
 
 interface User {
   role?: string | string[];

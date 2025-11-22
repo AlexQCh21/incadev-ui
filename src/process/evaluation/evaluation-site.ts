@@ -23,6 +23,7 @@ export const routes = {
   },
   dashboard:{
     index: "/evaluacion/encuestas",
+    account: "/academico/account"
   }
 };
 
