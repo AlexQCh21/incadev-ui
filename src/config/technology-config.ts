@@ -193,6 +193,12 @@ export const config = {
           summary: "/developer-web/chatbot/analytics/summary",
           conversationsByDay: "/developer-web/chatbot/analytics/conversations-by-day",
         },
+        // Conversación del Chatbot
+        conversation: {
+          start: "/developer-web/chatbot/conversation/start",
+          message: "/developer-web/chatbot/conversation/message",
+          end: "/developer-web/chatbot/conversation/end",
+        },
         // FAQs del Chatbot
         faqs: {
           public: {
@@ -207,6 +213,18 @@ export const config = {
           destroy: "/developer-web/chatbot/faqs/:id",
           stats: "/developer-web/chatbot/faqs/stats/summary",
         },
+      },
+
+      // Landing Page (Public)
+      landing: {
+        heroStats: "/developer-web/landing/hero-stats",
+        courses: "/developer-web/landing/courses",
+        featuredTeachers: "/developer-web/landing/featured-teachers",
+        testimonials: "/developer-web/landing/testimonials",
+        news: "/developer-web/landing/news",
+        newsDetail: "/developer-web/landing/news/:slug",
+        announcements: "/developer-web/landing/announcements",
+        alerts: "/developer-web/landing/alerts",
       },
     },
   }

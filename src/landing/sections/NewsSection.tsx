@@ -1,46 +1,84 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, ArrowRight, Newspaper } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Newspaper, Eye } from "lucide-react";
+import { config } from "@/config/technology-config";
 
-// Datos de ejemplo - En producción vendrían de la API
-const recentNews = [
-  {
-    id: 1,
-    title: "Nuevos cursos de Inteligencia Artificial disponibles para 2025",
-    excerpt: "Amplía tus habilidades con nuestros nuevos cursos especializados en IA, Machine Learning y Deep Learning.",
-    image: "/tecnologico/landing/educacion-y-estudiantes-sonriente-joven-asiatica-con-mochila-y-cuadernos-posando-contra-bac-azul.jpg",
-    category: "Cursos",
-    date: "2025-01-15",
-    readTime: "5 min"
-  },
-  {
-    id: 2,
-    title: "Convenio con empresas tecnológicas líderes del país",
-    excerpt: "Nuestros estudiantes tendrán acceso a prácticas profesionales y oportunidades laborales exclusivas.",
-    image: "/tecnologico/landing/chica-joven-estudiante-aislada-en-la-pared-gris-sonriendo-la-camara-presionando-la-computadora-portatil-contra-el-pecho-con-mochila-lista-para-ir-estudios-comenzar-un-nu.jpg",
-    category: "Alianzas",
-    date: "2025-01-10",
-    readTime: "4 min"
-  },
-  {
-    id: 3,
-    title: "Celebramos 100 egresados certificados en desarrollo web",
-    excerpt: "Un hito importante para nuestra institución. Conoce las historias de éxito de nuestros graduados.",
-    image: "/tecnologico/landing/educacion-y-estudiantes-mujer-asiatica-feliz-sosteniendo-cuadernos-y-riendo-sonriendo-la-camara-disfruta-de-goi.jpg",
-    category: "Logros",
-    date: "2025-01-05",
-    readTime: "3 min"
-  }
-];
-
-const categoryColors = {
-  "Cursos": "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  "Alianzas": "bg-green-500/10 text-green-600 dark:text-green-400",
-  "Logros": "bg-purple-500/10 text-purple-600 dark:text-purple-400"
-};
+interface News {
+  id: number;
+  title: string;
+  slug: string;
+  summary: string;
+  image_url: string;
+  category: string;
+  published_date: string;
+  views: number;
+  reading_time: string;
+  author: string;
+}
 
 export default function NewsSection() {
+  const [news, setNews] = useState<News[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch(`${config.apiUrl}${config.endpoints.developerWeb.landing.news}`);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        setNews(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <Badge variant="outline" className="mb-4">
+            <Newspaper className="h-3 w-3 mr-1" />
+            Últimas Noticias
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Mantente Informado
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Las últimas novedades, eventos y logros de nuestra comunidad educativa
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {[1, 2, 3].map((i) => (
+            <Card key={i} className="animate-pulse overflow-hidden">
+              <div className="h-48 bg-muted" />
+              <CardHeader>
+                <div className="h-4 bg-muted rounded w-1/4 mb-2" />
+                <div className="h-6 bg-muted rounded w-3/4" />
+                <div className="h-4 bg-muted rounded w-full mt-2" />
+              </CardHeader>
+              <CardContent>
+                <div className="h-10 bg-muted rounded" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (news.length === 0) {
+    return null;
+  }
+
   return (
     <div className="container mx-auto px-4">
       <div className="text-center mb-12">
@@ -57,19 +95,19 @@ export default function NewsSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-        {recentNews.map((news) => (
-          <Card key={news.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+        {news.map((item) => (
+          <Card key={item.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
             {/* Imagen de la noticia */}
             <div className="relative h-48 overflow-hidden bg-muted/30">
               <img
-                src={news.image}
-                alt={news.title}
+                src={item.image_url}
+                alt={item.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
               <div className="absolute top-3 left-3">
-                <Badge className={categoryColors[news.category as keyof typeof categoryColors]}>
-                  {news.category}
+                <Badge className="bg-primary/90 backdrop-blur">
+                  {item.category}
                 </Badge>
               </div>
             </div>
@@ -78,24 +116,29 @@ export default function NewsSection() {
               <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
-                  <span>{new Date(news.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <span>{new Date(item.published_date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
-                  <span>{news.readTime}</span>
+                  <span>{item.reading_time}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Eye className="h-3 w-3" />
+                  <span>{item.views}</span>
                 </div>
               </div>
               <CardTitle className="text-xl line-clamp-2 group-hover:text-primary transition-colors">
-                {news.title}
+                {item.title}
               </CardTitle>
               <CardDescription className="line-clamp-3">
-                {news.excerpt}
+                {item.summary}
               </CardDescription>
             </CardHeader>
 
             <CardContent className="mt-auto">
+              <p className="text-xs text-muted-foreground mb-3">Por {item.author}</p>
               <Button variant="ghost" className="w-full gap-2 group/btn" asChild>
-                <a href={`/tecnologico/web/noticias/${news.id}`}>
+                <a href={`/noticias/${item.slug}`}>
                   Leer más
                   <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </a>
@@ -108,7 +151,7 @@ export default function NewsSection() {
       {/* Ver todas las noticias */}
       <div className="text-center mt-12">
         <Button variant="outline" size="lg" className="gap-2" asChild>
-          <a href="/tecnologico/web/noticias">
+          <a href="/noticias">
             Ver todas las noticias
             <ArrowRight className="h-4 w-4" />
           </a>
