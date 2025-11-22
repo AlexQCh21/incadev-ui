@@ -74,7 +74,7 @@ export const adminNavItems: NavItem[] = [
       // Oferta educativa
       { title: "Cursos", url: "/administrativo/courses" },
       { title: "Versiones de Curso", url: "/administrativo/course-versions" },
-      { title: "Módulos", url: "/administrativo/modules" },
+      { title: "Módulos", url: "/administrativo/procesos-academicos/modules-course" },
 
       // Grupos
       { title: "Grupos", url: "/administrativo/groups" },
