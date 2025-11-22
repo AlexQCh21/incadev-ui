@@ -54,7 +54,7 @@ export const adminNavItems: NavItem[] = [
     items: [
       { title: "Estudiantes", url: "/administrativo/gestion-academica/estudiantes" },
       { title: "Matrículas", url: "/administrativo/matriculas" },
-      { title: "Historial Académico", url: "/administrativo/historial" },
+      { title: "Historial Académico", url: "/administrativo/gestion-academica/historial-academico" },
     ],
   },
 
@@ -81,7 +81,7 @@ export const adminNavItems: NavItem[] = [
       { title: "Docentes por Grupo", url: "/administrativo/procesos-academicos/group-teachers" },
 
       // Control académico
-      { title: "Estado de Matrículas", url: "/administrativo/enrollments" },
+      { title: "Estado de Matrículas", url: "/administrativo/procesos-academicos/enrollment-status" },
       //{ title: "Validación Académica", url: "/administrativo/payment-validation" },
     ],
   },
