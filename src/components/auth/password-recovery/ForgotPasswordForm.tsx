@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-import { usePasswordRecovery } from "../../hooks/usePasswordRecovery"
+import { usePasswordRecovery } from "@/hooks/usePasswordRecovery"
 
 // Form Schema
 const ForgotPasswordSchema = z.object({
@@ -127,7 +127,7 @@ export function ForgotPasswordForm() {
             {/* Back to Login */}
             <div className="text-center">
               <a
-                href="/tecnologico/login"
+                href="/auth"
                 className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
               >
                 <IconArrowLeft className="h-4 w-4" />

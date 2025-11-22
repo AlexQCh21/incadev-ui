@@ -61,7 +61,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
       });
 
       setTimeout(() => {
-        window.location.href = routes.general.login;
+        window.location.href = "/";
       }, 1000);
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
