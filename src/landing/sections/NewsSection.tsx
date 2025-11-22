@@ -234,7 +234,7 @@ export default function NewsSection() {
         {/* Ver todas las noticias */}
         <div className="text-center mt-12">
           <Button variant="outline" size="lg" className="gap-2" asChild>
-            <a href="/noticias">
+            <a href="/tecnologico/web/noticias">
               Ver todas las noticias
               <ArrowRight className="h-4 w-4" />
             </a>
@@ -244,7 +244,7 @@ export default function NewsSection() {
 
       {/* Modal de detalle de noticia - Tamaño completo */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-5xl w-[95vw] max-h-[95vh] overflow-y-auto p-0">
+        <DialogContent className="max-w-[95vw] w-full lg:max-w-[85vw] xl:max-w-[1400px] max-h-[95vh] overflow-y-auto p-0">
           {isLoadingDetail ? (
             <div className="flex items-center justify-center min-h-[400px]">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
