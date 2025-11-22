@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 import AdministrativeLayout from '@/process/administrative/AdministrativeLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -38,7 +39,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { config } from '@/config/administrative-config';
-import { IconSearch, IconFilter, IconArrowsSort, IconChevronDown, IconChevronUp, IconUserPlus, IconTrash, IconUsers, IconBook, IconCalendar, IconPlus } from '@tabler/icons-react';
+import { IconSearch, IconFilter, IconArrowsSort, IconChevronDown, IconChevronUp, IconUserPlus, IconTrash, IconUsers, IconBook, IconCalendar, IconPlus, IconUser, IconCheck, IconBriefcase } from '@tabler/icons-react';
 
 interface Group {
     id: number;
@@ -91,6 +92,7 @@ export default function TeacherGroupAssignment() {
     const [selectedTeacher, setSelectedTeacher] = useState<string>('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isAssigning, setIsAssigning] = useState(false);
+    const [teacherSearch, setTeacherSearch] = useState('');
     const itemsPerPage = 10;
 
     useEffect(() => {
@@ -203,6 +205,16 @@ export default function TeacherGroupAssignment() {
         setCurrentPage(1);
     };
 
+    const filteredTeachersForDialog = teachers.filter(teacher => {
+        const searchLower = teacherSearch.toLowerCase();
+        return (
+            (teacher.user_name || '').toLowerCase().includes(searchLower) ||
+            (teacher.user_email || '').toLowerCase().includes(searchLower) ||
+            (teacher.subject_area || '').toLowerCase().includes(searchLower) ||
+            (teacher.professional_summary || '').toLowerCase().includes(searchLower)
+        );
+    });
+
     const handleAssignTeacher = async () => {
         if (!selectedGroup || !selectedTeacher) return;
 
@@ -222,7 +234,8 @@ export default function TeacherGroupAssignment() {
             });
 
             if (!response.ok) {
-                throw new Error(`Error ${response.status}: ${response.statusText}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
             }
 
             await loadData();
@@ -231,7 +244,7 @@ export default function TeacherGroupAssignment() {
             setSelectedTeacher('');
         } catch (err) {
             console.error('Error al asignar docente:', err);
-            alert('Error al asignar docente');
+            alert(err instanceof Error ? err.message : 'Error al asignar docente');
         } finally {
             setIsAssigning(false);
         }
@@ -562,45 +575,142 @@ export default function TeacherGroupAssignment() {
                                                                                 <DialogHeader>
                                                                                     <DialogTitle>Asignar Docente</DialogTitle>
                                                                                     <DialogDescription>
-                                                                                        Asignar un docente al grupo {group.name}
+                                                                                        {group.status.toLowerCase() === 'completed' || group.status.toLowerCase() === 'cancelled'
+                                                                                            ? `Este grupo está ${group.status.toLowerCase() === 'completed' ? 'completado' : 'cancelado'}`
+                                                                                            : `Asignar un docente al grupo ${group.name}`
+                                                                                        }
                                                                                     </DialogDescription>
                                                                                 </DialogHeader>
-                                                                                <div className="space-y-4 py-4">
-                                                                                    <div className="space-y-2">
-                                                                                        <label className="text-sm font-medium">Seleccionar Docente</label>
-                                                                                        <Select value={selectedTeacher} onValueChange={setSelectedTeacher}>
-                                                                                            <SelectTrigger>
-                                                                                                <SelectValue placeholder="Seleccione un docente" />
-                                                                                            </SelectTrigger>
-                                                                                            <SelectContent>
-                                                                                                {teachers.map((teacher) => (
-                                                                                                    <SelectItem key={teacher.user_id} value={String(teacher.user_id)}>
-                                                                                                        {teacher.user_name || teacher.user_email} - {teacher.subject_area}
-                                                                                                    </SelectItem>
-                                                                                                ))}
-                                                                                            </SelectContent>
-                                                                                        </Select>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <DialogFooter>
-                                                                                    <Button
-                                                                                        variant="outline"
-                                                                                        onClick={() => {
-                                                                                            setIsDialogOpen(false);
-                                                                                            setSelectedGroup(null);
-                                                                                            setSelectedTeacher('');
-                                                                                        }}
-                                                                                    >
-                                                                                        Cancelar
-                                                                                    </Button>
-                                                                                    <Button
-                                                                                        onClick={handleAssignTeacher}
-                                                                                        disabled={!selectedTeacher || isAssigning}
-                                                                                        className="bg-sky-600 hover:bg-sky-700 text-white"
-                                                                                    >
-                                                                                        {isAssigning ? 'Asignando...' : 'Asignar'}
-                                                                                    </Button>
-                                                                                </DialogFooter>
+                                                                                {group.status.toLowerCase() === 'completed' || group.status.toLowerCase() === 'cancelled' ? (
+                                                                                    <>
+                                                                                        <div className="py-6">
+                                                                                            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                                                                                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/20">
+                                                                                                    <IconUsers className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+                                                                                                </div>
+                                                                                                <div className="space-y-2">
+                                                                                                    <p className="text-sm font-medium text-foreground">
+                                                                                                        No se pueden asignar docentes
+                                                                                                    </p>
+                                                                                                    <p className="text-sm text-muted-foreground max-w-sm">
+                                                                                                        Este grupo está {group.status.toLowerCase() === 'completed' ? 'completado' : 'cancelado'} y no permite la asignación de nuevos docentes.
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <DialogFooter>
+                                                                                            <Button
+                                                                                                variant="outline"
+                                                                                                onClick={() => {
+                                                                                                    setIsDialogOpen(false);
+                                                                                                    setSelectedGroup(null);
+                                                                                                    setSelectedTeacher('');
+                                                                                                    setTeacherSearch('');
+                                                                                                }}
+                                                                                            >
+                                                                                                Cerrar
+                                                                                            </Button>
+                                                                                        </DialogFooter>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <>
+                                                                                        <div className="space-y-4 py-4">
+                                                                                            <div className="space-y-3">
+                                                                                                <label className="text-sm font-medium">Seleccionar Docente</label>
+                                                                                                <Input
+                                                                                                    type="text"
+                                                                                                    placeholder="Buscar por nombre, email o área..."
+                                                                                                    value={teacherSearch}
+                                                                                                    onChange={(e) => setTeacherSearch(e.target.value)}
+                                                                                                    className="w-full"
+                                                                                                />
+                                                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2">
+                                                                                                    {filteredTeachersForDialog.length === 0 ? (
+                                                                                                        <div className="col-span-2 py-8 text-center text-sm text-muted-foreground">
+                                                                                                            No se encontraron docentes
+                                                                                                        </div>
+                                                                                                    ) : (
+                                                                                                        filteredTeachersForDialog.map((teacher) => (
+                                                                                                            <div
+                                                                                                                key={teacher.user_id}
+                                                                                                                onClick={() => setSelectedTeacher(String(teacher.user_id))}
+                                                                                                                className={cn(
+                                                                                                                    "relative cursor-pointer rounded-lg border-2 p-4 transition-all hover:shadow-md",
+                                                                                                                    selectedTeacher === String(teacher.user_id)
+                                                                                                                        ? "border-sky-500 bg-sky-50 dark:bg-sky-950/20"
+                                                                                                                        : "border-slate-200 dark:border-slate-800 hover:border-sky-300 dark:hover:border-sky-700"
+                                                                                                                )}
+                                                                                                            >
+                                                                                                                <div className="flex items-start gap-3">
+                                                                                                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-900/20">
+                                                                                                                        <IconUser className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                                                                                                                    </div>
+                                                                                                                    <div className="flex-1 min-w-0">
+                                                                                                                        <p className="font-medium text-sm truncate">
+                                                                                                                            {teacher.user_name || 'Sin nombre'}
+                                                                                                                        </p>
+                                                                                                                        <p className="text-xs text-muted-foreground truncate">
+                                                                                                                            {teacher.user_email}
+                                                                                                                        </p>
+                                                                                                                    </div>
+                                                                                                                    {selectedTeacher === String(teacher.user_id) && (
+                                                                                                                        <IconCheck className="h-5 w-5 text-sky-600 dark:text-sky-400 shrink-0" />
+                                                                                                                    )}
+                                                                                                                </div>
+                                                                                                                {teacher.subject_area && (
+                                                                                                                    <div className="mt-3 flex flex-wrap gap-1">
+                                                                                                                        {teacher.subject_area.split(',').slice(0, 2).map((area, idx) => (
+                                                                                                                            <Badge
+                                                                                                                                key={idx}
+                                                                                                                                variant="secondary"
+                                                                                                                                className="text-xs bg-slate-100 dark:bg-slate-800"
+                                                                                                                            >
+                                                                                                                                {area.trim()}
+                                                                                                                            </Badge>
+                                                                                                                        ))}
+                                                                                                                        {teacher.subject_area.split(',').length > 2 && (
+                                                                                                                            <Badge variant="secondary" className="text-xs bg-slate-100 dark:bg-slate-800">
+                                                                                                                                +{teacher.subject_area.split(',').length - 2}
+                                                                                                                            </Badge>
+                                                                                                                        )}
+                                                                                                                    </div>
+                                                                                                                )}
+                                                                                                                {teacher.professional_summary && (
+                                                                                                                    <div className="mt-2 flex items-start gap-1.5">
+                                                                                                                        <IconBriefcase className="h-3.5 w-3.5 text-muted-foreground mt-0.5 shrink-0" />
+                                                                                                                        <p className="text-xs text-muted-foreground line-clamp-2">
+                                                                                                                            {teacher.professional_summary}
+                                                                                                                        </p>
+                                                                                                                    </div>
+                                                                                                                )}
+                                                                                                            </div>
+                                                                                                        ))
+                                                                                                    )}
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <DialogFooter>
+                                                                                            <Button
+                                                                                                variant="outline"
+                                                                                                onClick={() => {
+                                                                                                    setIsDialogOpen(false);
+                                                                                                    setSelectedGroup(null);
+                                                                                                    setSelectedTeacher('');
+                                                                                                    setTeacherSearch('');
+                                                                                                }}
+                                                                                            >
+                                                                                                Cancelar
+                                                                                            </Button>
+                                                                                            <Button
+                                                                                                onClick={handleAssignTeacher}
+                                                                                                disabled={!selectedTeacher || isAssigning}
+                                                                                                className="bg-sky-600 hover:bg-sky-700 text-white"
+                                                                                            >
+                                                                                                {isAssigning ? 'Asignando...' : 'Asignar'}
+                                                                                            </Button>
+                                                                                        </DialogFooter>
+                                                                                    </>
+                                                                                )}
                                                                             </DialogContent>
                                                                         </Dialog>
                                                                     </div>

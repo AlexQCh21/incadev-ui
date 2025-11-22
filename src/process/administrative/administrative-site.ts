@@ -82,10 +82,7 @@ export const adminNavItems: NavItem[] = [
 
       // Control académico
       { title: "Estado de Matrículas", url: "/administrativo/enrollments" },
-      {
-        title: "Validación Académica",
-        url: "/administrativo/payment-validation",
-      },
+      //{ title: "Validación Académica", url: "/administrativo/payment-validation" },
     ],
   },
 
