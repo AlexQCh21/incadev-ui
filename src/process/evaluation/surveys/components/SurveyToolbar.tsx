@@ -1,14 +1,6 @@
-// src/process/evaluation/surveys/components/SurveyToolbar.tsx
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Plus, RefreshCw, Search } from "lucide-react"
 
 interface Props {
@@ -24,8 +16,6 @@ interface Props {
 export function SurveyToolbar({
   search,
   onSearchChange,
-  statusFilter,
-  onStatusFilterChange,
   onRefresh,
   onCreate,
   loading,

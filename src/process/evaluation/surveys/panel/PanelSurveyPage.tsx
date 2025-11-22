@@ -1,3 +1,5 @@
+// src/process/evaluation/surveys/panel/PanelSurveyPage.tsx
+
 import { useState, useMemo } from "react"
 import SurveyLayout from "@/process/evaluation/SurveyLayout"
 import { useSurveys } from "@/process/evaluation/surveys/hooks/useSurveys"
@@ -5,6 +7,7 @@ import { SurveyToolbar } from "@/process/evaluation/surveys/components/SurveyToo
 import { SurveyTable } from "@/process/evaluation/surveys/components/SurveyTable"
 import { SurveyFormDialog } from "@/process/evaluation/surveys/components/SurveyFormDialog"
 import { SurveyDeleteDialog } from "@/process/evaluation/surveys/components/SurveyDeleteDialog"
+import { SurveyQuestionsDialog } from "@/process/evaluation/surveys/components/SurveyQuestionsDialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, Loader2 } from "lucide-react"
 import type { Survey, SurveyFormData } from "@/process/evaluation/surveys/types/survey"
@@ -30,14 +33,14 @@ export default function PanelSurveyPage() {
   // Dialogs
   const [formOpen, setFormOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [questionsOpen, setQuestionsOpen] = useState(false)
   const [selectedSurvey, setSelectedSurvey] = useState<Survey | null>(null)
 
-  // Filtered surveys - ahora con paginación del servidor
+  // Filtered surveys
   const filtered = useMemo(() => {
     if (!search && statusFilter === "all") {
-      return surveys // Retorna todos los surveys cuando no hay filtros
+      return surveys
     }
-    
     return surveys.filter((s) => {
       const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) ||
         s.description?.toLowerCase().includes(search.toLowerCase())
@@ -62,6 +65,11 @@ export default function PanelSurveyPage() {
     setDeleteOpen(true)
   }
 
+  const handleManageQuestions = (survey: Survey) => {
+    setSelectedSurvey(survey)
+    setQuestionsOpen(true)
+  }
+
   const handleFormSubmit = async (data: SurveyFormData): Promise<boolean> => {
     if (selectedSurvey) {
       return updateSurvey(selectedSurvey.id, data)
@@ -77,7 +85,6 @@ export default function PanelSurveyPage() {
     setPage(page)
   }
 
-  // Meta por defecto para cuando no hay datos
   const defaultMeta = {
     current_page: 1,
     from: 0,
@@ -136,6 +143,7 @@ export default function PanelSurveyPage() {
             links={links || defaultLinks}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onManageQuestions={handleManageQuestions}
             onPageChange={handlePageChange}
             loading={loading}
           />
@@ -154,6 +162,12 @@ export default function PanelSurveyPage() {
           onOpenChange={setDeleteOpen}
           survey={selectedSurvey}
           onConfirm={handleDeleteConfirm}
+        />
+
+        <SurveyQuestionsDialog
+          open={questionsOpen}
+          onOpenChange={setQuestionsOpen}
+          survey={selectedSurvey}
         />
       </div>
     </SurveyLayout>

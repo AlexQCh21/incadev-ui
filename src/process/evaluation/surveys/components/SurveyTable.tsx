@@ -1,4 +1,5 @@
 // src/process/evaluation/surveys/components/SurveyTable.tsx
+
 import {
   Table,
   TableBody,
@@ -21,9 +22,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2, Eye, ListChecks } from "lucide-react"
 import type { Survey } from "@/process/evaluation/surveys/types/survey"
 
 interface Meta {
@@ -49,6 +51,7 @@ interface Props {
   onEdit: (survey: Survey) => void
   onDelete: (survey: Survey) => void
   onView?: (survey: Survey) => void
+  onManageQuestions: (survey: Survey) => void
   onPageChange: (page: number) => void
   loading?: boolean
 }
@@ -60,6 +63,7 @@ export function SurveyTable({
   onEdit, 
   onDelete, 
   onView, 
+  onManageQuestions,
   onPageChange,
   loading = false 
 }: Props) {
@@ -71,11 +75,9 @@ export function SurveyTable({
     })
   }
 
-  // Función para generar los números de página a mostrar
   const getPageNumbers = () => {
     const pages = []
-    const delta = 1 // Cuántas páginas mostrar alrededor de la actual
-    
+    const delta = 1
     for (
       let i = Math.max(1, meta.current_page - delta);
       i <= Math.min(meta.last_page, meta.current_page + delta);
@@ -83,7 +85,6 @@ export function SurveyTable({
     ) {
       pages.push(i)
     }
-    
     return pages
   }
 
@@ -103,21 +104,11 @@ export function SurveyTable({
           <TableBody>
             {[...Array(meta.per_page || 3)].map((_, idx) => (
               <TableRow key={idx}>
-                <TableCell className="font-medium">
-                  <div className="h-4 bg-muted rounded w-8 animate-pulse" />
-                </TableCell>
-                <TableCell>
-                  <div className="h-4 bg-muted rounded w-32 animate-pulse" />
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  <div className="h-4 bg-muted rounded w-48 animate-pulse" />
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <div className="h-4 bg-muted rounded w-24 animate-pulse" />
-                </TableCell>
-                <TableCell>
-                  <div className="h-8 w-8 bg-muted rounded animate-pulse" />
-                </TableCell>
+                <TableCell><div className="h-4 bg-muted rounded w-8 animate-pulse" /></TableCell>
+                <TableCell><div className="h-4 bg-muted rounded w-32 animate-pulse" /></TableCell>
+                <TableCell className="hidden md:table-cell"><div className="h-4 bg-muted rounded w-48 animate-pulse" /></TableCell>
+                <TableCell className="hidden sm:table-cell"><div className="h-4 bg-muted rounded w-24 animate-pulse" /></TableCell>
+                <TableCell><div className="h-8 w-8 bg-muted rounded animate-pulse" /></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -151,9 +142,7 @@ export function SurveyTable({
           <TableBody>
             {surveys.map((survey, idx) => (
               <TableRow key={survey.id}>
-                <TableCell className="font-medium">
-                  {meta.from + idx}
-                </TableCell>
+                <TableCell className="font-medium">{meta.from + idx}</TableCell>
                 <TableCell className="font-medium">{survey.title}</TableCell>
                 <TableCell className="hidden md:table-cell max-w-[300px] truncate text-muted-foreground">
                   {survey.description || "—"}
@@ -176,6 +165,11 @@ export function SurveyTable({
                           Ver detalles
                         </DropdownMenuItem>
                       )}
+                      <DropdownMenuItem onClick={() => onManageQuestions(survey)}>
+                        <ListChecks className="mr-2 h-4 w-4" />
+                        Gestionar Preguntas
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => onEdit(survey)}>
                         <Pencil className="mr-2 h-4 w-4" />
                         Editar
@@ -196,59 +190,32 @@ export function SurveyTable({
         </Table>
       </div>
       
-      {/* Paginación de Shadcn/ui */}
       <Pagination>
         <PaginationContent>
-          {/* Botón Anterior */}
           <PaginationItem>
             <PaginationPrevious 
               href="#"
               onClick={(e) => {
                 e.preventDefault()
-                if (meta.current_page > 1) {
-                  onPageChange(meta.current_page - 1)
-                }
+                if (meta.current_page > 1) onPageChange(meta.current_page - 1)
               }}
-              className={
-                meta.current_page === 1 
-                  ? "pointer-events-none opacity-50" 
-                  : "cursor-pointer"
-              }
+              className={meta.current_page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
             />
           </PaginationItem>
 
-          {/* Primera página */}
           {meta.current_page > 2 && (
             <PaginationItem>
-              <PaginationLink
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  onPageChange(1)
-                }}
-                className="cursor-pointer"
-              >
-                1
-              </PaginationLink>
+              <PaginationLink href="#" onClick={(e) => { e.preventDefault(); onPageChange(1) }} className="cursor-pointer">1</PaginationLink>
             </PaginationItem>
           )}
 
-          {/* Puntos suspensivos si hay muchas páginas al inicio */}
-          {meta.current_page > 3 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
+          {meta.current_page > 3 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
 
-          {/* Números de página */}
           {getPageNumbers().map((page) => (
             <PaginationItem key={page}>
               <PaginationLink
                 href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  onPageChange(page)
-                }}
+                onClick={(e) => { e.preventDefault(); onPageChange(page) }}
                 isActive={page === meta.current_page}
                 className="cursor-pointer"
               >
@@ -257,44 +224,24 @@ export function SurveyTable({
             </PaginationItem>
           ))}
 
-          {/* Puntos suspensivos si hay muchas páginas al final */}
-          {meta.current_page < meta.last_page - 2 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
+          {meta.current_page < meta.last_page - 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
 
-          {/* Última página */}
           {meta.current_page < meta.last_page - 1 && (
             <PaginationItem>
-              <PaginationLink
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  onPageChange(meta.last_page)
-                }}
-                className="cursor-pointer"
-              >
+              <PaginationLink href="#" onClick={(e) => { e.preventDefault(); onPageChange(meta.last_page) }} className="cursor-pointer">
                 {meta.last_page}
               </PaginationLink>
             </PaginationItem>
           )}
 
-          {/* Botón Siguiente */}
           <PaginationItem>
             <PaginationNext
               href="#"
               onClick={(e) => {
                 e.preventDefault()
-                if (meta.current_page < meta.last_page) {
-                  onPageChange(meta.current_page + 1)
-                }
+                if (meta.current_page < meta.last_page) onPageChange(meta.current_page + 1)
               }}
-              className={
-                meta.current_page === meta.last_page 
-                  ? "pointer-events-none opacity-50" 
-                  : "cursor-pointer"
-              }
+              className={meta.current_page === meta.last_page ? "pointer-events-none opacity-50" : "cursor-pointer"}
             />
           </PaginationItem>
         </PaginationContent>
