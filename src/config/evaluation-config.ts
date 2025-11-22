@@ -9,6 +9,12 @@ export const config = {
   //apiUrl:"http://127.0.0.1:8000",
   environment:"development",
   endpoints: {
-
+    surveys:{
+      listAll: "/api/surveys",
+      show: "/api/surveys/:id",
+      create: "/api/surveys",
+      update: "/api/surveys/:id",
+      delete: "/api/surveys/:id",
+    }
   },
 };
