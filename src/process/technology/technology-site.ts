@@ -55,7 +55,7 @@ export const routes = {
   infrastructure: {
     servers: "/tecnologico/infrastructure/servidores",
     licenses: "/tecnologico/infrastructure/licenses",
-
+    assets: "/tecnologico/infrastructure/assets",
     profile: "/tecnologico/infrastructure/perfil",
   },
   security: {

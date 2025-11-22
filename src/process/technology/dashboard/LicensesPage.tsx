@@ -1,18 +1,14 @@
 import TechnologyLayout from "@/process/technology/TechnologyLayout"
 import React, {useEffect, useState} from "react";
 import { ChevronUp, ChevronDown, Pencil, Trash } from "lucide-react";
+import {Card, CardContent} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
 export default function LicensesPage(){
-    /*const initialSoftware = [
-        { id: 1, name: 'Office Pro', version: '2021', type: 'suite' },
-        { id: 2, name: 'Photoshop', version: '2023', type: 'design' }
-    ];
-
-    const initialLicenses = [
-        { id: 1, software_id: 1, key_code: 'OFF-ABC-001', provider: 'Microsoft', purchase_date: '2024-04-01', expiration_date: '2026-04-01', status: 'active' },
-        { id: 2, software_id: 2, key_code: 'PS-XYZ-123', provider: 'Adobe', purchase_date: '2023-08-12', expiration_date: '2025-08-12', status: 'assigned' },
-        { id: 3, software_id: 1, key_code: 'OFF-DEF-002', provider: 'Microsoft', purchase_date: '2024-06-01', expiration_date: '2026-06-01', status: 'active' }
-    ];*/
 
     const [softwareList, setSoftwareList] = useState([]);
     const [licenses, setLicenses] = useState([]);
@@ -158,14 +154,21 @@ function LicenseRow({ lic, onEdit, onDelete }){
 }
 
 function EditLicenseModal({ license, onClose, onUpdate }) {
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "";
+    return timestamp.split("T")[0];
+  };
 
-    const [form, setForm] = useState({
+  const [form, setForm] = useState({
         key_code: license.key_code,
         provider: license.provider,
-        purchase_date: license.purchase_date,
-        expiration_date: license.expiration_date,
+        purchase_date: formatDate(license.purchase_date), //necesito convertirlo a fecha ya que me retorna en tipo TIMESTAMP
+        expiration_date: formatDate(license.expiration_date),
         status: license.status
-    });
+  });
+
+
+  
 
     const handleChange = (e) =>
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -176,67 +179,83 @@ function EditLicenseModal({ license, onClose, onUpdate }) {
     };
 
     return (
-        <div style={modalStyles.backdrop}>
-            <div style={modalStyles.modal}>
-                <h2>Editar licencia</h2>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <Card className="w-full max-w-lg border-gray-700 bg-gray-900">
+              <CardContent className="p-6 space-y-6">
+                <h2 className="text-xl font-semibold mb-2">Editar licencia</h2>
 
-                <form onSubmit={handleSubmit} style={modalStyles.form}>
-
-                    <label>Key</label>
-                    <input 
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                   <div className="space-y-1">
+                    <Label>Key</Label>
+                    <Input 
                         name="key_code"
                         value={form.key_code}
                         onChange={handleChange}
                         required
                     />
-
-                    <label>Proveedor</label>
-                    <input 
+                   </div>
+                   <div className="space-y-1">
+                    <Label>Proveedor</Label>
+                    <Input 
                         name="provider"
                         value={form.provider}
                         onChange={handleChange}
                     />
-
-                    <label>Fecha de compra</label>
-                    <input 
+                   </div>
+                   <div className="space-y-1">
+                    <Label>Fecha de compra</Label>
+                    <Input 
                         type="date"
                         name="purchase_date"
                         value={form.purchase_date}
                         onChange={handleChange}
                         required
                     />
+                   </div>
 
-                    <label>Fecha de expiración</label>
-                    <input 
+                   <div className="space-y-1">
+                    <Label>Fecha de expiración</Label>
+                    <Input 
                         type="date"
                         name="expiration_date"
                         value={form.expiration_date}
                         onChange={handleChange}
                         required
                     />
-
+                   </div>
+                   <div className="space-y-1">
                     <label>Estado</label>
-                    <select
+                    <Select
                         name="status"
                         value={form.status}
-                        onChange={handleChange}
+                        onValueChange={(v) => setForm({ ...form, status: v})}
                     >
-                        <option value="active">Activa</option>
-                        <option value="assigned">Asignada</option>
-                        <option value="expired">Expirada</option>
-                    </select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar estado" />
+                      </SelectTrigger>
 
-                    <div style={modalStyles.actions}>
-                        <button type="button" onClick={onClose} style={modalStyles.cancelBtn}>
+                      <SelectContent>
+                        <SelectItem value="active">Activa</SelectItem>
+                        <SelectItem value="assigned">Asignada</SelectItem>
+                        <SelectItem value="expired">Expirada</SelectItem>
+                      </SelectContent>     
+
+                    </Select>
+                   </div>
+                    
+
+                    <div className="flex justify-end gap-3 pt-4">
+                        <Button variant="ghost" onClick={onClose}>
                             Cancelar
-                        </button>
-                        <button type="submit" style={modalStyles.saveBtn}>
+                        </Button>
+                        <Button type="submit">
                             Guardar
-                        </button>
+                        </Button>
                     </div>
                 </form>
-            </div>
-        </div>
+              </CardContent>
+            </Card>      
+          </div>
     );
 }
 
