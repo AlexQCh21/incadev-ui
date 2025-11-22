@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Clock, Star, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Tag, Star, ArrowRight } from "lucide-react";
 import { config } from "@/config/technology-config";
 
 interface Course {
@@ -10,7 +10,9 @@ interface Course {
   name: string;
   description: string;
   image: string;
-  duration_hours: number;
+  version: string;
+  version_name: string;
+  price: string;
   created_at: string;
 }
 
@@ -40,14 +42,6 @@ export default function FeaturedCoursesSlider() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatDuration = (hours: number) => {
-    if (hours >= 40) {
-      const weeks = Math.round(hours / 40);
-      return `${weeks} semana${weeks > 1 ? 's' : ''}`;
-    }
-    return `${hours} horas`;
   };
 
   const goToPrevious = () => {
@@ -188,19 +182,27 @@ export default function FeaturedCoursesSlider() {
                 </CardHeader>
 
                 <CardContent>
-                  {/* Duración */}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span>{formatDuration(course.duration_hours)}</span>
+                  {/* Versión */}
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                    <Tag className="h-4 w-4 text-primary" />
+                    <span>{course.version_name}</span>
                   </div>
 
-                  {/* CTA */}
-                  <Button className="w-full gap-2 group/btn" asChild>
-                    <a href={`/academico/grupos/disponible?course=${course.id}`}>
-                      Ver detalles
-                      <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </a>
-                  </Button>
+                  {/* Precio y CTA */}
+                  <div className="pt-4 border-t space-y-3">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-primary">
+                        S/ {parseFloat(course.price).toFixed(0)}
+                      </span>
+                      <span className="text-sm text-muted-foreground">por curso</span>
+                    </div>
+                    <Button className="w-full gap-2 group/btn" asChild>
+                      <a href={`/academico/grupos/disponible?course=${course.id}`}>
+                        Ver detalles
+                        <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </a>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>

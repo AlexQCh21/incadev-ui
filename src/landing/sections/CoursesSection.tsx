@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Clock, ArrowRight } from "lucide-react";
+import { BookOpen, ArrowRight, Tag } from "lucide-react";
 import { config } from "@/config/technology-config";
 
 interface Course {
@@ -10,7 +10,9 @@ interface Course {
   name: string;
   description: string;
   image: string;
-  duration_hours: number;
+  version: string;
+  version_name: string;
+  price: string;
   created_at: string;
 }
 
@@ -35,14 +37,6 @@ export default function CoursesSection() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatDuration = (hours: number) => {
-    if (hours >= 40) {
-      const weeks = Math.round(hours / 40);
-      return `${weeks} semana${weeks > 1 ? 's' : ''}`;
-    }
-    return `${hours} horas`;
   };
 
   if (isLoading) {
@@ -119,14 +113,20 @@ export default function CoursesSection() {
             </CardHeader>
 
             <CardContent className="flex-1 flex flex-col">
-              {/* Duración */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4 pb-4 border-b">
-                <Clock className="h-4 w-4 text-primary" />
-                <span>{formatDuration(course.duration_hours)}</span>
+              {/* Versión */}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                <Tag className="h-4 w-4 text-primary" />
+                <span>{course.version_name}</span>
               </div>
 
-              {/* CTA */}
-              <div className="mt-auto">
+              {/* Precio y CTA */}
+              <div className="mt-auto pt-4 border-t space-y-3">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-primary">
+                    S/ {parseFloat(course.price).toFixed(0)}
+                  </span>
+                  <span className="text-sm text-muted-foreground">por curso</span>
+                </div>
                 <Button className="w-full gap-2" asChild>
                   <a href={`/academico/grupos/disponible?course=${course.id}`}>
                     Ver detalles
