@@ -65,5 +65,8 @@ export const config = {
 
     //Configuración Académica
     academicSettings: "/api/academic-processes/academic-settings",
+
+    //cursos
+    courses: '/api/academic-processes/courses-management',
   },
 };
