@@ -17,7 +17,8 @@ export const config = {
       delete: "/api/surveys/:id",
       response: "/api/surveys/:id/responses",
       byRole: "/api/surveys/by-role",
-      active: "/api/surveys/active"
+      active: "/api/surveys/active",
+      isSurveyCompleted: "/api/surveys/completed",
     },
     questions: {
       listAll: "/api/surveys/:surveyId/questions",
