@@ -71,12 +71,17 @@ export const routes = {
     profile: "/tecnologico/security/perfil",
   },
   academic_analyst: {
+    dashboard: "/tecnologico/academic_analyst/dashboard",
+    attendance: "/tecnologico/academic_analyst/asistencia",
+    performance: "/tecnologico/academic_analyst/rendimiento",
+    progress: "/tecnologico/academic_analyst/progreso",
+    riskPrediction: "/tecnologico/academic_analyst/prediccion-riesgo",
     reports: "/tecnologico/academic_analyst/reportes",
     profile: "/tecnologico/academic_analyst/perfil",
   },
   web: {
     dashboard: "/tecnologico/web/dashboard",
-    news: "/tecnologico/web/noticias",
+    news: "/tecnologico/web/noticias_add",
     announcements: "/tecnologico/web/anuncios", 
     alerts: "/tecnologico/web/alertas",
     projects: "/tecnologico/web/proyectos",
