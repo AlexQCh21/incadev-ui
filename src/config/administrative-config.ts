@@ -65,5 +65,11 @@ export const config = {
 
     //Configuración Académica
     academicSettings: "/api/academic-processes/academic-settings",
+
+    //indicadores (KPIs)
+    kpis: "/api/indicadores",
+    kpisUpdateGoal: "/api/indicadores",
+    kpisRecalculate: "/api/indicadores/recalculate",
+    kpisExportData: "/api/indicadores/export-data",
   },
 };
