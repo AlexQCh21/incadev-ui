@@ -6,9 +6,22 @@
 
 export const config = {
   apiUrl:"https://instituto.cetivirgendelapuerta.com/academico/backend/public",
-  //apiUrl:"http://127.0.0.1:8000",
+  //apiUrl:"http://127.0.0.1:8002",
   environment:"development",
   endpoints: {
-
+    surveys:{
+      listAll: "/api/surveys",
+      show: "/api/surveys/:id",
+      create: "/api/surveys",
+      update: "/api/surveys/:id",
+      delete: "/api/surveys/:id",
+    },
+    questions: {
+      listAll: "/api/surveys/:surveyId/questions",
+      show: "/api/questions/:id",
+      create: "/api/surveys/:surveyId/questions",
+      update: "/api/questions/:id",
+      delete: "/api/questions/:id",
+    }
   },
 };
