@@ -56,9 +56,11 @@ export const routes = {
     profile: "/tecnologico/support/perfil",
   },
   infrastructure: {
+    dashboard: "/tecnologico/infrastructure/dashboard",
     servers: "/tecnologico/infrastructure/servidores",
-    licenses: "/tecnologico/infrastructure/licenses",
     assets: "/tecnologico/infrastructure/assets",
+    software: "/tecnologico/infrastructure/software",
+    licenses: "/tecnologico/infrastructure/licenses",
     profile: "/tecnologico/infrastructure/perfil",
   },
   security: {

@@ -285,5 +285,54 @@ export const config = {
     groups: {
       active: "/data-analyst/groups/active",
     },
+
+    // Infrastructure Module
+    infrastructure: {
+      // Dashboard
+      dashboard: {
+        stats: "/infrastructure/dashboard/stats",
+        summary: "/infrastructure/dashboard/summary",
+      },
+      // Tech Assets
+      assets: {
+        list: "/infrastructure/assets",
+        show: "/infrastructure/assets/:id",
+        store: "/infrastructure/assets",
+        update: "/infrastructure/assets/:id",
+        destroy: "/infrastructure/assets/:id",
+      },
+      // Hardware
+      hardware: {
+        list: "/infrastructure/hardwares",
+        show: "/infrastructure/hardwares/:id",
+        store: "/infrastructure/hardwares",
+        update: "/infrastructure/hardwares/:id",
+        destroy: "/infrastructure/hardwares/:id",
+      },
+      // Software
+      software: {
+        list: "/infrastructure/softwares",
+        show: "/infrastructure/softwares/:id",
+        store: "/infrastructure/softwares",
+        update: "/infrastructure/softwares/:id",
+        destroy: "/infrastructure/softwares/:id",
+      },
+      // Licenses
+      licenses: {
+        list: "/infrastructure/licenses",
+        show: "/infrastructure/licenses/:id",
+        store: "/infrastructure/licenses",
+        update: "/infrastructure/licenses/:id",
+        destroy: "/infrastructure/licenses/:id",
+      },
+      // License Assignments
+      assignments: {
+        list: "/infrastructure/assignments",
+        show: "/infrastructure/assignments/:id",
+        store: "/infrastructure/assignments",
+        update: "/infrastructure/assignments/:id",
+        destroy: "/infrastructure/assignments/:id",
+      },
+    },
   }
 };

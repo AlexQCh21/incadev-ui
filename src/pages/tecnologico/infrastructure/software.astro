@@ -1,9 +1,9 @@
 ---
-import AssetsPage from "@/process/technology/dashboard/AssetsPage.tsx";
+import SoftwarePage from "@/process/technology/dashboard/SoftwarePage";
 import '@/styles/global.css';
 
-const title = "Activos Tecnológicos | INCADEV Tecnológico";
-const description = "Gestión de activos tecnológicos y recursos de hardware";
+const title = "Software | INCADEV Tecnológico";
+const description = "Catálogo de software y aplicaciones";
 const robots = ["noindex", "nofollow"];
 ---
 <!DOCTYPE html>
@@ -17,6 +17,6 @@ const robots = ["noindex", "nofollow"];
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
-    <AssetsPage client:load />
+    <SoftwarePage client:load />
   </body>
 </html>
