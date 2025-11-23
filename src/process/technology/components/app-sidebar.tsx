@@ -12,7 +12,7 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
-import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconTicket, IconServer, IconAlertTriangle, IconFileText, IconCode, IconUser, IconLock, IconDeviceDesktop, IconActivity, IconAdjustments } from "@tabler/icons-react";
+import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconTicket, IconServer, IconFileText, IconCode, IconUser, IconLock, IconDeviceDesktop, IconActivity, IconAdjustments } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -321,25 +321,17 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
         return (
           <>
             <SidebarGroup>
-              <SidebarGroupLabel>General</SidebarGroupLabel>
+              <SidebarGroupLabel>Seguridad</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={dashboardRoute}>
                         <IconHome className="h-4 w-4" />
-                        <span>Dashboard</span>
+                        <span>Dashboard Seguridad</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            <SidebarGroup>
-              <SidebarGroupLabel>Gestión de Seguridad</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.security.blocks}>
@@ -366,9 +358,9 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                      <a href={routes.security.incidents}>
-                        <IconAlertTriangle className="h-4 w-4" />
-                        <span>Incidentes</span>
+                      <a href={routes.security.settings}>
+                        <IconAdjustments className="h-4 w-4" />
+                        <span>Configuración Seguridad</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -385,22 +377,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.support.myTickets}>
                         <IconTicket className="h-4 w-4" />
                         <span>Mis Tickets</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            <SidebarGroup>
-              <SidebarGroupLabel>Configuración</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.security.settings}>
-                        <IconAdjustments className="h-4 w-4" />
-                        <span>Configuración Seguridad</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
