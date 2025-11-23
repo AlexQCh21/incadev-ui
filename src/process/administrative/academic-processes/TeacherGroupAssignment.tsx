@@ -677,15 +677,17 @@ export default function TeacherGroupAssignment() {
                                                                         <div key={teacher.id} className="flex items-center gap-1.5 rounded-lg border border-violet-500/20 bg-violet-500/10 px-2.5 py-1.5 text-xs">
                                                                             <IconUser className="h-3 w-3 text-violet-600 dark:text-violet-400" />
                                                                             <span className="font-medium text-violet-700 dark:text-violet-300">{teacher.user_name || 'Sin nombre'}</span>
-                                                                            <Button
-                                                                                variant="ghost"
-                                                                                size="sm"
-                                                                                className="h-4 w-4 p-0 ml-1 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                                                                                onClick={() => handleRemoveTeacher(group.id, teacher.user_id)}
-                                                                                title="Remover docente"
-                                                                            >
-                                                                                <IconTrash className="h-3 w-3" />
-                                                                            </Button>
+                                                                            {group.status !== 'completed' && group.status !== 'cancelled' && (
+                                                                                <Button
+                                                                                    variant="ghost"
+                                                                                    size="sm"
+                                                                                    className="h-4 w-4 p-0 ml-1 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                                                                    onClick={() => handleRemoveTeacher(group.id, teacher.user_id)}
+                                                                                    title="Remover docente"
+                                                                                >
+                                                                                    <IconTrash className="h-3 w-3" />
+                                                                                </Button>
+                                                                            )}
                                                                         </div>
                                                                     ))
                                                                 ) : (
