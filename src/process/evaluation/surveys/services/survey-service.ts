@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/services/survey-service.ts
-
 import { config } from "@/config/evaluation-config"
 import type { 
   Survey, 
@@ -56,5 +54,25 @@ export const surveyService = {
     const res = await fetch(url, { method: "DELETE", headers: headers() })
     if (!res.ok) throw new Error("Error al eliminar encuesta")
     return res.json()
+  },
+
+  async downloadPdfReport(surveyId: number): Promise<Blob> {
+    const url = `${config.apiUrl}${config.endpoints.reports.pdf}`.replace(":surveyId", String(surveyId))
+    const res = await fetch(url, { 
+      method: "GET", 
+      headers: { "Authorization": `Bearer ${getAuthToken()}` } 
+    })
+    if (!res.ok) throw new Error("Error al descargar reporte PDF")
+    return res.blob()
+  },
+
+  async downloadExcelReport(surveyId: number): Promise<Blob> {
+    const url = `${config.apiUrl}${config.endpoints.reports.excel}`.replace(":surveyId", String(surveyId))
+    const res = await fetch(url, { 
+      method: "GET", 
+      headers: { "Authorization": `Bearer ${getAuthToken()}` } 
+    })
+    if (!res.ok) throw new Error("Error al descargar reporte Excel")
+    return res.blob()
   },
 }

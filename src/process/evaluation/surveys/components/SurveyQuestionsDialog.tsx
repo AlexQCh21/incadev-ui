@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/components/SurveyQuestionsDialog.tsx
-
 import { useState, useEffect } from "react"
 import {
   Dialog,

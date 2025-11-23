@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/components/SurveyTable.tsx
-
 import {
   Table,
   TableBody,
@@ -9,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import {
   Pagination,
   PaginationContent,
@@ -25,8 +24,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Pencil, Trash2, Eye, ListChecks } from "lucide-react"
-import type { Survey } from "@/process/evaluation/surveys/types/survey"
+import { 
+  MoreHorizontal, 
+  Pencil, 
+  Trash2, 
+  Eye, 
+  ListChecks, 
+  FileText, 
+  Table as TableIcon 
+} from "lucide-react"
+import type { Survey, SurveyEvent } from "@/process/evaluation/surveys/types/survey"
 
 interface Meta {
   current_page: number
@@ -52,8 +59,16 @@ interface Props {
   onDelete: (survey: Survey) => void
   onView?: (survey: Survey) => void
   onManageQuestions: (survey: Survey) => void
+  onDownloadPdf: (surveyId: number) => Promise<boolean>
+  onDownloadExcel: (surveyId: number) => Promise<boolean>
   onPageChange: (page: number) => void
   loading?: boolean
+}
+
+const eventConfig: Record<SurveyEvent, { label: string; variant: "default" | "secondary" | "outline" }> = {
+  satisfaction: { label: "Satisfacción", variant: "default" },
+  teacher: { label: "Docente", variant: "secondary" },
+  impact: { label: "Impacto", variant: "outline" },
 }
 
 export function SurveyTable({ 
@@ -64,6 +79,8 @@ export function SurveyTable({
   onDelete, 
   onView, 
   onManageQuestions,
+  onDownloadPdf,
+  onDownloadExcel,
   onPageChange,
   loading = false 
 }: Props) {
@@ -88,6 +105,24 @@ export function SurveyTable({
     return pages
   }
 
+  // Manejar descarga de PDF
+  const handleDownloadPdf = async (surveyId: number) => {
+    const success = await onDownloadPdf(surveyId)
+    if (!success) {
+      // El error ya está manejado en el hook
+      console.error("Error al descargar PDF")
+    }
+  }
+
+  // Manejar descarga de Excel
+  const handleDownloadExcel = async (surveyId: number) => {
+    const success = await onDownloadExcel(surveyId)
+    if (!success) {
+      // El error ya está manejado en el hook
+      console.error("Error al descargar Excel")
+    }
+  }
+
   if (loading) {
     return (
       <div className="rounded-md border">
@@ -96,6 +131,7 @@ export function SurveyTable({
             <TableRow>
               <TableHead className="w-[50px]">#</TableHead>
               <TableHead>Título</TableHead>
+              <TableHead>Evento</TableHead>
               <TableHead className="hidden md:table-cell">Descripción</TableHead>
               <TableHead className="hidden sm:table-cell">Creación</TableHead>
               <TableHead className="w-[70px]">Acciones</TableHead>
@@ -106,6 +142,7 @@ export function SurveyTable({
               <TableRow key={idx}>
                 <TableCell><div className="h-4 bg-muted rounded w-8 animate-pulse" /></TableCell>
                 <TableCell><div className="h-4 bg-muted rounded w-32 animate-pulse" /></TableCell>
+                <TableCell><div className="h-5 bg-muted rounded w-20 animate-pulse" /></TableCell>
                 <TableCell className="hidden md:table-cell"><div className="h-4 bg-muted rounded w-48 animate-pulse" /></TableCell>
                 <TableCell className="hidden sm:table-cell"><div className="h-4 bg-muted rounded w-24 animate-pulse" /></TableCell>
                 <TableCell><div className="h-8 w-8 bg-muted rounded animate-pulse" /></TableCell>
@@ -134,6 +171,7 @@ export function SurveyTable({
             <TableRow>
               <TableHead className="w-[50px]">#</TableHead>
               <TableHead>Título</TableHead>
+              <TableHead>Evento</TableHead>
               <TableHead className="hidden md:table-cell">Descripción</TableHead>
               <TableHead className="hidden sm:table-cell">Creación</TableHead>
               <TableHead className="w-[70px]">Acciones</TableHead>
@@ -144,7 +182,12 @@ export function SurveyTable({
               <TableRow key={survey.id}>
                 <TableCell className="font-medium">{meta.from + idx}</TableCell>
                 <TableCell className="font-medium">{survey.title}</TableCell>
-                <TableCell className="hidden md:table-cell max-w-[300px] truncate text-muted-foreground">
+                <TableCell>
+                  <Badge variant={eventConfig[survey.mapping.event]?.variant || "default"}>
+                    {eventConfig[survey.mapping.event]?.label || survey.mapping.event}
+                  </Badge>
+                </TableCell>
+                <TableCell className="hidden md:table-cell max-w-[250px] truncate text-muted-foreground">
                   {survey.description || "—"}
                 </TableCell>
                 <TableCell className="hidden sm:table-cell text-muted-foreground">
@@ -169,6 +212,19 @@ export function SurveyTable({
                         <ListChecks className="mr-2 h-4 w-4" />
                         Gestionar Preguntas
                       </DropdownMenuItem>
+                      
+                      {/* Sección de Reportes */}
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => handleDownloadPdf(survey.id)}>
+                        <FileText className="mr-2 h-4 w-4" />
+                        Descargar PDF
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDownloadExcel(survey.id)}>
+                        <TableIcon className="mr-2 h-4 w-4" />
+                        Descargar Excel
+                      </DropdownMenuItem>
+
+                      {/* Sección de Administración */}
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => onEdit(survey)}>
                         <Pencil className="mr-2 h-4 w-4" />
