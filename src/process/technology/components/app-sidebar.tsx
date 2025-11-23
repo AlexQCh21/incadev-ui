@@ -12,6 +12,9 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
+import { toast } from "sonner";
+import { config } from "@/config/technology-config";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   IconLogout, 
   IconUserCircle, 
@@ -35,10 +38,6 @@ import {
   IconAlertTriangle,
   IconLifebuoy
 } from "@tabler/icons-react";
-import { toast } from "sonner";
-import { config } from "@/config/technology-config";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 interface User {
   id: number
   name: string
@@ -219,14 +218,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.support.createTicket}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Crear Ticket</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
@@ -269,14 +260,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.support.tickets}>
                         <IconTicket className="h-4 w-4" />
                         <span>Todos los Tickets</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.support.createTicket}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Crear Ticket</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -349,14 +332,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.support.createTicket}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Crear Ticket</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
@@ -423,14 +398,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.support.myTickets}>
                         <IconTicket className="h-4 w-4" />
                         <span>Mis Tickets</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.support.createTicket}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Crear Ticket</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -519,14 +486,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.support.createTicket}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Crear Ticket</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
@@ -558,14 +517,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                      <a href={routes.web.dashboard}>
-                        <IconCode className="h-4 w-4" />
-                        <span>Dashboard</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
                       <a href={routes.web.news}>
                         <IconNews className="h-4 w-4" />
                         <span>Noticias</span>
@@ -585,14 +536,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.web.alerts}>
                         <IconAlertTriangle className="h-4 w-4" />
                         <span>Alertas</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.web.projects}>
-                        <IconCode className="h-4 w-4" />
-                        <span>Proyectos</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -649,14 +592,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       <a href={routes.support.myTickets}>
                         <IconTicket className="h-4 w-4" />
                         <span>Mis Tickets</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.support.createTicket}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Crear Ticket</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
