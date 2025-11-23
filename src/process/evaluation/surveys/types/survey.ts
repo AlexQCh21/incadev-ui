@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/types/survey.ts
-
 export type SurveyEvent = "satisfaction" | "teacher" | "impact"
 
 export interface SurveyMapping {

@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/hooks/useQuestions.ts
-
 import { useState, useCallback } from "react"
 import { questionService } from "@/process/evaluation/surveys/services/question-service"
 import type { Question, QuestionFormData } from "@/process/evaluation/surveys/types/question"
