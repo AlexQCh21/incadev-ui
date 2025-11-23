@@ -276,6 +276,11 @@ function EnrollmentDetailModal({
         className:
           "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
       },
+      cancelled: {
+        text: "🚫 Cancelado",
+        className:
+          "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
+      },
     };
     const info = statusMap[status] || statusMap.pending;
     return (
@@ -308,7 +313,7 @@ function EnrollmentDetailModal({
           "bg-violet-500/10 text-violet-700 dark:text-violet-400 border-violet-500/20",
       },
       failed: {
-        text: "❌ Reprobado",
+        text: "❌ Rechazado",
         className:
           "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
       },
@@ -335,13 +340,12 @@ function EnrollmentDetailModal({
           {/* Status Cards */}
           <div className="grid gap-4 md:grid-cols-2">
             <Card
-              className={`border-2 ${
-                enrollment.payment_status === "paid"
-                  ? "border-emerald-200 dark:border-emerald-800"
-                  : enrollment.payment_status === "overdue"
+              className={`border-2 ${enrollment.payment_status === "paid"
+                ? "border-emerald-200 dark:border-emerald-800"
+                : enrollment.payment_status === "overdue"
                   ? "border-red-200 dark:border-red-800"
                   : "border-amber-200 dark:border-amber-800"
-              }`}
+                }`}
             >
               <CardContent className="p-4">
                 <div className="space-y-2">
@@ -367,13 +371,12 @@ function EnrollmentDetailModal({
             </Card>
 
             <Card
-              className={`border-2 ${
-                enrollment.academic_status === "active"
-                  ? "border-emerald-200 dark:border-emerald-800"
-                  : enrollment.academic_status === "inactive"
+              className={`border-2 ${enrollment.academic_status === "active"
+                ? "border-emerald-200 dark:border-emerald-800"
+                : enrollment.academic_status === "inactive"
                   ? "border-red-200 dark:border-red-800"
                   : "border-amber-200 dark:border-amber-800"
-              }`}
+                }`}
             >
               <CardContent className="p-4">
                 <div className="space-y-2">
@@ -598,15 +601,15 @@ function EnrollmentDetailModal({
                             enrollment.last_payment.status === "approved"
                               ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
                               : enrollment.last_payment.status === "rejected"
-                              ? "bg-red-500/10 text-red-700 dark:text-red-400"
-                              : "bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                                ? "bg-red-500/10 text-red-700 dark:text-red-400"
+                                : "bg-amber-500/10 text-amber-700 dark:text-amber-400"
                           }
                         >
                           {enrollment.last_payment.status === "approved"
                             ? "✅ Aprobado"
                             : enrollment.last_payment.status === "rejected"
-                            ? "❌ Rechazado"
-                            : "⏳ Pendiente"}
+                              ? "❌ Rechazado"
+                              : "⏳ Pendiente"}
                         </Badge>
                       </div>
                     </div>
@@ -923,6 +926,11 @@ export default function EnrollmentManagement() {
         className:
           "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
       },
+      cancelled: {
+        text: "🚫 Cancelado",
+        className:
+          "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
+      },
     };
     const info = statusMap[status] || statusMap.pending;
     return (
@@ -955,7 +963,7 @@ export default function EnrollmentManagement() {
           "bg-violet-500/10 text-violet-700 dark:text-violet-400 border-violet-500/20",
       },
       failed: {
-        text: "❌ Reprobado",
+        text: "❌ Rechazado",
         className:
           "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20",
       },
@@ -1233,22 +1241,22 @@ export default function EnrollmentManagement() {
                                     </Button>
                                     {enrollment.academic_status ===
                                       "pending" && (
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
-                                        onClick={() =>
-                                          handleUpdateStatus(
-                                            enrollment.id,
-                                            "active",
-                                            "academic"
-                                          )
-                                        }
-                                        title="Activar matrícula"
-                                      >
-                                        <IconCheck className="h-4 w-4" />
-                                      </Button>
-                                    )}
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                                          onClick={() =>
+                                            handleUpdateStatus(
+                                              enrollment.id,
+                                              "active",
+                                              "academic"
+                                            )
+                                          }
+                                          title="Activar matrícula"
+                                        >
+                                          <IconCheck className="h-4 w-4" />
+                                        </Button>
+                                      )}
                                   </div>
                                 </TableCell>
                               </TableRow>
