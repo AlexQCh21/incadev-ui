@@ -1,18 +1,31 @@
-// src/process/evaluation/surveys/types/survey.ts
+export type SurveyEvent = "satisfaction" | "teacher" | "impact"
+
+export interface SurveyMapping {
+  id: number
+  event: SurveyEvent
+  survey_id: number
+  description: string
+  created_at: string
+  updated_at: string
+}
 
 export interface Survey {
   id: number
   title: string
   description: string
+  mapping: SurveyMapping
   questions_count?: number
   responses_count?: number
   created_at: string
   updated_at: string
+  questions: any[] // Mantener por compatibilidad
 }
 
 export interface SurveyFormData {
   title: string
   description: string
+  event: SurveyEvent
+  mapping_description: string
 }
 
 export interface SurveyResponse<T> {
@@ -43,3 +56,10 @@ export interface PaginatedSurveyResponse {
   meta: PaginationMeta
   links: PaginationLinks
 }
+
+// Configuración de eventos para reutilizar en componentes
+export const SURVEY_EVENTS: { value: SurveyEvent; label: string }[] = [
+  { value: "satisfaction", label: "Satisfacción" },
+  { value: "teacher", label: "Docente" },
+  { value: "impact", label: "Impacto" },
+]

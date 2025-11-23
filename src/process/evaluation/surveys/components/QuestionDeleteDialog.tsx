@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/components/QuestionDeleteDialog.tsx
-
 import { useState } from "react"
 import {
   AlertDialog,

@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/panel/PanelSurveyPage.tsx
-
 import { useState, useMemo } from "react"
 import SurveyLayout from "@/process/evaluation/SurveyLayout"
 import { useSurveys } from "@/process/evaluation/surveys/hooks/useSurveys"
@@ -23,33 +21,29 @@ export default function PanelSurveyPage() {
     setPage,
     createSurvey, 
     updateSurvey, 
-    deleteSurvey 
+    deleteSurvey,
+    downloadPdfReport,
+    downloadExcelReport 
   } = useSurveys()
 
-  // Filters
   const [search, setSearch] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [eventFilter, setEventFilter] = useState("all")
 
-  // Dialogs
   const [formOpen, setFormOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [questionsOpen, setQuestionsOpen] = useState(false)
   const [selectedSurvey, setSelectedSurvey] = useState<Survey | null>(null)
 
-  // Filtered surveys
   const filtered = useMemo(() => {
-    if (!search && statusFilter === "all") {
-      return surveys
-    }
     return surveys.filter((s) => {
-      const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) ||
+      const matchSearch = !search || 
+        s.title.toLowerCase().includes(search.toLowerCase()) ||
         s.description?.toLowerCase().includes(search.toLowerCase())
-      const matchStatus = statusFilter === "all"
-      return matchSearch && matchStatus
+      const matchEvent = eventFilter === "all" || s.mapping.event === eventFilter
+      return matchSearch && matchEvent
     })
-  }, [surveys, search, statusFilter])
+  }, [surveys, search, eventFilter])
 
-  // Handlers
   const handleCreate = () => {
     setSelectedSurvey(null)
     setFormOpen(true)
@@ -104,7 +98,6 @@ export default function PanelSurveyPage() {
   return (
     <SurveyLayout title="Dashboard: Crud de Encuestas">
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
-        {/* Header */}
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Gestión de Encuestas</h1>
           <p className="text-muted-foreground">
@@ -112,7 +105,6 @@ export default function PanelSurveyPage() {
           </p>
         </div>
 
-        {/* Error Alert */}
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
@@ -120,23 +112,22 @@ export default function PanelSurveyPage() {
           </Alert>
         )}
 
-        {/* Toolbar */}
         <SurveyToolbar
           search={search}
           onSearchChange={setSearch}
-          statusFilter={statusFilter}
-          onStatusFilterChange={setStatusFilter}
+          eventFilter={eventFilter}
+          onEventFilterChange={setEventFilter}
           onRefresh={refresh}
           onCreate={handleCreate}
           loading={loading}
         />
 
-        {/* Content */}
         {loading && surveys.length === 0 ? (
           <div className="flex flex-1 items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : (
+          // En el PanelSurveyPage, actualiza el uso del SurveyTable:
           <SurveyTable
             surveys={filtered}
             meta={meta || defaultMeta}
@@ -144,12 +135,13 @@ export default function PanelSurveyPage() {
             onEdit={handleEdit}
             onDelete={handleDelete}
             onManageQuestions={handleManageQuestions}
+            onDownloadPdf={downloadPdfReport}
+            onDownloadExcel={downloadExcelReport}
             onPageChange={handlePageChange}
             loading={loading}
           />
         )}
 
-        {/* Dialogs */}
         <SurveyFormDialog
           open={formOpen}
           onOpenChange={setFormOpen}

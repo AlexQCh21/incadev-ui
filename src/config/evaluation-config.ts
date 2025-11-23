@@ -15,6 +15,9 @@ export const config = {
       create: "/api/surveys",
       update: "/api/surveys/:id",
       delete: "/api/surveys/:id",
+      response: "/api/surveys/:id/responses",
+      byRole: "/api/surveys/by-role",
+      active: "/api/surveys/active"
     },
     questions: {
       listAll: "/api/surveys/:surveyId/questions",
@@ -22,6 +25,10 @@ export const config = {
       create: "/api/surveys/:surveyId/questions",
       update: "/api/questions/:id",
       delete: "/api/questions/:id",
+    },
+    reports: {
+      pdf: "/api/reports/survey/:surveyId/pdf",
+      excel: "/api/reports/survey/:surveyId/excel",
     }
   },
 
