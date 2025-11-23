@@ -113,7 +113,7 @@ const statusConfig = {
 
 // Eventos permitidos por rol
 const ALLOWED_EVENTS_BY_ROLE = {
-  student: ["satisfaction", "impact"],
+  student: ["satisfaction", "impact", "teacher"],
   teacher: ["teacher"]
 };
 
