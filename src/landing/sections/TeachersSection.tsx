@@ -7,7 +7,7 @@ import { config } from "@/config/technology-config";
 interface Teacher {
   id: number;
   name: string;
-  avatar: string;
+  avatar: string | null;
   subject_areas: string[];
   professional_summary: string | null;
   cv_path: string | null;
@@ -91,17 +91,19 @@ export default function TeachersSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {teachers.map((teacher) => (
           <Card key={teacher.id} className="group hover:shadow-xl transition-all duration-300 flex flex-col">
-            {/* Avatar del profesor */}
-            <div className="relative">
-              <div className="aspect-square overflow-hidden bg-muted/30">
-                <img
-                  src={teacher.avatar}
-                  alt={teacher.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
+            {/* Avatar del profesor - solo si existe */}
+            {teacher.avatar && teacher.avatar.trim() !== '' && (
+              <div className="relative">
+                <div className="aspect-square overflow-hidden bg-muted/30">
+                  <img
+                    src={teacher.avatar}
+                    alt={teacher.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <CardHeader>
               <CardTitle className="text-lg capitalize">{teacher.name.toLowerCase()}</CardTitle>

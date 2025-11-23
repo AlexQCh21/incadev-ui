@@ -119,20 +119,14 @@ export default function CoursesSection() {
                 <span>{course.version_name}</span>
               </div>
 
-              {/* Precio y CTA */}
-              <div className="mt-auto pt-4 border-t space-y-3">
+              {/* Precio */}
+              <div className="mt-auto pt-4 border-t">
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl font-bold text-primary">
                     S/ {parseFloat(course.price).toFixed(0)}
                   </span>
                   <span className="text-sm text-muted-foreground">por curso</span>
                 </div>
-                <Button className="w-full gap-2" asChild>
-                  <a href={`/academico/grupos/disponible?course=${course.id}`}>
-                    Ver detalles
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </Button>
               </div>
             </CardContent>
           </Card>
@@ -142,7 +136,7 @@ export default function CoursesSection() {
       {/* Ver todos los cursos */}
       <div className="text-center mt-12">
         <Button variant="outline" size="lg" className="gap-2" asChild>
-          <a href="/academico/grupos/disponible">
+          <a href="/tecnologico/web/cursos">
             Ver todos los cursos
             <ArrowRight className="h-4 w-4" />
           </a>

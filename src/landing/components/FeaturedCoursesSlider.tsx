@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Tag, Star, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Tag, BookOpen } from "lucide-react";
 import { config } from "@/config/technology-config";
 
 interface Course {
@@ -31,9 +31,11 @@ export default function FeaturedCoursesSlider() {
       const data = await response.json();
 
       if (data.success && data.data) {
-        setCourses(data.data);
+        // Limitar a los últimos 4 cursos
+        const limitedCourses = data.data.slice(0, 4);
+        setCourses(limitedCourses);
         // Centrar en el segundo curso si hay más de 2
-        if (data.data.length > 2) {
+        if (limitedCourses.length > 2) {
           setCurrentIndex(1);
         }
       }
@@ -98,14 +100,14 @@ export default function FeaturedCoursesSlider() {
       <div className="w-full py-8">
         <div className="text-center mb-8">
           <Badge variant="outline" className="mb-4">
-            <Star className="h-3 w-3 mr-1 fill-yellow-500 text-yellow-500" />
-            Cursos Destacados
+            <BookOpen className="h-3 w-3 mr-1" />
+            Nuevos Cursos
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Los Mejores Cursos del Momento
+            Últimos Cursos Publicados
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Cursos más populares y mejor valorados por nuestros estudiantes
+            Descubre los cursos más recientes agregados a nuestra plataforma
           </p>
         </div>
         <div className="flex justify-center">
@@ -131,16 +133,16 @@ export default function FeaturedCoursesSlider() {
 
   return (
     <div className="w-full py-8">
-      <div className="text-center mb-8">
+      <div className="text-center mb-16">
         <Badge variant="outline" className="mb-4">
-          <Star className="h-3 w-3 mr-1 fill-yellow-500 text-yellow-500" />
-          Cursos Destacados
+          <BookOpen className="h-3 w-3 mr-1" />
+          Nuevos Cursos
         </Badge>
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Los Mejores Cursos del Momento
+          Últimos Cursos Publicados
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Cursos más populares y mejor valorados por nuestros estudiantes
+          Descubre los cursos más recientes agregados a nuestra plataforma
         </p>
       </div>
 
@@ -166,12 +168,6 @@ export default function FeaturedCoursesSlider() {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <Badge className="bg-yellow-500/90 text-yellow-950 backdrop-blur-sm shadow-md">
-                      <Star className="h-3 w-3 mr-1 fill-current" />
-                      Destacado
-                    </Badge>
-                  </div>
                 </div>
 
                 <CardHeader>
@@ -188,20 +184,14 @@ export default function FeaturedCoursesSlider() {
                     <span>{course.version_name}</span>
                   </div>
 
-                  {/* Precio y CTA */}
-                  <div className="pt-4 border-t space-y-3">
+                  {/* Precio */}
+                  <div className="pt-4 border-t">
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl font-bold text-primary">
                         S/ {parseFloat(course.price).toFixed(0)}
                       </span>
                       <span className="text-sm text-muted-foreground">por curso</span>
                     </div>
-                    <Button className="w-full gap-2 group/btn" asChild>
-                      <a href={`/academico/grupos/disponible?course=${course.id}`}>
-                        Ver detalles
-                        <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </a>
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
