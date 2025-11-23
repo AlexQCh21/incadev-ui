@@ -295,6 +295,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
               <SidebarGroupLabel>Infraestructura</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
+                  {/* TODO: Descomentar cuando el backend de servidores esté listo
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.infrastructure.servers}>
@@ -303,6 +304,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
+                  */}
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.infrastructure.assets}>

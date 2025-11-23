@@ -510,12 +510,14 @@ export default function InfrastructureDashboard() {
                 <span>Catálogo de Software</span>
               </a>
             </Button>
+            {/* TODO: Descomentar cuando el backend de servidores esté listo
             <Button variant="outline" className="h-auto py-4 flex-col gap-2" asChild>
               <a href={routes.infrastructure.servers}>
                 <Server className="h-5 w-5 text-purple-500" />
                 <span>Ver Servidores</span>
               </a>
             </Button>
+            */}
           </div>
         </CardContent>
       </Card>
