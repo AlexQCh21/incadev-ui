@@ -8,10 +8,9 @@ import DashboardICV from "@/process/academic/dasboard/Dashboard";
 
 export const config = {
   //apiUrl:"https://instituto.cetivirgendelapuerta.com/administrativo/backend/public",
-  apiUrl:"http://127.0.0.1:8000",
-  environment:"development",
+  apiUrl:  "http://127.0.0.1:8000",
+  environment:  "development",
   endpoints: {
-
     //dashboard
     dashboard: "/api/dashboard/data",
     export_pdf: "/api/dashboard/export-data",
@@ -30,6 +29,7 @@ export const config = {
     balance_general: "/api/finanzas/balance-general",
 
     //estudiantes
+
     students:"/api/gestion-academica/estudiantes",
     studentsExportCsv: '/api/gestion-academica/estudiantes/export/csv',
     studentsExportData: '/api/gestion-academica/estudiantes/export-data',
@@ -38,7 +38,29 @@ export const config = {
     documents: "/api/gestion-documentaria/documentos",
     documentsExportCsv: '/api/gestion-documentaria/documentos/export/csv',
     documentsExportData: '/api/gestion-documentaria/documentos/export-data',
-    documentsDownload: '/api/gestion-documentaria/documentos'
+    documentsDownload: '/api/gestion-documentaria/documentos',
+
+
+    // Historial Académico
+    academicHistory: "/api/gestion-academica/historial-academico",
+    academicHistoryExportCsv:
+      "/api/gestion-academica/historial-academico/exportar/csv",
+    academicHistoryExportData:
+      "/api/gestion-academica/historial-academico/exportar/datos",
+
+    // Matrículas
+    enrollments: "/api/gestion-academica/matriculas",
+
+    // Módulos
+    modulesCourses: "/api/academic-processes/courses",
+    modulesCourseVersion: "/api/academic-processes/course-version",
+    modules: "/api/academic-processes",
+    modulesReorder: "/api/academic-processes/reorder",
+
+    // Grupos
+    groups: "/api/academic-processes/groups",
+    groupsCourseVersions: "/api/academic-processes/groups/course-versions",
+    groupsStatistics: "/api/academic-processes/groups/statistics",
 
   },
 };
