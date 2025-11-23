@@ -76,6 +76,7 @@ interface SurveyStatus {
   event: string;
   group_id: number;
   survey_id?: number;
+  canAnswerTime: boolean;
 }
 
 interface GroupWithSurveys {
@@ -101,6 +102,12 @@ const statusConfig = {
     variant: "secondary" as const,
     icon: CheckCircle2,
     color: "text-green-600"
+  },
+  "time-locked": {
+    label: "No disponible",
+    variant: "outline" as const,
+    icon: Lock,
+    color: "text-gray-500"
   }
 };
 
@@ -240,11 +247,13 @@ export default function SurveysPage() {
       return data.data;
     } catch (error) {
       console.error(`Error verificando estado de encuesta ${event} (survey: ${surveyId}) para grupo ${groupId}:`, error);
-      // Si hay error, asumimos que no ha respondido
+      // Si hay error, asumimos que no ha respondido pero puede responder
       return {
         hasResponded: false,
         event,
-        group_id: parseInt(groupId)
+        group_id: parseInt(groupId),
+        survey_id: surveyId,
+        canAnswerTime: true
       };
     }
   };
@@ -313,13 +322,24 @@ export default function SurveysPage() {
     }
   }, [token, role]);
 
-  const handleSurveyClick = (survey: APISurvey, groupId: string, event: string, hasResponded: boolean) => {
-    if (hasResponded) return; // No hacer nada si ya respondió
+  const handleSurveyClick = (survey: APISurvey, groupId: string, event: string, hasResponded: boolean, canAnswerTime: boolean) => {
+    if (hasResponded) return;
+    
+    if (event === 'impact' && !canAnswerTime) {
+      return;
+    }
     
     setSelectedSurvey({ survey, groupId, event });
     setIsDialogOpen(true);
   };
 
+  const isSurveyEnabled = (survey: APISurvey & { status: SurveyStatus }) => {
+    const { hasResponded, canAnswerTime, event } = survey.status;
+    
+    if (hasResponded) return false;
+    if (event === 'impact' && !canAnswerTime) return false;
+    return true;
+  };
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedSurvey(null);
@@ -366,8 +386,12 @@ export default function SurveysPage() {
   
   const pendingSurveys = totalSurveys - completedSurveys;
 
-  const getSurveyStatus = (hasResponded: boolean) => {
-    return hasResponded ? "completed" : "pending";
+  const getSurveyStatus = (survey: APISurvey & { status: SurveyStatus }) => {
+    const { hasResponded, canAnswerTime, event } = survey.status;
+    
+    if (hasResponded) return "completed";
+    if (event === 'impact' && !canAnswerTime) return "time-locked";
+    return "pending";
   };
 
   if (loading) {
@@ -488,22 +512,30 @@ export default function SurveysPage() {
                     {/* Surveys Grid */}
                     <div className="grid gap-4 md:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
                       {groupData.surveys.map((survey) => {
-                        const surveyStatus = getSurveyStatus(survey.status.hasResponded);
+                        const surveyStatus = getSurveyStatus(survey);
                         const config = statusConfig[surveyStatus];
                         const StatusIcon = config.icon;
+                        const isEnabled = isSurveyEnabled(survey);
                         const isCompleted = surveyStatus === "completed";
+                        const isTimeLocked = surveyStatus === "time-locked";
 
                         return (
                           <Card
                             key={`${groupData.group.id}-${survey.id}`}
                             className={`relative overflow-hidden transition-all ${
-                              isCompleted 
+                              !isEnabled 
                                 ? "opacity-60 cursor-not-allowed" 
                                 : "cursor-pointer hover:shadow-md hover:border-primary"
                             }`}
-                            onClick={() => !isCompleted && handleSurveyClick(survey, groupData.group.id, survey.mapping.event, survey.status.hasResponded)}
+                            onClick={() => isEnabled && handleSurveyClick(
+                              survey, 
+                              groupData.group.id, 
+                              survey.mapping.event, 
+                              survey.status.hasResponded, 
+                              survey.status.canAnswerTime
+                            )}
                           >
-                            {isCompleted && (
+                            {!isEnabled && (
                               <div className="absolute top-3 right-3">
                                 <Lock className="h-5 w-5 text-muted-foreground" />
                               </div>
@@ -521,6 +553,11 @@ export default function SurveysPage() {
                               </div>
                               <CardDescription className="line-clamp-2">
                                 {survey.description}
+                                {isTimeLocked && (
+                                  <div className="text-xs text-amber-600 mt-1">
+                                    Disponible 2 meses después de finalizar el grupo
+                                  </div>
+                                )}
                               </CardDescription>
                             </CardHeader>
                             
@@ -536,14 +573,14 @@ export default function SurveysPage() {
                                   <span className="text-xs capitalize">
                                     Tipo: {survey.mapping.event}
                                   </span>
-                                  {!isCompleted && (
+                                  {isEnabled && !isCompleted && (
                                     <Button size="sm" variant="default">
                                       {role === 'teacher' ? 'Evaluar' : 'Iniciar'}
                                     </Button>
                                   )}
-                                  {isCompleted && (
+                                  {!isEnabled && (
                                     <Badge variant="secondary" className="text-xs">
-                                      Completada
+                                      {isCompleted ? 'Completada' : 'No disponible'}
                                     </Badge>
                                   )}
                                 </div>
