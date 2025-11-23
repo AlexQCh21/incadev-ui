@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import AddLicenseForm from "./AddLicenseForm";
+import {Trash2} from "lucide-react";
 
 export default function LicensesPage(){
 
@@ -47,6 +48,17 @@ export default function LicensesPage(){
       setEditModal({ open: true, license });
     };
 
+    const handleDelete = async (licenseId: number) => {
+      try{
+        await fetch(`http://localhost:8000/api/infrastructure/licenses/${licenseId}`, {
+        method: "DELETE",
+      });
+        setLicenses(prev => prev.filter(lic => lic.id !== licenseId));
+      } catch(error){
+        console.error("Error eliminando la licencia:", error);
+        alert("Ocurrió un error al eliminar la licencia");
+      }
+    }
     const handleUpdate = async (updatedLic) => {
       await fetch(`http://localhost:8000/api/infrastructure/licenses/${updatedLic.id}`, {
         method: "PUT",
@@ -59,6 +71,29 @@ export default function LicensesPage(){
       ));
 
       setEditModal({ open: false, license: null });
+    };
+
+    const handleDeleteSoftware = async (softwareId: number) => {
+
+      const hasLicenses = licenses.some((lic) => lic.software_id === softwareId);
+      if(hasLicenses){
+        alert("No se puede eliminar este software porque tiene licencias asociadas");
+        return;
+      }
+
+      const confirmDelete = confirm("¿Seguro que deseas eliminar este software?");
+      if (!confirmDelete) return;
+      try{
+        await fetch(`http://localhost:8000/api/infrastructure/softwares/${softwareId}`, {
+        method: "DELETE",
+      });
+
+      //no quiero que se elimine si tiene licencias asociadas
+        setSoftwareList((prev) => prev.filter((soft) => soft.id !== softwareId));
+      } catch(error){
+        console.error("Error eliminando el software:", error);
+        alert("Ocurrió un error al eliminar el software");
+      }
     };
 
     const licensesBySoftware = softwareList.map(soft => ({
@@ -84,7 +119,8 @@ export default function LicensesPage(){
                   key = {soft.id} 
                   soft={soft} 
                   onEdit= {handleEdit}
-                  onDelete={(id) => console.log("eliminar", id)}
+                  onDelete={handleDelete} //borar licencia
+                  onDeleteSoftware = {handleDeleteSoftware} //borrar software
                   />))}
                   {editModal.open && (
                     <EditLicenseModal
@@ -98,7 +134,7 @@ export default function LicensesPage(){
         );
  
 }
-function SoftwareCard({ soft, onEdit, onDelete }){
+function SoftwareCard({ soft, onEdit, onDelete, onDeleteSoftware }){
   const [open, setOpen] = useState(false);
   return (
     <div style={styles.softwareCard}>
@@ -110,6 +146,13 @@ function SoftwareCard({ soft, onEdit, onDelete }){
         <h3 style={{ margin: 0 }}>{soft.software_name}</h3>
         <small>Versión: {soft.version}</small>
       </div>
+      <Button
+        onClick={() => onDeleteSoftware(soft.id)}
+        className="text-red-500 hover:text-red-700"
+        title="Eliminar software">
+          <Trash2 size={20}/>
+
+      </Button>
       {open ? <ChevronUp/> : <ChevronDown/>}
       </div>
      {open && (
