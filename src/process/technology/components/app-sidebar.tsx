@@ -15,28 +15,31 @@ import { routes } from "@/process/technology/technology-site";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  IconLogout, 
-  IconUserCircle, 
-  IconHome, 
-  IconUsers, 
-  IconShield, 
-  IconKey, 
-  IconTicket, 
-  IconServer, 
-  IconFileText, 
-  IconCode, 
-  IconUser, 
-  IconLock, 
-  IconDeviceDesktop, 
-  IconActivity, 
+import {
+  IconLogout,
+  IconUserCircle,
+  IconHome,
+  IconUsers,
+  IconShield,
+  IconKey,
+  IconTicket,
+  IconServer,
+  IconFileText,
+  IconCode,
+  IconUser,
+  IconLock,
+  IconDeviceDesktop,
+  IconActivity,
   IconAdjustments,
   IconChartBar,
   IconRobot,
   IconNews,
   IconBell,
   IconAlertTriangle,
-  IconLifebuoy
+  IconLifebuoy,
+  IconPackage,
+  IconApps,
+  IconLicense,
 } from "@tabler/icons-react";
 interface User {
   id: number
@@ -303,15 +306,23 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                       <a href={routes.infrastructure.assets}>
-                        <IconServer className="h-4 w-4" />
+                        <IconPackage className="h-4 w-4" />
                         <span>Activos Tecnológicos</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
+                      <a href={routes.infrastructure.software}>
+                        <IconApps className="h-4 w-4" />
+                        <span>Catálogo de Software</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
                       <a href={routes.infrastructure.licenses}>
-                        <IconServer className="h-4 w-4" />
+                        <IconLicense className="h-4 w-4" />
                         <span>Gestión de Licencias</span>
                       </a>
                     </SidebarMenuButton>
