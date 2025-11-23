@@ -6,6 +6,7 @@ import { Search, Download, Loader2, AlertCircle, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import { config } from "@/config/academic-config"
+import { config as evaluationConfig } from "@/config/evaluation-config"
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
@@ -17,11 +18,28 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { Badge } from "@/components/ui/badge"
+import { routes } from "@/process/academic/academic-site"
 
 // Interfaz extendida para incluir los campos del certificado
 interface CompletedAPIGroupData extends APIGroupData {
   has_certificate: boolean
   certificate_download_url: string
+}
+
+// Interfaz para la respuesta de encuestas completadas
+interface SurveyCompletionStatus {
+  group_id: string;
+  isCompleted: boolean;
+  requiredSurveys: Array<{
+    id: number;
+    title: string;
+    event: string;
+  }>;
+  pendingSurveys: Array<{
+    id: number;
+    title: string;
+    event: string;
+  }>;
 }
 
 interface APIResponse {
@@ -90,6 +108,33 @@ export default function FinishGroup() {
     }
   }
 
+  // Verificar si las encuestas están completadas
+  const checkSurveyCompletion = async (groupId: string): Promise<SurveyCompletionStatus> => {
+    try {
+      const tokenWithoutQuotes = token?.replace(/^"|"$/g, '');
+      const response = await fetch(
+        `${evaluationConfig.apiUrl}${evaluationConfig.endpoints.surveys.isSurveyCompleted}?group_id=${groupId}`,
+        {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${tokenWithoutQuotes}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error(`Error verificando encuestas para grupo ${groupId}:`, error);
+      throw error;
+    }
+  };
+
   const handleViewCertificate = async (group: CompletedAPIGroupData) => {
     if (!token || !group.has_certificate) {
       console.error("No hay token de autenticación o el grupo no tiene certificado")
@@ -99,7 +144,17 @@ export default function FinishGroup() {
     try {
       setDownloading(group.id.toString())
       
-      // Usar la URL completa del certificado que viene en la respuesta
+      // Primero verificar si las encuestas están completadas
+      const surveyStatus = await checkSurveyCompletion(group.id.toString());
+      
+      if (!surveyStatus.isCompleted) {
+        // Si no están completadas, redireccionar a encuestas
+        setDownloading(null);
+        window.location.href = routes.dashboard.surveys;
+        return;
+      }
+
+      // Si las encuestas están completadas, proceder con la descarga del certificado
       const response = await fetch(group.certificate_download_url, {
         method: "GET",
         headers: {
@@ -126,7 +181,14 @@ export default function FinishGroup() {
       console.log("Certificado descargado exitosamente")
     } catch (error) {
       console.error("Error descargando certificado:", error)
-      alert("Error al descargar el certificado. Por favor, inténtalo de nuevo.")
+      
+      // Si el error es específico de encuestas incompletas, mostrar mensaje apropiado
+      if (error instanceof Error && error.message.includes("encuestas")) {
+        alert("No puedes descargar el certificado hasta completar todas las encuestas requeridas.");
+        window.location.href = routes.dashboard.surveys;
+      } else {
+        alert("Error al descargar el certificado. Por favor, inténtalo de nuevo.")
+      }
     } finally {
       setDownloading(null)
     }

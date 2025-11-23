@@ -89,7 +89,7 @@ export const navSimpleMain: NavSimpleItem[] = [
     title: "Encuestas",
     url: "/academico/encuesta",
     icon: IconChecklist,
-    allowedRoles: ["teacher"]
+    allowedRoles: ["student"]
   },
   {
     title: "Tutorias",
