@@ -24,7 +24,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Pencil, Trash2, Eye, ListChecks } from "lucide-react"
+import { 
+  MoreHorizontal, 
+  Pencil, 
+  Trash2, 
+  Eye, 
+  ListChecks, 
+  FileText, 
+  Table as TableIcon 
+} from "lucide-react"
 import type { Survey, SurveyEvent } from "@/process/evaluation/surveys/types/survey"
 
 interface Meta {
@@ -51,6 +59,8 @@ interface Props {
   onDelete: (survey: Survey) => void
   onView?: (survey: Survey) => void
   onManageQuestions: (survey: Survey) => void
+  onDownloadPdf: (surveyId: number) => Promise<boolean>
+  onDownloadExcel: (surveyId: number) => Promise<boolean>
   onPageChange: (page: number) => void
   loading?: boolean
 }
@@ -69,6 +79,8 @@ export function SurveyTable({
   onDelete, 
   onView, 
   onManageQuestions,
+  onDownloadPdf,
+  onDownloadExcel,
   onPageChange,
   loading = false 
 }: Props) {
@@ -91,6 +103,24 @@ export function SurveyTable({
       pages.push(i)
     }
     return pages
+  }
+
+  // Manejar descarga de PDF
+  const handleDownloadPdf = async (surveyId: number) => {
+    const success = await onDownloadPdf(surveyId)
+    if (!success) {
+      // El error ya está manejado en el hook
+      console.error("Error al descargar PDF")
+    }
+  }
+
+  // Manejar descarga de Excel
+  const handleDownloadExcel = async (surveyId: number) => {
+    const success = await onDownloadExcel(surveyId)
+    if (!success) {
+      // El error ya está manejado en el hook
+      console.error("Error al descargar Excel")
+    }
   }
 
   if (loading) {
@@ -182,6 +212,19 @@ export function SurveyTable({
                         <ListChecks className="mr-2 h-4 w-4" />
                         Gestionar Preguntas
                       </DropdownMenuItem>
+                      
+                      {/* Sección de Reportes */}
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => handleDownloadPdf(survey.id)}>
+                        <FileText className="mr-2 h-4 w-4" />
+                        Descargar PDF
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDownloadExcel(survey.id)}>
+                        <TableIcon className="mr-2 h-4 w-4" />
+                        Descargar Excel
+                      </DropdownMenuItem>
+
+                      {/* Sección de Administración */}
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => onEdit(survey)}>
                         <Pencil className="mr-2 h-4 w-4" />
