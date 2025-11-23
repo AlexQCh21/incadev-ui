@@ -197,22 +197,6 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.admin.support.tickets}>
-                        <IconTicket className="h-4 w-4" />
-                        <span>Todos los Tickets</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={routes.admin.support.createTicket}>
-                        <IconFileText className="h-4 w-4" />
-                        <span>Crear Ticket</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
