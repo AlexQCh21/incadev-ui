@@ -5,11 +5,11 @@
  **/
 
 export const config = {
-  apiUrl:"https://instituto.cetivirgendelapuerta.com/academico/backend/public",
-  //apiUrl:"http://127.0.0.1:8002",
-  environment:"development",
+  apiUrl: "https://instituto.cetivirgendelapuerta.com/evaluacion/backend/public",
+  //apiUrl:"http://127.0.0.1:8000",
+  environment: "development",
   endpoints: {
-    surveys:{
+    surveys: {
       listAll: "/api/surveys",
       show: "/api/surveys/:id",
       create: "/api/surveys",
@@ -24,4 +24,5 @@ export const config = {
       delete: "/api/questions/:id",
     }
   },
+
 };
