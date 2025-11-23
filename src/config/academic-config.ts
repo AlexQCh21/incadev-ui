@@ -5,8 +5,8 @@
  **/
 
 export const config = {
-  //apiUrl:"https://instituto.cetivirgendelapuerta.com/backend/academico/public",
-  apiUrl:"http://127.0.0.1:8000",
+  apiUrl:"https://instituto.cetivirgendelapuerta.com/backend/academico/public",
+  //apiUrl:"http://127.0.0.1:8000",
   environment:"development",
   endpoints: {
 
@@ -63,7 +63,9 @@ export const config = {
       statistics: "/api/teaching-groups/:group/attendance-statistics"
     },
     marketing: {
-      students: "/api/marketing/students"
+      students: "/api/marketing/students",
+      courses: "/api/marketing/courses",
+      versions: "/api/marketing/versions"
     }
   },
 };
