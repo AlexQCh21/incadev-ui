@@ -142,7 +142,7 @@ export const adminNavItems: NavItem[] = [
     url: "#",
     icon: IconFileText,
     items: [
-      { title: "Documentos Administrativos", url: "/administrativo/documents" },
+      { title: "Documentos Administrativos", url: "/administrativo/gestion-documentaria/documentos" },
     ],
   },
 ];

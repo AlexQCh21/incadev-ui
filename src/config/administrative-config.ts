@@ -32,6 +32,13 @@ export const config = {
     //estudiantes
     students:"/api/gestion-academica/estudiantes",
     studentsExportCsv: '/api/gestion-academica/estudiantes/export/csv',
-    studentsExportData: '/api/gestion-academica/estudiantes/export-data'
+    studentsExportData: '/api/gestion-academica/estudiantes/export-data',
+
+    //documentos administrativos
+    documents: "/api/gestion-documentaria/documentos",
+    documentsExportCsv: '/api/gestion-documentaria/documentos/export/csv',
+    documentsExportData: '/api/gestion-documentaria/documentos/export-data',
+    documentsDownload: '/api/gestion-documentaria/documentos'
+
   },
 };
