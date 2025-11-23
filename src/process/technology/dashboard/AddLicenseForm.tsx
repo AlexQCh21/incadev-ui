@@ -6,15 +6,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+
 export default function AddLicenseForm({ open, onClose, softwareList, onCreate }) {
-
-
-    const licenseStatuses = [
+  const licenseStatuses = [
         {value: "active", label: "Activa"},
         {value: "expired", label: "Expirada"},
         {value: "pending", label: "Pendiente de renovación"},
         {value: "deactivated", label: "Desactivada"},
-    ]
+  ]
+
+  const [softList, setSoftwareList] = softwareList;
+  const [showNewSoftwareForm, setShowNewSoftwareForm] = useState(false);
+  const [newSoftware, setNewSoftware] = useState({
+    software_name: "",
+    version: "",
+    type:""
+  });
   const [form, setForm] = useState({
     software_id: "",
     key_code:"",
@@ -52,13 +59,20 @@ export default function AddLicenseForm({ open, onClose, softwareList, onCreate }
   return (
     <Card className="p-4 mb-6">
       <CardContent>
-        <form onSubmit={handleSubmit} className="grip gap-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-6">
          {/* Software */}
-          <div>
+          <div className="md:col-span-1">
             <Label>Software</Label>
             <Select
               value={form.software_id}
-              onValueChange={(value) => setForm({ ...form, software_id: value })}
+              onValueChange={(value) =>{
+                if (value === "new"){
+                  setShowNewSoftwareForm(true);
+                } else {
+                  setShowNewSoftwareForm(false);
+                }
+               setForm({ ...form, software_id: value });
+              }}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleccione software" />
@@ -69,10 +83,87 @@ export default function AddLicenseForm({ open, onClose, softwareList, onCreate }
                     {soft.software_name} {soft.version && `(${soft.version})`}
                   </SelectItem>
                 ))}
+                <SelectItem
+                  value= "new"
+                  className="text-blue-500 font-semibold"
+                >
+                  Nuevo Software
+                </SelectItem>
               </SelectContent>
             </Select>
+            {showNewSoftwareForm && (
+            <div className="mt-4 p-4 border rounded-xl bg-gray-900">
+              <h3 className="font-semibold mb-2">Registrar nuevo software</h3>
+
+              <div className="grid gap-3">
+                <div>
+                  <Label>Nombre</Label>
+                  <input
+                    className="bg-gray-800 border border-gray-700 p-2 w-full rounded"
+                    value={newSoftware.software_name}
+                    onChange={(e) =>
+                      setNewSoftware({ ...newSoftware, software_name: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label>Versión</Label>
+                  <input
+                    className="bg-gray-800 border border-gray-700 p-2 w-full rounded"
+                    value={newSoftware.version}
+                    onChange={(e) =>
+                      setNewSoftware({ ...newSoftware, version: e.target.value })
+                    }
+                  />
+                </div>
+                <Select
+                  value={newSoftware.type}
+                  onValueChange={(value) => setNewSoftware({ ... newSoftware, type: value})}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Tipo de software" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="desktop">Desktop</SelectItem>
+                      <SelectItem value="web">Web</SelectItem>
+                    </SelectContent>
+                </Select>
+                <button
+                  type="button"
+                  className="bg-blue-600 hover:bg-blue-700 p-2 rounded text-white"
+                  onClick={async () => {
+                    // Aquí llamas a tu API Laravel
+                    const res = await fetch("http://localhost:8000/api/infrastructure/softwares", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(newSoftware)
+                      });
+    
+
+                    // Actualizar lista local
+                    const data = await res.json();
+                    setSoftwareList((prev) => [...prev, data.data]);
+
+                    // Seleccionar el nuevo software
+                    setForm({
+                      ...form,
+                      software_id: String(data.data.id),
+                    });
+
+                    setShowNewSoftwareForm(false);
+                    setNewSoftware({ software_name: "", version: "", type:""});
+                  }}
+                >
+                  Guardar software
+                </button>
+              </div>
+            </div>
+            )}
           </div>
-          {/* Clave */}
+          
+          <div className="md:col-span-2 grid grid-cols-2 gap-4">
+            {/* Clave */}
           <div>
             <Label>Clave / License Key</Label>
             <Input
@@ -154,6 +245,8 @@ export default function AddLicenseForm({ open, onClose, softwareList, onCreate }
           <Button type="submit" className="w-fit">
             Registrar licencia
           </Button>
+          </div>
+          
         </form>
       </CardContent>
     </Card>
