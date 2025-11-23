@@ -71,6 +71,11 @@ export const routes = {
     profile: "/tecnologico/security/perfil",
   },
   academic_analyst: {
+    dashboard: "/tecnologico/academic_analyst/dashboard",
+    attendance: "/tecnologico/academic_analyst/asistencia",
+    performance: "/tecnologico/academic_analyst/rendimiento",
+    progress: "/tecnologico/academic_analyst/progreso",
+    riskPrediction: "/tecnologico/academic_analyst/prediccion-riesgo",
     reports: "/tecnologico/academic_analyst/reportes",
     profile: "/tecnologico/academic_analyst/perfil",
   },
