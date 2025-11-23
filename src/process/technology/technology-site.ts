@@ -81,7 +81,7 @@ export const routes = {
   },
   web: {
     dashboard: "/tecnologico/web/dashboard",
-    news: "/tecnologico/web/noticias",
+    news: "/tecnologico/web/noticias_add",
     announcements: "/tecnologico/web/anuncios", 
     alerts: "/tecnologico/web/alertas",
     projects: "/tecnologico/web/proyectos",
