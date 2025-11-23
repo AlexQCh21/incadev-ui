@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/components/SurveyTable.tsx
-
 import {
   Table,
   TableBody,

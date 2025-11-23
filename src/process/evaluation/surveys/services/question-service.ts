@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/services/question-service.ts
-
 import { config } from "@/config/evaluation-config"
 import type { 
   Question, 
