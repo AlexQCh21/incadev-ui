@@ -24,6 +24,7 @@ interface User {
   avatar?: string | null
   avatar_url?: string | null
   role?: string
+  roles?: string[]
 }
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
@@ -73,7 +74,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
   };
 
   const handleGoToProfile = () => {
-    const userRole = user?.role || 'admin';
+    const userRole = user?.roles?.[0] || user?.role || 'admin';
     const profileRoutes: Record<string, string> = {
       admin: routes.admin.profile,
       support: routes.support.profile,
@@ -86,7 +87,7 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
   };
 
   // Obtener el rol del usuario
-  const userRole = user?.role || 'admin';
+  const userRole = user?.roles?.[0] || user?.role || 'admin';
 
   // Configuración de navegación por rol
   const getRoleNavigation = () => {
