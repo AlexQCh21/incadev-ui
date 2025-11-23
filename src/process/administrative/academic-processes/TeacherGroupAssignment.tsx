@@ -634,7 +634,7 @@ export default function TeacherGroupAssignment() {
                                         <>
                                             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                                                 {pageGroups.map((group) => (
-                                                    <div key={group.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-5 space-y-4 hover:shadow-lg transition-shadow">
+                                                    <div key={group.id} className="group rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-5 space-y-4 hover:shadow-lg transition-all duration-300 hover:border-violet-500/50">
                                                         <div className="flex items-start justify-between gap-3">
                                                             <div className="flex-1 min-w-0">
                                                                 <div className="flex items-center gap-2 mb-1">
