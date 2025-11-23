@@ -21,7 +21,9 @@ export default function PanelSurveyPage() {
     setPage,
     createSurvey, 
     updateSurvey, 
-    deleteSurvey 
+    deleteSurvey,
+    downloadPdfReport,
+    downloadExcelReport 
   } = useSurveys()
 
   const [search, setSearch] = useState("")
@@ -125,6 +127,7 @@ export default function PanelSurveyPage() {
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : (
+          // En el PanelSurveyPage, actualiza el uso del SurveyTable:
           <SurveyTable
             surveys={filtered}
             meta={meta || defaultMeta}
@@ -132,6 +135,8 @@ export default function PanelSurveyPage() {
             onEdit={handleEdit}
             onDelete={handleDelete}
             onManageQuestions={handleManageQuestions}
+            onDownloadPdf={downloadPdfReport}
+            onDownloadExcel={downloadExcelReport}
             onPageChange={handlePageChange}
             loading={loading}
           />

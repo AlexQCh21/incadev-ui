@@ -25,6 +25,10 @@ export const config = {
       create: "/api/surveys/:surveyId/questions",
       update: "/api/questions/:id",
       delete: "/api/questions/:id",
+    },
+    reports: {
+      pdf: "/api/reports/survey/:surveyId/pdf",
+      excel: "/api/reports/survey/:surveyId/excel",
     }
   },
 };

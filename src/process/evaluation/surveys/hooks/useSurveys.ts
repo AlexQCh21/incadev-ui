@@ -18,6 +18,8 @@ interface UseSurveysReturn {
   createSurvey: (data: SurveyFormData) => Promise<boolean>
   updateSurvey: (id: number, data: SurveyFormData) => Promise<boolean>
   deleteSurvey: (id: number) => Promise<boolean>
+  downloadPdfReport: (surveyId: number) => Promise<boolean>
+  downloadExcelReport: (surveyId: number) => Promise<boolean>
 }
 
 export function useSurveys(): UseSurveysReturn {
@@ -84,6 +86,50 @@ export function useSurveys(): UseSurveysReturn {
     }
   }
 
+  // Nuevas funciones para descargar reportes
+  const downloadPdfReport = async (surveyId: number): Promise<boolean> => {
+    try {
+      const blob = await surveyService.downloadPdfReport(surveyId)
+      
+      // Crear URL para descarga
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.style.display = "none"
+      a.href = url
+      a.download = `reporte_encuesta_${surveyId}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      
+      return true
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error al descargar PDF")
+      return false
+    }
+  }
+
+  const downloadExcelReport = async (surveyId: number): Promise<boolean> => {
+    try {
+      const blob = await surveyService.downloadExcelReport(surveyId)
+      
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.style.display = "none"
+      a.href = url
+      a.download = `reporte_encuesta_${surveyId}.xlsx`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      
+      return true
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error al descargar Excel")
+      return false
+    }
+  }
+
   return { 
     surveys, 
     meta, 
@@ -94,6 +140,8 @@ export function useSurveys(): UseSurveysReturn {
     setPage,
     createSurvey, 
     updateSurvey, 
-    deleteSurvey 
+    deleteSurvey,
+    downloadPdfReport,
+    downloadExcelReport
   }
 }
