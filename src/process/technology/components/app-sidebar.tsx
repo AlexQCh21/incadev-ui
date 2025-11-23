@@ -12,11 +12,32 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { routes } from "@/process/technology/technology-site";
-import { IconLogout, IconUserCircle, IconHome, IconUsers, IconShield, IconKey, IconTicket, IconServer, IconFileText, IconCode, IconUser, IconLock, IconDeviceDesktop, IconActivity, IconAdjustments } from "@tabler/icons-react";
 import { toast } from "sonner";
 import { config } from "@/config/technology-config";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { 
+  IconLogout, 
+  IconUserCircle, 
+  IconHome, 
+  IconUsers, 
+  IconShield, 
+  IconKey, 
+  IconTicket, 
+  IconServer, 
+  IconFileText, 
+  IconCode, 
+  IconUser, 
+  IconLock, 
+  IconDeviceDesktop, 
+  IconActivity, 
+  IconAdjustments,
+  IconChartBar,
+  IconRobot,
+  IconNews,
+  IconBell,
+  IconAlertTriangle,
+  IconLifebuoy
+} from "@tabler/icons-react";
 interface User {
   id: number
   name: string
@@ -411,12 +432,44 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
+                      <a href={routes.academic_analyst.attendance}>
+                        <IconChartBar className="h-4 w-4" />
+                        <span>Asistencia</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.academic_analyst.performance}>
+                        <IconChartBar className="h-4 w-4" />
+                        <span>Rendimiento</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.academic_analyst.progress}>
+                        <IconChartBar className="h-4 w-4" />
+                        <span>Progreso</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.academic_analyst.riskPrediction}>
+                        <IconChartBar className="h-4 w-4" />
+                        <span>Predicción de Riesgo</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  {/*<SidebarMenuItem>
+                    <SidebarMenuButton asChild>
                       <a href={routes.academic_analyst.reports}>
                         <IconFileText className="h-4 w-4" />
                         <span>Reportes</span>
                       </a>
                     </SidebarMenuButton>
-                  </SidebarMenuItem>
+                  </SidebarMenuItem>*/}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
@@ -464,9 +517,65 @@ export function AppSidebar({ token, user, ...props }: AppSidebarProps) {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                      <a href={routes.web.projects}>
-                        <IconCode className="h-4 w-4" />
-                        <span>Proyectos</span>
+                      <a href={routes.web.news}>
+                        <IconNews className="h-4 w-4" />
+                        <span>Noticias</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.announcements}>
+                        <IconBell className="h-4 w-4" />
+                        <span>Anuncios</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.alerts}>
+                        <IconAlertTriangle className="h-4 w-4" />
+                        <span>Alertas</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Chatbot</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.chatbot.dashboard}>
+                        <IconRobot className="h-4 w-4" />
+                        <span>Dashboard</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.chatbot.faqs}>
+                        <IconRobot className="h-4 w-4" />
+                        <span>FAQs</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.chatbot.configuracion}>
+                        <IconAdjustments className="h-4 w-4" />
+                        <span>Configuración</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={routes.web.chatbot.analytics}>
+                        <IconChartBar className="h-4 w-4" />
+                        <span>Analytics</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
