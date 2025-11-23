@@ -1,5 +1,3 @@
-// src/process/evaluation/surveys/types/question.ts
-
 export interface Question {
   id: number
   survey_id: number
