@@ -348,12 +348,21 @@ export const auditService = {
     /* -----------------------------------------
        🔹 OBTENER TIPOS AUDITABLES
     ----------------------------------------- */
-    async getAuditableTypes(): Promise<ApiResponse<string[]>> {
+    async getAuditableTypes(): Promise<ApiResponse<Record<string, string>>> {
         const url = `${config.apiUrl}/api/auditable-types`
         const response = await fetch(url, {
             method: "GET",
             headers: getHeaders(),
         })
-        return handleResponse<ApiResponse<string[]>>(response)
+        return handleResponse<ApiResponse<Record<string, string>>>(response)
+    },
+
+    async getAuditableSubtypes(type: string): Promise<ApiResponse<Record<string, string>>> {
+        const url = `${config.apiUrl}/api/auditable-types/${type}/subtypes`
+        const response = await fetch(url, {
+            method: "GET",
+            headers: getHeaders(),
+        })
+        return handleResponse<ApiResponse<Record<string, string>>>(response)
     }
 }
