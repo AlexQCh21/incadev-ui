@@ -55,8 +55,8 @@ export const ROLE_ROUTES: Record<string, string> = {
   // ========================================
   // 📢 GRUPO HURTADO - MARKETING
   // ========================================
-  marketing: "/marketing/marketing/dashboard",
-  marketing_admin: "/marketing/marketing_admin/dashboard",
+  marketing: "/marketing/dashboard",
+  marketing_admin: "/marketing/dashboard",
 
   // ========================================
   // 🎓 GRUPO VÁSQUEZ - ACADÉMICO
