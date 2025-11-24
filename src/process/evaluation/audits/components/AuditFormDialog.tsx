@@ -42,203 +42,244 @@ export function AuditFormDialog({
     // 👇 CORREGIDO: Estructura simplificada según tu API
     const [formData, setFormData] = useState({
         audit_date: "",
-            summary: "",
-            auditable_type: "",
-            auditable_id: "",
-        }
+        summary: "",
+        auditable_type: "",
+        auditable_id: ""
     })
 
+    const [auditableTypes, setAuditableTypes] = useState<Record<string, string>>({})
+
+    // Cargar tipos auditables
     useEffect(() => {
         if (open) {
-            loadAuditables()
-            if (audit) {
-                form.reset({
-                    summary: audit.summary,
-                    auditable_type: audit.auditable_type,
-                    auditable_id: audit.auditable_id.toString(),
-                    audit_date: new Date(audit.audit_date),
-                })
-            } else {
-                form.reset({
-                    summary: "",
-                    auditable_type: "",
-                    auditable_id: "",
-                    audit_date: new Date(),
-                })
-            }
+            loadAuditableTypes()
+        }
+    }, [open])
+
+    // Reset form cuando se abre/cierra
+    useEffect(() => {
+        if (open && audit) {
+            // Modo edición
+            setFormData({
+                audit_date: audit.audit_date ? audit.audit_date.split('T')[0] : "",
+                summary: audit.summary || "",
+                auditable_type: audit.auditable_type || "",
+                auditable_id: audit.auditable_id?.toString() || ""
+            })
+        } else if (open) {
+            // Modo creación - valores por defecto
+            const today = new Date().toISOString().split('T')[0]
+            setFormData({
+                audit_date: today,
+                summary: "",
+                auditable_type: "",
+                auditable_id: ""
+            })
         }
     }, [open, audit])
 
-    const loadAuditables = async () => {
+    const loadAuditableTypes = async () => {
         try {
-            // Cargar tipos de elementos auditables
-            const typesResponse = await auditService.getAuditableTypes()
-            if (typesResponse.success) {
-                // Aquí podrías cargar los elementos según el tipo seleccionado
-                // Por simplicidad, asumimos que ya tenemos los datos
-            }
-        } catch (error) {
-            console.error("Error cargando datos:", error)
-        }
-    }
-
-    const handleSubmit = async (data: z.infer<typeof auditFormSchema>) => {
-        setLoading(true)
-        try {
-            const formData: AuditFormData = {
-                ...data,
-                audit_date: format(data.audit_date, 'yyyy-MM-dd'),
-                auditable_id: parseInt(data.auditable_id),
-                auditor_id: 1, // Esto debería venir del usuario autenticado
-            }
-
-            const success = await onSubmit(formData)
-            if (success) {
-                onOpenChange(false)
-                form.reset()
-            }
-        } catch (error) {
-            console.error("Error enviando formulario:", error)
+            setLoading(true)
+            const response = await auditService.getAuditableTypes()
+            setAuditableTypes(response.data || {})
+        } catch (error: any) {
+            console.error("Error cargando tipos auditables:", error)
+            setError("Error al cargar los tipos auditables")
         } finally {
             setLoading(false)
         }
     }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        // 👇 CORREGIDO: Validaciones según campos requeridos
+        if (!formData.audit_date || !formData.summary || !formData.auditable_type || !formData.auditable_id) {
+            setError("Por favor complete todos los campos requeridos")
+            return
+        }
+
+        // Validar que auditable_id sea un número válido
+        const auditableId = parseInt(formData.auditable_id)
+        if (isNaN(auditableId) || auditableId <= 0) {
+            setError("El ID del elemento debe ser un número válido")
+            return
+        }
+
+        try {
+            setSaving(true)
+            setError(null)
+
+            // 👇 CORREGIDO: Estructura exacta que espera tu API
+            const auditData = {
+                audit_date: formData.audit_date,
+                summary: formData.summary,
+                auditable_type: formData.auditable_type,
+                auditable_id: auditableId
+            }
+
+            console.log("📤 Enviando datos de auditoría:", auditData)
+
+            if (audit) {
+                // Editar auditoría existente
+                await auditService.update(audit.id, auditData)
+            } else {
+                // Crear nueva auditoría
+                await auditService.create(auditData)
+            }
+
+            onSuccess()
+            onOpenChange(false)
+
+        } catch (error: any) {
+            console.error("❌ Error guardando auditoría:", error)
+            setError(error?.message || "Error al guardar la auditoría")
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    const handleInputChange = (field: string, value: string) => {
+        setFormData(prev => ({ ...prev, [field]: value }))
+        // Limpiar error cuando el usuario empiece a escribir
+        if (error) setError(null)
+    }
+
+    // 👇 CORREGIDO: Función para generar resumen automático
+    const generateSummary = () => {
+        if (formData.auditable_type && !formData.summary) {
+            const typeName = auditableTypes[formData.auditable_type] || formData.auditable_type
+            const summary = `Auditoría del ${typeName}`
+            setFormData(prev => ({ ...prev, summary }))
+        }
+    }
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-md">
                 <DialogHeader>
                     <DialogTitle>
-                        Crear Nueva Auditoría
+                        {audit ? 'Editar Auditoría' : 'Nueva Auditoría'}
                     </DialogTitle>
+                    <DialogDescription>
+                        Complete la información para {audit ? 'editar' : 'crear'} la auditoría
+                    </DialogDescription>
                 </DialogHeader>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                        {/* Fecha de Auditoría */}
-                        <FormField
-                            control={form.control}
-                            name="audit_date"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Fecha de Auditoría</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "w-full pl-3 text-left font-normal",
-                                                        !field.value && "text-muted-foreground"
-                                                    )}
-                                                >
-                                                    {field.value ? (
-                                                        format(field.value, "PPP", { locale: es })
-                                                    ) : (
-                                                        <span>Selecciona una fecha</span>
-                                                    )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={(date) => date < new Date()}
-                                                initialFocus
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                {error && (
+                    <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
 
-                        {/* Tipo de Elemento */}
-                        <FormField
-                            control={form.control}
-                            name="auditable_type"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tipo de Elemento</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Selecciona el tipo" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="IncadevUns\\CoreDomain\\Models\\Unidad">Unidad</SelectItem>
-                                            <SelectItem value="IncadevUns\\CoreDomain\\Models\\Sistema">Sistema</SelectItem>
-                                            <SelectItem value="IncadevUns\\CoreDomain\\Models\\Proceso">Proceso</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Fecha de Auditoría */}
+                    <div className="space-y-2">
+                        <Label htmlFor="audit_date">Fecha de Auditoría *</Label>
+                        <Input
+                            id="audit_date"
+                            type="date"
+                            value={formData.audit_date}
+                            onChange={(e) => handleInputChange('audit_date', e.target.value)}
+                            required
                         />
+                    </div>
 
-                        {/* Elemento a Auditar */}
-                        <FormField
-                            control={form.control}
-                            name="auditable_id"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Elemento a Auditar</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Selecciona el elemento" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="1">Sistema de Notas UNS</SelectItem>
-                                            <SelectItem value="2">Sistema de Matrícula</SelectItem>
-                                            <SelectItem value="3">Proceso de Admisión</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                    {/* Tipo Auditable */}
+                    <div className="space-y-2">
+                        <Label htmlFor="auditable_type">Tipo a Auditar *</Label>
+                        <Select
+                            value={formData.auditable_type}
+                            onValueChange={(value) => {
+                                handleInputChange('auditable_type', value)
+                                // Generar resumen automático cuando se selecciona tipo
+                                setTimeout(generateSummary, 100)
+                            }}
+                            disabled={loading}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Seleccione el tipo a auditar" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {Object.entries(auditableTypes).map(([key, value]) => (
+                                    <SelectItem key={key} value={key}>
+                                        {value}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {loading && (
+                            <p className="text-sm text-muted-foreground flex items-center gap-2">
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                                Cargando tipos...
+                            </p>
+                        )}
+                    </div>
+
+                    {/* ID del Auditable */}
+                    <div className="space-y-2">
+                        <Label htmlFor="auditable_id">ID del Elemento *</Label>
+                        <Input
+                            id="auditable_id"
+                            type="number"
+                            min="1"
+                            value={formData.auditable_id}
+                            onChange={(e) => handleInputChange('auditable_id', e.target.value)}
+                            placeholder="Ingrese el ID numérico del elemento"
+                            required
                         />
+                        <p className="text-xs text-muted-foreground">
+                            ID numérico del elemento que se va a auditar
+                        </p>
+                    </div>
 
-                        {/* Resumen */}
-                        <FormField
-                            control={form.control}
-                            name="summary"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Resumen</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Describe el propósito y alcance de esta auditoría..."
-                                            className="min-h-[100px]"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                    {/* Resumen */}
+                    <div className="space-y-2">
+                        <Label htmlFor="summary">Resumen *</Label>
+                        <Textarea
+                            id="summary"
+                            value={formData.summary}
+                            onChange={(e) => handleInputChange('summary', e.target.value)}
+                            placeholder="Describa brevemente el propósito de esta auditoría..."
+                            rows={3}
+                            required
                         />
+                        <p className="text-xs text-muted-foreground">
+                            Resumen descriptivo de la auditoría
+                        </p>
+                    </div>
 
-                        <div className="flex justify-end gap-3 pt-4">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => onOpenChange(false)}
-                                disabled={loading}
-                            >
-                                Cancelar
-                            </Button>
-                            <Button type="submit" disabled={loading}>
-                                {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                                Crear Auditoría
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
+                    {/* Información adicional */}
+                    <div className="p-3 bg-muted/50 rounded-lg">
+                        <h4 className="text-sm font-medium mb-2">Información del Sistema</h4>
+                        <ul className="text-xs text-muted-foreground space-y-1">
+                            <li>• La auditoría se creará con estado "Pendiente"</li>
+                            <li>• Podrá iniciar la auditoría desde la tabla principal</li>
+                            <li>• El ID debe corresponder a un elemento existente en el sistema</li>
+                        </ul>
+                    </div>
+
+                    {/* Botones */}
+                    <div className="flex justify-end gap-3 pt-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => onOpenChange(false)}
+                            disabled={saving}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            type="submit"
+                            disabled={saving || !formData.audit_date || !formData.summary || !formData.auditable_type || !formData.auditable_id}
+                        >
+                            {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+                            {audit ? 'Actualizar' : 'Crear'} Auditoría
+                        </Button>
+                    </div>
+                </form>
             </DialogContent>
         </Dialog>
     )
