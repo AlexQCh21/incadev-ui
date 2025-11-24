@@ -1,11 +1,9 @@
 ---
 // src/pages/marketing/dashboard.astro
 import Layout from "../../layouts/MarketingLayout.astro";
-import StatCard from "../../process/marketing/StatCard.tsx";
+import DashboardStats, { ApprovalRateSection } from "../../process/marketing/DashboardStats.tsx";
 import PropuestasPreview from "../../process/marketing/PropuestasPreview.tsx";
-import CursosProximos from "../../process/marketing/CursosProximos.tsx";
 import AlumnosResumen from "../../process/marketing/AlumnosResumen.tsx";
-import TimelineActividad from "../../process/marketing/TimelineActividad.tsx";
 ---
 
 <Layout title="Dashboard Marketing - INCADEV UI">
@@ -45,114 +43,21 @@ import TimelineActividad from "../../process/marketing/TimelineActividad.tsx";
         </div>
       </div>
 
-      <!-- Stats Grid - AHORA CON 5 CARDS -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <StatCard
-          client:load
-          title="Propuestas Activas"
-          value="12"
-          icon="file-text"
-          color="blue"
-          trend={{ value: 8, label: "vs. mes anterior" }}
-        />
-
-        <StatCard
-          client:load
-          title="Propuestas Aprobadas"
-          value="5"
-          icon="file-text"
-          color="green"
-          trend={{ value: 25, label: "este mes" }}
-        />
-
-        <StatCard
-          client:load
-          title="Cursos Activos"
-          value="8"
-          icon="calendar"
-          color="purple"
-          trend={{ value: 15, label: "más que el mes pasado" }}
-        />
-
-        <StatCard
-          client:load
-          title="Leads Totales"
-          value="342"
-          icon="users"
-          color="orange"
-          trend={{ value: 12, label: "crecimiento mensual" }}
-        />
-
-        <StatCard
-          client:load
-          title="Campañas Activas"
-          value="15"
-          icon="megaphone"
-          color="blue"
-          trend={{ value: -3, label: "finalizaron" }}
-        />
-      </div>
+      <!-- Stats Grid - DATOS REALES -->
+      <DashboardStats client:load />
     </section>
 
-    <!-- KPI Destacado: Tasa de Aprobación -->
-    <section
-      class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl border border-green-200 dark:border-green-900/50 p-6"
-    >
-      <div class="flex items-center justify-between">
-        <div>
-          <p
-            class="text-sm font-medium text-green-700 dark:text-green-400 mb-1"
-          >
-            Tasa de Aprobación de Propuestas
-          </p>
-          <div class="flex items-baseline gap-3">
-            <p class="text-4xl font-bold text-green-600 dark:text-green-400">
-              41.6%
-            </p>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              5 de 12 propuestas aprobadas este mes
-            </p>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">
-            Promedio histórico: 38% | Meta: 45%
-          </p>
-        </div>
-        <div class="text-right">
-          <svg
-            class="w-16 h-16 text-green-600 dark:text-green-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </div>
-      </div>
-    </section>
+    <!-- KPI Destacado: Tasa de Aprobación - DATOS REALES -->
+    <ApprovalRateSection client:load />
 
-    <!-- Main Content Grid: Propuestas + Timeline -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Propuestas (2/3 width) -->
-      <section class="lg:col-span-2">
+    <!-- Main Content Grid: Propuestas + Alumnos -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Propuestas -->
+      <section>
         <PropuestasPreview client:load />
       </section>
 
-      <!-- Timeline de Actividad (1/3 width) - NUEVO -->
-      <section>
-        <TimelineActividad client:load />
-      </section>
-    </div>
-
-    <!-- Cursos y Alumnos Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <section>
-        <CursosProximos client:load />
-      </section>
-
+      <!-- Seguimiento de Alumnos -->
       <section>
         <AlumnosResumen client:load />
       </section>

@@ -74,10 +74,10 @@ export const config = {
     },
 
 
-    // Alumnos
+    // Alumnos (desde marketing-backend usando modelos de core-domain)
     alumnos: {
-      resumen: "/alumnos/resumen",
       stats: "/alumnos/stats",
+      resumen: "/alumnos/resumen",
     },
   },
 
