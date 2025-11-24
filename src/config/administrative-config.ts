@@ -77,5 +77,13 @@ export const config = {
     kpisUpdateGoal: "/api/indicadores",
     kpisRecalculate: "/api/indicadores/recalculate",
     kpisExportData: "/api/indicadores/export-data",
+
+    // RRHH - Nuevos endpoints agregados
+    employees: "/api/rrhh/employees",
+    contracts: '/api/rrhh/employees',
+    offers: "/api/rrhh/offers",
+    applicants: "/api/rrhh/applicants",
+
+
   },
 };
