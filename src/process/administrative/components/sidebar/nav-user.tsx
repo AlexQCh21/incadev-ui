@@ -25,14 +25,34 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { config } from "@/config/technology-config";
 
-const handleLogout = () => {
+const handleLogout = async () => {
   console.log("[NavUser] Logging out...");
 
+  try {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      // Llamar al endpoint de logout del backend
+      await fetch(`${config.apiUrl}${config.endpoints.auth.logout}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+    }
+  } catch (error) {
+    console.error("[NavUser] Error during logout:", error);
+  }
+
+  // Limpiar localStorage
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  localStorage.removeItem("role");
 
-  // Si usas rutas dinámicas, podrías usar router.push
+  // Redirigir al login
   window.location.href = "/auth";
 };
 
