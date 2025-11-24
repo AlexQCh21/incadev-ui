@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { config } from "@/config/academic-config";
+import { config } from "@/config/support-config";
 import type { Forum } from "../types";
 
 interface UseForumsResult {
@@ -26,7 +26,7 @@ export function useForums(token: string | null): UseForumsResult {
       setError(null);
       
       const tokenWithoutQuotes = token.replace(/^"|"$/g, '');
-      const url = `${config.tutoringApiUrl}${config.endpoints.forums.list}`;
+      const url = `${config.apiUrl}${config.endpoints.forums.list}`;
       
       const response = await fetch(url, {
         method: "GET",
