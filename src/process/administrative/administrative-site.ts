@@ -5,7 +5,7 @@ import {
   IconCreditCard,
   IconChartBar,
   IconFileText,
-  IconUsers, 
+  IconUsers,
 } from "@tabler/icons-react";
 import { type LucideIcon } from "lucide-react";
 
@@ -52,9 +52,9 @@ export const adminNavItems: NavItem[] = [
     url: "#",
     icon: IconSchool,
     items: [
-      { title: "Estudiantes", url: "/administrativo/estudiantes" },
-      { title: "Matrículas", url: "/administrativo/matriculas" },
-      { title: "Historial Académico", url: "/administrativo/historial" },
+      { title: "Estudiantes", url: "/administrativo/gestion-academica/estudiantes" },
+      { title: "Matrículas", url: "/administrativo/gestion-academica/matriculas" },
+      { title: "Historial Académico", url: "/administrativo/gestion-academica/historial-academico" },
     ],
   },
 
@@ -68,24 +68,21 @@ export const adminNavItems: NavItem[] = [
     items: [
       {
         title: "Configuración Académica",
-        url: "/administrativo/academic-settings",
+        url: "/administrativo/procesos-academicos/config-academica",
       },
 
       // Oferta educativa
-      { title: "Cursos", url: "/administrativo/courses" },
-      { title: "Versiones de Curso", url: "/administrativo/course-versions" },
-      { title: "Módulos", url: "/administrativo/modules" },
+      { title: "Cursos", url: "/administrativo/procesos-academicos/courses" },
+      { title: "Versiones de Curso", url: "/administrativo/procesos-academicos/course-versions" },
+      { title: "Módulos", url: "/administrativo/procesos-academicos/modules-course" },
 
       // Grupos
-      { title: "Grupos", url: "/administrativo/groups" },
-      { title: "Docentes por Grupo", url: "/administrativo/group-teachers" },
+      { title: "Grupos", url: "/administrativo/procesos-academicos/grupos" },
+      { title: "Docentes por Grupo", url: "/administrativo/procesos-academicos/group-teachers" },
 
       // Control académico
-      { title: "Estado de Matrículas", url: "/administrativo/enrollments" },
-      {
-        title: "Validación Académica",
-        url: "/administrativo/payment-validation",
-      },
+      { title: "Estado de Matrículas", url: "/administrativo/procesos-academicos/enrollment-status" },
+      //{ title: "Validación Académica", url: "/administrativo/payment-validation" },
     ],
   },
 
@@ -93,7 +90,7 @@ export const adminNavItems: NavItem[] = [
   // MÓDULO DE PAGOS
   // --------------------------------------
   {
-    title: "Pagos",
+    title: "Pagos Académicos",
     url: "#",
     icon: IconCreditCard,
     items: [
@@ -128,12 +125,7 @@ export const adminNavItems: NavItem[] = [
     icon: IconChartBar,
     items: [
       { title: "Balance General", url: "/administrativo/finanzas/balance" },
-      { title: "Presupuestos", url: "/administrativo/finance/budget" },
-      {
-        title: "Pagos al Personal",
-        url: "/administrativo/finance/staff-payments",
-      },
-      { title: "Reportes Contables", url: "/administrativo/finance/reports" },
+      { title: "Reportes Contables", url: "/administrativo/finanzas/reportes" },
     ],
   },
 
@@ -145,7 +137,7 @@ export const adminNavItems: NavItem[] = [
     url: "#",
     icon: IconFileText,
     items: [
-      { title: "Documentos Administrativos", url: "/administrativo/documents" },
+      { title: "Documentos Administrativos", url: "/administrativo/gestion-documentaria/documentos" },
     ],
   },
 ];
