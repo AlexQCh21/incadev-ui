@@ -328,34 +328,43 @@ export default function PaymentApproval() {
                       <div className="rounded-lg bg-white dark:bg-slate-900 p-6 text-center text-sm text-muted-foreground">
                         Verificando comprobante...
                       </div>
-                    ) : !selectedPayment.evidence_path ? (
-                      <div className="rounded-lg bg-white dark:bg-slate-900 p-6 text-center text-sm text-muted-foreground">
-                        El estudiante no adjuntó un comprobante.
-                      </div>
-                    ) : evidenceError || !evidenceUrl ? (
-                      <div className="rounded-lg bg-white dark:bg-slate-900 p-6 text-center text-sm text-muted-foreground">
-                        No se pudo mostrar el comprobante. El archivo no existe o no es accesible.
-                      </div>
                     ) : (
-                      <div className="flex flex-col gap-3">
-                        <div className="flex justify-center bg-white dark:bg-slate-900 rounded-lg p-4">
-                          <img
-                            src={evidenceUrl}
-                            alt="Evidencia de pago"
-                            className="max-w-full h-auto rounded-lg shadow-lg"
-                            onError={() => setEvidenceError(true)}
-                          />
-                        </div>
-                        <div className="text-right">
-                          <a
-                            href={evidenceUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-sky-600 hover:underline"
-                          >
-                            Abrir comprobante en una nueva pestaña
-                          </a>
-                        </div>
+                      <div className="rounded-lg bg-white dark:bg-slate-900 p-4">
+                        {selectedPayment.evidence_path && evidenceUrl && !evidenceError ? (
+                          <div className="flex flex-col gap-3">
+                            <div className="flex justify-center bg-white dark:bg-slate-900 rounded-lg p-4">
+                              <img
+                                src={evidenceUrl}
+                                alt="Evidencia de pago"
+                                className="max-w-full h-auto rounded-lg shadow-lg"
+                                onError={() => setEvidenceError(true)}
+                              />
+                            </div>
+                            <div className="text-right">
+                              <a
+                                href={evidenceUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-sky-600 hover:underline"
+                              >
+                                Abrir comprobante en una nueva pestaña
+                              </a>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-3">
+                            <div className="flex-shrink-0 flex items-center justify-center h-20 w-28 bg-slate-100 dark:bg-slate-800 rounded-md">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7M8 3h8l1 4H7l1-4z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 13l2.5 3L14 11l4 6" />
+                              </svg>
+                            </div>
+                            <div className="flex-1 text-sm text-slate-500 dark:text-slate-400">
+                              <div className="font-medium">Comprobante no disponible</div>
+                              <div className="text-xs">Se muestran en esta ventana los datos del comprobante; utilícelos para validar la operación.</div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
