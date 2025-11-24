@@ -1,7 +1,7 @@
 import * as React from "react"
-import { NavMain } from "@/process/academic/components/sidebar/nav-main"
-import { NavSecondary } from "@/process/academic/components/sidebar/nav-secondary"
-import { NavUser } from "@/process/academic/components/sidebar/nav-user"
+import { NavMain } from "@/process/evaluation/components/sidebar/nav-main"
+import { NavSecondary } from "@/process/evaluation/components/sidebar/nav-secondary"
+import { NavUser } from "@/process/evaluation/components/sidebar/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -15,8 +15,8 @@ import {
   navMainCollapse, 
   navSimpleMain, 
   navMainOptions, 
-} from "@/process/academic/academic-site"
-import {routes} from "@/process/academic/academic-site";
+} from "@/process/evaluation/evaluation-site"
+import {routes} from "@/process/evaluation/evaluation-site";
 import { useAcademicAuth } from "@/process/academic/hooks/useAcademicAuth";
 
 interface User {
