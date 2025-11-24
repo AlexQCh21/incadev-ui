@@ -1,29 +1,29 @@
 ---
 import DashboardLayout from "@/layouts/DashboardLayout.astro";
-import PanelAuditPage from "@/process/evaluation/audits/panel/PanelAuditPage";
+import PanelSurveyPage from "@/process/evaluation/surveys/panel/PanelSurveyPage";
 const robots = ["noindex", "nofollow"];
 
-const title = "Auditorias | Plataforma Virtual Incadev";
+const title = "Encuestas | Plataforma Virtual Incadev";
 
 const description =
-    "Crea, gestiona y analiza auditorias online en la plataforma virtual de Incadev. Recoge la opinión de tus estudiantes, mide la satisfacción de tus cursos y mejora la experiencia de aprendizaje en tiempo real.";
+    "Crea, gestiona y analiza encuestas online en la plataforma virtual de Incadev. Recoge la opinión de tus estudiantes, mide la satisfacción de tus cursos y mejora la experiencia de aprendizaje en tiempo real.";
 
 const keywords = [
-    "auditorias online",
-    "auditorias plataforma virtual",
-    "auditorias educativas",
+    "encuestas online",
+    "encuestas plataforma virtual",
+    "encuestas educativas",
     "evaluación de cursos virtuales",
     "feedback de estudiantes",
     "satisfacción de estudiantes",
     "formularios online educativos",
-    "auditorias para e-learning",
-    "auditorias para clases virtuales",
-    "auditorias Incadev",
-    "analítica de auditorias educativas",
+    "encuestas para e-learning",
+    "encuestas para clases virtuales",
+    "encuestas Incadev",
+    "analítica de encuestas educativas",
     "retroalimentación en plataforma virtual",
 ];
 
-const url = "https://instituto.cetivirgendelapuerta.com/evaluacion/auditorias";
+const url = "https://instituto.cetivirgendelapuerta.com/evaluacion/encuestas";
 const imageOG = "/ISOLOGOTIPO_VERTICAL.svg";
 const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
 ---
@@ -37,5 +37,5 @@ const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
     {imageOG}
     {imagetwt}
 >
-    <PanelAuditPage client:load />
+    <PanelSurveyPage client:load />
 </DashboardLayout>
