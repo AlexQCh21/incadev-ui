@@ -1,19 +1,15 @@
 // components/AuditFormDialog.tsx
 import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
     Select,
     SelectContent,
@@ -21,53 +17,31 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { CalendarIcon, Loader2 } from "lucide-react"
-import { format } from "date-fns"
-import { es } from "date-fns/locale"
-import { cn } from "@/lib/utils"
-import type { Audit, AuditFormData } from "../types/audit"
-import { auditService } from "../services/audit-service"
-
-const auditFormSchema = z.object({
-    audit_date: z.date({
-        required_error: "La fecha de auditoría es requerida",
-    }),
-    summary: z.string().min(10, "El resumen debe tener al menos 10 caracteres"),
-    auditable_type: z.string().min(1, "Selecciona el tipo de elemento"),
-    auditable_id: z.string().min(1, "Selecciona el elemento a auditar"),
-})
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Loader2, AlertCircle } from "lucide-react"
+import { auditService } from "@/process/evaluation/audits/services/audit-service"
 
 interface AuditFormDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
-    audit?: Audit | null
-    onSubmit: (data: AuditFormData) => Promise<boolean>
+    audit?: any
+    onSuccess: () => void
 }
 
 export function AuditFormDialog({
     open,
     onOpenChange,
     audit,
-    onSubmit
+    onSuccess
 }: AuditFormDialogProps) {
     const [loading, setLoading] = useState(false)
-    const [auditables, setAuditables] = useState<any[]>([])
+    const [saving, setSaving] = useState(false)
+    const [error, setError] = useState<string | null>(null)
 
-    const form = useForm<z.infer<typeof auditFormSchema>>({
-        resolver: zodResolver(auditFormSchema),
-        defaultValues: {
+    // 👇 CORREGIDO: Estructura simplificada según tu API
+    const [formData, setFormData] = useState({
+        audit_date: "",
             summary: "",
             auditable_type: "",
             auditable_id: "",
