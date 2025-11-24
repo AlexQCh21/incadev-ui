@@ -1,14 +1,12 @@
 ---
-import UserForm from '@/process/technology/dashboard/UserForm';
+import AssignUserPermissions from '@/process/technology/dashboard/AssignUserPermissions';
 import '@/styles/global.css';
 
-const { id } = Astro.params;
-
-const title = "Editar Usuario | INCADEV Tecnológico";
-const description = "Editar usuario del módulo tecnológico";
+const title = "Asignar Permisos | INCADEV Tecnológico";
+const description = "Asignar permisos al usuario";
 const robots = ["noindex", "nofollow"];
-const keywords = ["INCADEV", "tecnológico", "usuarios", "editar"];
-const url = `https://instituto.cetivirgendelapuerta.com/tecnologico/admin/usuarios/${id}/editar`;
+const keywords = ["INCADEV", "tecnológico", "usuarios", "permisos"];
+const url = "https://instituto.cetivirgendelapuerta.com/tecnologico/admin/usuarios/permisos";
 const imageOG = "/ISOLOGOTIPO_VERTICAL.svg";
 const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
 ---
@@ -39,6 +37,6 @@ const imagetwt = "/ISOLOGOTIPO_VERTICAL.svg";
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body class="min-h-screen bg-background font-sans antialiased">
-  <UserForm client:load userId={parseInt(id as string)} />
+  <AssignUserPermissions client:load />
 </body>
 </html>
