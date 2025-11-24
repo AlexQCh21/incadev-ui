@@ -52,7 +52,7 @@ export const routes = {
     tickets: "/tecnologico/support/tickets",
     myTickets: "/tecnologico/support/mis-tickets",
     createTicket: "/tecnologico/support/tickets/crear",
-    ticketDetail: (id: number) => `/tecnologico/support/tickets/${id}`,
+    ticketDetail: (id: number) => `/tecnologico/support/tickets/detail?id=${id}`,
     profile: "/tecnologico/support/perfil",
   },
   infrastructure: {
