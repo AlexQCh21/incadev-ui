@@ -226,7 +226,7 @@ const mockTitle = "Curso - INCADEV UI";
           </h2>
 
           <!-- Stats Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div
               class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-900/50"
             >
@@ -251,7 +251,7 @@ const mockTitle = "Curso - INCADEV UI";
               <p
                 class="text-sm font-medium text-green-600 dark:text-green-400 mb-2"
               >
-                CTR Promedio
+                Engagement Rate
               </p>
               <p
                 id="metricaCTR"
@@ -260,25 +260,7 @@ const mockTitle = "Curso - INCADEV UI";
                 --%
               </p>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                Tasa de clics
-              </p>
-            </div>
-            <div
-              class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-900/50"
-            >
-              <p
-                class="text-sm font-medium text-purple-600 dark:text-purple-400 mb-2"
-              >
-                Pre-registros
-              </p>
-              <p
-                id="metricaPreRegistros"
-                class="text-3xl font-bold text-gray-900 dark:text-white"
-              >
-                --
-              </p>
-              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                Interesados
+                Tasa de interacción
               </p>
             </div>
             <div
@@ -493,8 +475,8 @@ const mockTitle = "Curso - INCADEV UI";
                 <p class="text-xs text-gray-600 dark:text-gray-400">Alcance</p>
               </div>
               <div class="text-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <p class="text-2xl font-bold text-gray-900 dark:text-white">${c.metricas.totalPreRegistrations}</p>
-                <p class="text-xs text-gray-600 dark:text-gray-400">Pre-registros</p>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">${c.metricas.totalInteractions}</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Interacciones</p>
               </div>
             </div>
 
@@ -505,9 +487,9 @@ const mockTitle = "Curso - INCADEV UI";
             </div>
 
             <div class="flex gap-2">
-              <button class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium smooth-transition">
+              <a href="/marketing/campañas/${c.id}" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium smooth-transition text-center">
                 Ver Detalles
-              </button>
+              </a>
             </div>
           </div>
         `;
@@ -566,14 +548,12 @@ const mockTitle = "Curso - INCADEV UI";
       // Calcular totales
       let totalReach = 0;
       let totalInteractions = 0;
-      let totalPreRegistrations = 0;
       let totalPosts = 0;
       let sumCtr = 0;
 
       data.campañas.forEach((c) => {
         totalReach += c.metricas.totalReach;
         totalInteractions += c.metricas.totalInteractions;
-        totalPreRegistrations += c.metricas.totalPreRegistrations;
         totalPosts += c.metricas.totalPosts;
         sumCtr += c.metricas.averageCtr;
       });
@@ -597,8 +577,8 @@ const mockTitle = "Curso - INCADEV UI";
             <p class="text-2xl font-bold text-gray-900 dark:text-white">${totalReach > 1000 ? (totalReach / 1000).toFixed(1) + "K" : totalReach}</p>
           </div>
           <div class="text-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <p class="text-sm text-gray-600 dark:text-gray-400">Pre-registros</p>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">${totalPreRegistrations}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Interacciones</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">${totalInteractions}</p>
           </div>
         `;
       }
@@ -606,7 +586,6 @@ const mockTitle = "Curso - INCADEV UI";
       // Tab Métricas
       const metricaAlcance = document.getElementById("metricaAlcance");
       const metricaCTR = document.getElementById("metricaCTR");
-      const metricaPreRegistros = document.getElementById("metricaPreRegistros");
       const metricaInteracciones = document.getElementById("metricaInteracciones");
       const metricaTotalCampanas = document.getElementById("metricaTotalCampanas");
       const metricaTotalPosts = document.getElementById("metricaTotalPosts");
@@ -614,7 +593,6 @@ const mockTitle = "Curso - INCADEV UI";
 
       if (metricaAlcance) metricaAlcance.textContent = totalReach > 1000 ? (totalReach / 1000).toFixed(1) + "K" : String(totalReach);
       if (metricaCTR) metricaCTR.textContent = avgCtr.toFixed(1) + "%";
-      if (metricaPreRegistros) metricaPreRegistros.textContent = String(totalPreRegistrations);
       if (metricaInteracciones) metricaInteracciones.textContent = String(totalInteractions);
       if (metricaTotalCampanas) metricaTotalCampanas.textContent = String(data.totalCampañas);
       if (metricaTotalPosts) metricaTotalPosts.textContent = String(totalPosts);

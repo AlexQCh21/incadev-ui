@@ -10,10 +10,14 @@ import type { CourseFromAPI, CourseForUI, CourseVersionFromAPI, CourseVersionFor
  * Mapea los datos de curso de la API a la estructura que necesita la UI
  */
 function mapCourseToUI(course: CourseFromAPI): CourseForUI {
+    const imagePath = course.image_path;
+    const imagen = imagePath && imagePath.trim() !== '' ? imagePath : null;
+
     return {
         id: course.id,
         nombre: course.name,
         descripcion: course.description || 'Sin descripción',
+        imagen,
         fechaCreacion: course.created_at,
         fechaActualizacion: course.updated_at
     };
@@ -23,7 +27,6 @@ function mapCourseToUI(course: CourseFromAPI): CourseForUI {
  * Mapea los datos de versión de curso de la API a la estructura que necesita la UI
  */
 function mapVersionToUI(version: CourseVersionFromAPI): CourseVersionForUI {
-    // Manejar imagen: puede ser null, undefined, o string vacío
     const imagePath = version.course?.image_path;
     const cursoImagen = imagePath && imagePath.trim() !== '' ? imagePath : null;
 
@@ -132,7 +135,6 @@ import type {
  * Mapea el detalle de curso de la API a la estructura de UI
  */
 function mapCourseDetailToUI(course: CourseDetailFromAPI): CourseDetailForUI {
-    // Manejar imagen: puede ser null, undefined, o string vacío
     const imagePath = course.image_path;
     const imagen = imagePath && imagePath.trim() !== '' ? imagePath : null;
 
