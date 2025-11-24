@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@astrojs/node':
-        specifier: ^9.5.0
+        specifier: ^9.5.1
         version: 9.5.1(astro@5.16.0(@types/node@24.9.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.52.5)(typescript@5.9.3))
       '@astrojs/react':
         specifier: ^4.4.1
@@ -120,7 +120,7 @@ importers:
         specifier: ^11.0.5
         version: 11.0.5(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       recharts:
-        specifier: 2.15.4
+        specifier: ^2.15.4
         version: 2.15.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       sonner:
         specifier: ^2.0.7

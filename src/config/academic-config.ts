@@ -6,7 +6,8 @@
 
 export const config = {
   apiUrl:"https://instituto.cetivirgendelapuerta.com/backend/academico/public",
-  //apiUrl:"http://127.0.0.1:8000",
+  //apiUrl:"http://127.0.0.1:8002",
+  tutoringApiUrl:"http://127.0.0.1:8000",
   environment:"development",
   endpoints: {
     users: {
@@ -61,10 +62,42 @@ export const config = {
     marketing: {
       students: "/api/marketing/students"
     },
-    export: {
-      matriculas: "/api/export/:groupId/enrollments",
-      asistencias: "/api/export/:groupId/attendances",
-      grades: "/api/export/:groupId/grades"
+    tutoring: {
+      // Endpoints para estudiantes
+      studentRequests: "/api/tutoring/my-requests",
+      createRequest: "/api/tutoring/requests",
+      teachers: "/api/tutoring/teachers",
+      teacherAvailability: "/api/tutoring/availabilities/:teacherId"
+    },
+    report: {
+      studentGroups: "/api/report/student-groups",
+      groupGrades: "/api/report/group-grades",
+      enrolledCoursesPdf: "/api/report/reports/enrolled-courses",
+      singleCourseGradesPdf: "/api/report/reports/single-course-grades"
+    },
+    forums: {
+      list: "/api/forums",
+      get: "/api/forums/:forumId",
+      create: "/api/forums",
+      update: "/api/forums/:forumId",
+      delete: "/api/forums/:forumId",
+    },
+    threads: {
+      listByForum: "/api/forums/:forumId/threads",
+      get: "/api/threads/:threadId",
+      create: "/api/forums/:forumId/threads",
+      update: "/api/threads/:threadId",
+      delete: "/api/threads/:threadId",
+    },
+    comments: {
+      listByThread: "/api/threads/:threadId/comments",
+      create: "/api/threads/:threadId/comments",
+      update: "/api/comments/:commentId",
+      delete: "/api/comments/:commentId",
+    },
+    votes: {
+      voteThread: "/api/threads/:threadId/votes",
+      voteComment: "/api/comments/:commentId/votes",
     }
   },
 };
