@@ -189,9 +189,12 @@ export default function PaymentsHistory() {
   };
 
   const exportPDF = () => {
-    const url = config.endpoints.pagosExportData;
+    const url = `${config.apiUrl}${config.endpoints.pagosExportData}`;
     fetch(url)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         localStorage.setItem('paymentsExportData', JSON.stringify(data));
         window.open('/administrativo/pagos/export-pdf', '_blank');
@@ -470,18 +473,26 @@ export default function PaymentsHistory() {
                               <p><span className="font-medium text-foreground">Fecha:</span> {new Date(payment.operation_date).toLocaleDateString()}</p>
                             </div>
                             <div className="flex justify-end">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  localStorage.setItem('invoicePaymentId', String(payment.id));
-                                  window.open('/administrativo/pagos/invoice', '_blank');
-                                }}
-                                title="Ver comprobante"
-                              >
-                                Ver comprobante
-                              </Button>
-                            </div>
+                                  {(() => {
+                                    const canEmit = (payment.status || '').toLowerCase() === 'approved';
+                                    return (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => {
+                                          if (!canEmit) return;
+                                          localStorage.setItem('invoicePaymentId', String(payment.id));
+                                          window.open('/administrativo/pagos/invoice', '_blank');
+                                        }}
+                                        title={canEmit ? 'Ver comprobante' : 'Disponible solo si el pago está aprobado'}
+                                        disabled={!canEmit}
+                                        className={!canEmit ? 'opacity-60 pointer-events-none' : ''}
+                                      >
+                                        Ver comprobante
+                                      </Button>
+                                    );
+                                  })()}
+                                </div>
                           </div>
                         ))}
                       </div>
@@ -592,17 +603,25 @@ export default function PaymentsHistory() {
                                 <TableCell className="text-center">{getStatusBadge(payment.status)}</TableCell>
                                 <TableCell>
                                   <div className="flex items-center justify-center gap-2">
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={() => {
-                                        localStorage.setItem('invoicePaymentId', String(payment.id));
-                                        window.open('/administrativo/pagos/invoice', '_blank');
-                                      }}
-                                      title="Ver comprobante"
-                                    >
-                                      <IconFileText className="h-4 w-4" />
-                                    </Button>
+                                      {(() => {
+                                        const canEmit = (payment.status || '').toLowerCase() === 'approved';
+                                        return (
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => {
+                                              if (!canEmit) return;
+                                              localStorage.setItem('invoicePaymentId', String(payment.id));
+                                              window.open('/administrativo/pagos/invoice', '_blank');
+                                            }}
+                                            title={canEmit ? 'Ver comprobante' : 'Disponible solo si el pago está aprobado'}
+                                            disabled={!canEmit}
+                                            className={!canEmit ? 'opacity-60 pointer-events-none' : ''}
+                                          >
+                                            <IconFileText className="h-4 w-4" />
+                                          </Button>
+                                        );
+                                      })()}
                                   </div>
                                 </TableCell>
                               </TableRow>
