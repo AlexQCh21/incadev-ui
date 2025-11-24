@@ -79,6 +79,12 @@ export const navSimpleMain: NavSimpleItem[] = [
     allowedRoles: ["survey_admin"]
   },
   {
+    title: "Dashboard",
+    url: "/evaluacion/auditorias",
+    icon: IconChalkboard,
+    allowedRoles: ["audit_manager", "auditor"]
+  },
+  {
     title: "Auditorias",
     url: "/evaluacion/auditorias/panel-audit",
     icon: IconChalkboard,
