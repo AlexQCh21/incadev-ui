@@ -90,5 +90,9 @@ export const config = {
     applicants: "/api/rrhh/applicants",
 
 
+    // ✅ NUEVOS ENDPOINTS DE NÓMINA
+    payroll: "/api/rrhh/payroll",
+    payrollStats: "/api/rrhh/payroll/stats",
+    payrollEmployeeHistory: "/api/rrhh/payroll/employee",
   },
 };
