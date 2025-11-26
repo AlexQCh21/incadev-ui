@@ -22,6 +22,7 @@ export const config = {
 
     //pagos
     pagos: "/api/pagos",
+    pagosApproval: "/api/pagos/approval",
     pagosExportCsv: "/api/pagos/export-csv",
     pagosExportData: "/api/pagos/export-data",
 
@@ -32,7 +33,7 @@ export const config = {
 
     //estudiantes
 
-    students:"/api/gestion-academica/estudiantes",
+    students: "/api/gestion-academica/estudiantes",
     studentsExportCsv: '/api/gestion-academica/estudiantes/export/csv',
     studentsExportData: '/api/gestion-academica/estudiantes/export-data',
 
