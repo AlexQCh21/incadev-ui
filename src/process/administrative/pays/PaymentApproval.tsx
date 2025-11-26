@@ -92,7 +92,7 @@ export default function PaymentApproval() {
   const loadPendingPayments = async () => {
     try {
       setLoading(true);
-      const apiUrl = `/api/pagos?status=pending`;
+      const apiUrl = `${config.apiUrl}/api/pagos?status=pending`;
       const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
