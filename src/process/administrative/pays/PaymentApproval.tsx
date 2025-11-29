@@ -92,13 +92,14 @@ export default function PaymentApproval() {
   const loadPendingPayments = async () => {
     try {
       setLoading(true);
-      const apiUrl = `${config.apiUrl}/api/pagos?status=pending`;
+      const apiUrl = `${config.apiUrl}${config.endpoints.pagos}`;
       const res = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
 
       const all: Payment[] = data.payments || [];
-      setPayments(all);
+      const pending = all.filter((p) => (p.status || '').toLowerCase() === 'pending');
+      setPayments(pending);
       setError(null);
     } catch (err) {
       console.error('Carga de pagos fallida', err);
@@ -147,44 +148,6 @@ export default function PaymentApproval() {
     };
     const statusInfo = statusMap[statusLower] || { text: status, className: 'bg-slate-500/10 text-slate-700 dark:text-slate-400 border-slate-500/20' };
     return <Badge variant="outline" className={statusInfo.className}>{statusInfo.text}</Badge>;
-  };
-
-  const getGoogleDriveInfo = (url: string) => {
-    if (!url) return { isGoogleDrive: false, isPdf: false, embedUrl: url };
-
-    const isGoogleDrive = url.includes('drive.google.com') || url.includes('docs.google.com');
-
-    if (!isGoogleDrive) {
-      return { isGoogleDrive: false, isPdf: false, embedUrl: url };
-    }
-
-    const isPdf = url.includes('/presentation/') || url.includes('/file/d/') && url.includes('pdf');
-
-    let fileId = '';
-
-    const presentationMatch = url.match(/\/presentation\/d\/([^\/]+)/);
-    if (presentationMatch) {
-      fileId = presentationMatch[1];
-      return {
-        isGoogleDrive: true,
-        isPdf: true,
-        embedUrl: `https://drive.google.com/file/d/${fileId}/preview`,
-        directUrl: url
-      };
-    }
-
-    const fileMatch = url.match(/\/file\/d\/([^\/]+)/);
-    if (fileMatch) {
-      fileId = fileMatch[1];
-      return {
-        isGoogleDrive: true,
-        isPdf: isPdf,
-        embedUrl: `https://drive.google.com/file/d/${fileId}/preview`,
-        directUrl: url
-      };
-    }
-
-    return { isGoogleDrive: true, isPdf: false, embedUrl: url, directUrl: url };
   };
 
   const openEvidenceModal = async (payment: Payment) => {
@@ -368,71 +331,26 @@ export default function PaymentApproval() {
                     ) : (
                       <div className="rounded-lg bg-white dark:bg-slate-900 p-4">
                         {selectedPayment.evidence_path && evidenceUrl && !evidenceError ? (
-                          (() => {
-                            const driveInfo = getGoogleDriveInfo(evidenceUrl);
-
-                            return (
-                              <div className="flex flex-col gap-3">
-                                {driveInfo.isGoogleDrive ? (
-                                  <>
-                                    {driveInfo.isPdf ? (
-                                      <div className="w-full">
-                                        <iframe
-                                          src={driveInfo.embedUrl}
-                                          className="w-full h-[600px] rounded-lg border border-slate-200 dark:border-slate-700"
-                                          title="Comprobante de pago PDF"
-                                          allow="autoplay"
-                                        />
-                                      </div>
-                                    ) : (
-                                      <div className="flex justify-center bg-white dark:bg-slate-900 rounded-lg p-4">
-                                        <iframe
-                                          src={driveInfo.embedUrl}
-                                          className="w-full h-[600px] rounded-lg border border-slate-200 dark:border-slate-700"
-                                          title="Comprobante de pago"
-                                          allow="autoplay"
-                                        />
-                                      </div>
-                                    )}
-                                    <div className="flex justify-between items-center">
-                                      <p className="text-xs text-muted-foreground">
-                                        {driveInfo.isPdf ? 'Documento PDF' : 'Imagen'} desde Google Drive
-                                      </p>
-                                      <a
-                                        href={driveInfo.directUrl || evidenceUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs text-sky-600 hover:underline font-medium"
-                                      >
-                                        Abrir en Google Drive →
-                                      </a>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <div className="flex flex-col gap-3">
-                                    <div className="flex justify-center bg-white dark:bg-slate-900 rounded-lg p-4">
-                                      <img
-                                        src={evidenceUrl}
-                                        alt="Evidencia de pago"
-                                        className="max-w-full h-auto rounded-lg shadow-lg"
-                                        onError={() => setEvidenceError(true)}
-                                      />
-                                    </div>
-                                    <div className="text-right">
-                                      <a
-                                        href={evidenceUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs text-sky-600 hover:underline"
-                                      >
-                                        Abrir comprobante en una nueva pestaña
-                                      </a>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })()
+                          <div className="flex flex-col gap-3">
+                            <div className="flex justify-center bg-white dark:bg-slate-900 rounded-lg p-4">
+                              <img
+                                src={evidenceUrl}
+                                alt="Evidencia de pago"
+                                className="max-w-full h-auto rounded-lg shadow-lg"
+                                onError={() => setEvidenceError(true)}
+                              />
+                            </div>
+                            <div className="text-right">
+                              <a
+                                href={evidenceUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-sky-600 hover:underline"
+                              >
+                                Abrir comprobante en una nueva pestaña
+                              </a>
+                            </div>
+                          </div>
                         ) : (
                           <div className="flex items-center gap-3">
                             <div className="flex-shrink-0 flex items-center justify-center h-20 w-28 bg-slate-100 dark:bg-slate-800 rounded-md">
