@@ -3,6 +3,8 @@ import AdministrativeLayout from '@/process/administrative/AdministrativeLayout'
 import { config } from "@/config/administrative-config";
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { generateKpisPDF } from './components/kpi-export-pdf';
+import { toast } from '@/utils/toast';
 import {
   IconFileDownload,
   IconRefresh,
@@ -126,15 +128,15 @@ export default function IndicadoresManagement() {
       if (!response.ok) throw new Error(`Error ${response.status}`);
 
       const data = await response.json();
-      localStorage.setItem('kpiExportData', JSON.stringify(data));
-
-      const pdfWindow = window.open('/administrativo/indicadores/export-pdf', '_blank');
-      if (!pdfWindow) {
-        alert('Por favor, permite las ventanas emergentes para exportar el PDF');
-      }
+      
+      // Llamar a la función que genera el PDF
+      generateKpisPDF(data);
+      
+      toast.success('PDF descargado exitosamente', 'Descargado');
+      
     } catch (error) {
       console.error('Error al exportar PDF:', error);
-      alert(`Error al exportar PDF: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      toast.error('No se pudo generar el PDF', 'Error');
     }
   };
 
