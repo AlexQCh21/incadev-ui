@@ -96,10 +96,10 @@ export default function IndicadoresManagement() {
       if (!response.ok) throw new Error('Error al recalcular indicadores');
 
       await loadKpis();
-      alert('Indicadores recalculados exitosamente');
+      toast.success('Indicadores recalculados exitosamente', 'Actualizado'); // ← Cambiado aquí
     } catch (error) {
       console.error('Error recalculating KPIs:', error);
-      alert('Error al recalcular los indicadores');
+      toast.error('Error al recalcular los indicadores', 'Error'); // ← Y aquí
     }
   };
 
